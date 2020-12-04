@@ -1,16 +1,10 @@
-# ENG1-G14 - Dragon Boat Race
+ # Dragon Boat Race ENG1 Project
 
-## Setup
-First of all download GitHub Desktop [here](https://desktop.github.com/)  
-Login  
-Then clone the repository
-
-## How to edit (VSCode)
-All the code is stored in the `core/src/com/dragonboatrace`
-
-Press `Ctrl+Shift+B` to run the program
+  This is the code for the ENG1 project DragonBoatRace Game part 2.
+  
+  Original code base from Team 14's [repo] (https://github.com/Xychic/ENG1-DragonBoatRace) 
 
 ## Making changes
-First create a new branch, named after what you are changing eg. if you are editing the main menu, create a branch called `mainMenu`   
+First create a new branch, named after the feature/change being made (eg. CPU AI)   
 Then edit the code!  
 Finally add a commit message and push to the new branch
