@@ -178,4 +178,8 @@ public abstract class Boat extends Entity {
     public float getCurrentSpeed() {
         return this.vel.y;
     }
+
+    public Tuple<Float,Float> getLaneBounds(){
+        return this.laneBounds;
+    }
 }
