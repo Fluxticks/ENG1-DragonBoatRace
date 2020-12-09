@@ -7,6 +7,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
+import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
@@ -17,10 +18,11 @@ public class midRoundScreen extends ScreenAdapter {
     int round;
     PlayerBoat pb;
     int[] playerPositions;
+    Lane[] lanes;
 
-    public midRoundScreen(DragonBoatRace game, int round, CPUBoat[] CPUs, PlayerBoat playerBoat) {
+    public midRoundScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat) {
         this.game = game;
-        this.CPUs = CPUs;
+        this.lanes = lanes;
         this.round = round;
         this.pb = playerBoat;
         this.game.toDispose.add(this);
@@ -34,20 +36,16 @@ public class midRoundScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.SPACE) {
-                    pb.moveToStart();
-
-                    for (CPUBoat CPU : CPUs) {
-                        CPU.moveToStart();
+                    for(Lane lane : lanes){
+                        lane.moveBoatToStart();
                     }
                     if (round != 3 || playerPositions[1] < 4) {
-                        game.setScreen(new GameScreen(game, round + 1, CPUs, pb));
+                        game.setScreen(new GameScreen(game, round + 1, lanes, pb));
                     } else {
-                        game.setScreen(new Finale(game, CPUs, pb));
+                        game.setScreen(new Finale(game, lanes, pb));
                     }
                     //this will move every cpu boat to the 'start'
                     //really it just moves them to be at the same position as the player
-
-
                 }
                 return true;
             }

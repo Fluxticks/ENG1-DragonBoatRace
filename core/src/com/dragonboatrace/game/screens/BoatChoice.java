@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.DragonBoatRace;
+import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.Tuple;
 import com.dragonboatrace.game.entities.Boat;
 import com.dragonboatrace.game.entities.BoatType;
@@ -102,7 +103,13 @@ public class BoatChoice extends ScreenAdapter {
                     );    // Creating the players boat
                     pb.saveStartPos();
 
-                    game.setScreen(new GameScreen(game, 0, CPUs, pb));
+                    Lane[] lanes = new Lane[laneCount];
+                    for(int i = 0; i < laneCount - 1; i++){
+                        lanes[i] = new Lane(CPUs[i], pb);
+                    }
+                    lanes[laneCount-1] = new Lane(pb,pb);
+
+                    game.setScreen(new GameScreen(game, 0, lanes, pb));
                 } else if (keyCode == Input.Keys.LEFT) {
                     selection += boats.length - 1;
                     selection %= boats.length;
