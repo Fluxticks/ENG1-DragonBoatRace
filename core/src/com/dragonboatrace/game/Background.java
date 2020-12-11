@@ -63,9 +63,6 @@ public class Background extends Entity {
         }
     }
 
-    public void collide(Obstacle o) {
-    }
-
     public void move(float deltaTime) {
     }
 

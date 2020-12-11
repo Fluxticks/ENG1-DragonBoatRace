@@ -83,8 +83,6 @@ public abstract class Entity {
 
     public abstract void move(float deltaTime);
 
-    public abstract void collide(Obstacle o);
-
     public abstract void dispose();
 
     public Vector2 getSize() {
