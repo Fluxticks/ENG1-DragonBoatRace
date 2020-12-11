@@ -11,7 +11,7 @@ public abstract class Entity {
 
     public Entity(Vector2 pos, Vector2 size, float weight) {
         this.pos = pos;
-        this.inGamePos = new Vector2(pos.x, pos.y);
+        this.inGamePos = new Vector2(pos);
         this.inGameVel = new Vector2();
         this.vel = new Vector2();
         this.acc = new Vector2();
@@ -66,7 +66,6 @@ public abstract class Entity {
     public Vector2 getInGamePos() {
         return this.inGamePos;
     }
-
 
     public Vector2 getVel() {
         return this.vel;
