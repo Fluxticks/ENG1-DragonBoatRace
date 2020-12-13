@@ -1,7 +1,9 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.entities.*;
 
@@ -24,11 +26,14 @@ public class Lane {
 
     public boolean isPlayerLane;
 
+    private final ShapeRenderer shapeRenderer;
+
     public Lane(Boat boatInLane, PlayerBoat pb){
         this.boat = boatInLane;
         this.obstacles = new ArrayList<>();
         this.pb = pb;
         this.isPlayerLane = (this.pb == this.boat);
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float deltaTime){
@@ -43,7 +48,7 @@ public class Lane {
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             }
             else {
-                this.pb.checkCollision(obstacle);
+                this.boat.checkForCollision(obstacle);
                 obstacle.move(deltaTime);    // Run the obstacles mover
                 obstacle.update(deltaTime);    // Update the position of the obstacle
             }
@@ -52,7 +57,11 @@ public class Lane {
         if(this.obstacles.size() < maxObstacles){
             this.obstacles.add(spawnObstacle());
         }
-        System.out.println("Obstacles size: " + obstacles.size());
+
+        // Don't like this but not sure how best to do this without swapping to the structure in the old game.
+        if(!this.isPlayerLane){
+            ((CPUBoat)this.boat).decideMovement(obstacles);
+        }
 
         this.boat.move(deltaTime);
         this.boat.update(deltaTime);
@@ -61,8 +70,18 @@ public class Lane {
     public void render(SpriteBatch batch){
         for(Obstacle obstacle : this.obstacles){
             obstacle.render(batch, this.pb.getInGamePos());
+            obstacle.renderHitBox(this.pb.getInGamePos());
         }
         this.boat.render(batch, this.pb.getInGamePos());
+        renderBounds();
+    }
+
+    private void renderBounds(){
+        Tuple<Float,Float> bounds = this.boat.getLaneBounds();
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        this.shapeRenderer.setColor(Color.RED);
+        this.shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
+        this.shapeRenderer.end();
     }
 
     public void updateRound(int newRound){
@@ -70,16 +89,16 @@ public class Lane {
 
         switch (this.round) {    // The max number of obstacles changes from round to round
             case 0:
-                this.maxObstacles = 5;
+                this.maxObstacles = 3;
                 break;
             case 1:
-                this.maxObstacles = 8;
+                this.maxObstacles = 4;
                 break;
             case 2:
-                this.maxObstacles = 11;
+                this.maxObstacles = 5;
                 break;
             case 3:
-                this.maxObstacles = 14;
+                this.maxObstacles = 6;
                 break;
             default:
                 this.maxObstacles = 0;
@@ -139,8 +158,6 @@ public class Lane {
         spawnPos.x = (float)rand.nextDouble(this.boat.getLaneBounds().a, this.boat.getLaneBounds().b);
         spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + this.pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
         //spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y;        // Translate 2 screens up and relative to the player
-
-        System.out.println("SpawnPos: (" + spawnPos.x + "," + spawnPos.y + ")");
 
         dir = spawnPos.cpy().sub(new Vector2(    // Create a vector pointing from the spawn pos to a random point on the screen
                 rand.nextFloat() * Gdx.graphics.getWidth(),

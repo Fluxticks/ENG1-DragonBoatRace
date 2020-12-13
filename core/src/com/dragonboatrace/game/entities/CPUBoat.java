@@ -3,15 +3,19 @@ package com.dragonboatrace.game.entities;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.Tuple;
 
+import java.util.ArrayList;
+
 public class CPUBoat extends Boat {
 
     int difficulty;
     Vector2 startPos;
+    private int dir;
 
     public CPUBoat(BoatType boatType, Vector2 pos, int difficulty, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         this.difficulty = difficulty;
         this.startPos = pos;
+        this.dir = 0;
     }
 
     @Override
@@ -23,6 +27,8 @@ public class CPUBoat extends Boat {
         } else if (this.vel.y > this.currentMaxSpeed) {
             this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         }
+
+        this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)),0);
 
         //this part stops them if they break
         if (this.currentHealth <= 0) {
@@ -42,17 +48,49 @@ public class CPUBoat extends Boat {
 
     //this method isnt used yet bc it sucks, I was going to use it to decide where to move the cpus intelligently but that's too hard so might just make them move randomly 
     //please ignore this method
-    public void decideMovement(float deltaTime, Obstacle[] obstacles) {
+    public void decideMovement(ArrayList<Obstacle> obstacles) {
 
-        Obstacle closestObstacle = obstacles[0];
+        // The amount on each side to check for obstacles
+        int paddingX = 5;
+        int paddingY = 75;
+        boolean obstacleInZone = false;
+        float thisCenter = this.size.x/2f + this.inGamePos.x;
 
-        for (Obstacle i : obstacles) {
-            Vector2 obstaclePos = i.getRelPos(pos);
-            if (obstaclePos.y > 0) {
-                if (obstaclePos.y < closestObstacle.getRelPos(pos).y) {
-                    closestObstacle = i;
-                }
+        for(Obstacle obstacle : obstacles){
+            if(this.inGamePos.x + this.size.x + paddingX > obstacle.inGamePos.x && this.inGamePos.x - paddingX < obstacle.inGamePos.x + obstacle.size.x && this.inGamePos.y < obstacle.inGamePos.y + obstacle.size.y && this.inGamePos.y + this.size.y + paddingY > obstacle.inGamePos.y){
+                float obstacleCenter = obstacle.size.x/2f + obstacle.inGamePos.x;
+                obstacleInZone = true;
+                dir = decideDirection(thisCenter, obstacleCenter);
+                break;
             }
+        }
+
+        if(!obstacleInZone){
+            float laneCenter = (laneBounds.b + laneBounds.a)/2f;
+            if(thisCenter + 100 < laneCenter){
+                this.dir = 1;
+            }else if(thisCenter - 100 > laneCenter){
+                this.dir = -1;
+            }else{
+                this.dir = 0;
+            }
+        }
+    }
+
+    private int decideDirection(float thisCenter, float obstacleCenter){
+
+        // Try to stay in the lane.
+        if(this.inGamePos.x - 10 < this.laneBounds.a){
+            return 1;
+        }else if(this.inGamePos.x + this.size.x + 10 > this.laneBounds.b){
+            return -1;
+        }
+
+        // If the obstacle is to the right of our center move to the left.
+        if(thisCenter < obstacleCenter){
+            return -1;
+        }else{
+            return 1;
         }
     }
 
