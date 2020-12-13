@@ -52,7 +52,6 @@ public class Lane {
         if(this.obstacles.size() < maxObstacles){
             this.obstacles.add(spawnObstacle());
         }
-        System.out.println("Obstacles size: " + obstacles.size());
 
         this.boat.move(deltaTime);
         this.boat.update(deltaTime);
@@ -61,8 +60,10 @@ public class Lane {
     public void render(SpriteBatch batch){
         for(Obstacle obstacle : this.obstacles){
             obstacle.render(batch, this.pb.getInGamePos());
+            obstacle.renderHitBox(this.pb.getInGamePos());
         }
         this.boat.render(batch, this.pb.getInGamePos());
+
     }
 
     public void updateRound(int newRound){
@@ -70,16 +71,16 @@ public class Lane {
 
         switch (this.round) {    // The max number of obstacles changes from round to round
             case 0:
-                this.maxObstacles = 5;
+                this.maxObstacles = 3;
                 break;
             case 1:
-                this.maxObstacles = 8;
+                this.maxObstacles = 4;
                 break;
             case 2:
-                this.maxObstacles = 11;
+                this.maxObstacles = 5;
                 break;
             case 3:
-                this.maxObstacles = 14;
+                this.maxObstacles = 6;
                 break;
             default:
                 this.maxObstacles = 0;
@@ -139,8 +140,6 @@ public class Lane {
         spawnPos.x = (float)rand.nextDouble(this.boat.getLaneBounds().a, this.boat.getLaneBounds().b);
         spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + this.pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
         //spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y;        // Translate 2 screens up and relative to the player
-
-        System.out.println("SpawnPos: (" + spawnPos.x + "," + spawnPos.y + ")");
 
         dir = spawnPos.cpy().sub(new Vector2(    // Create a vector pointing from the spawn pos to a random point on the screen
                 rand.nextFloat() * Gdx.graphics.getWidth(),
