@@ -14,7 +14,6 @@ import com.dragonboatrace.game.entities.PlayerBoat;
 public class midRoundScreen extends ScreenAdapter {
 
     DragonBoatRace game;
-    CPUBoat[] CPUs;
     int round;
     PlayerBoat pb;
     int[] playerPositions;
@@ -83,12 +82,14 @@ public class midRoundScreen extends ScreenAdapter {
         //element 1 of the output is the players position in all races
 
         int[] output = {1, 1};
-        for (CPUBoat CPU : CPUs) {
-            if (CPU.getFinishTimeLong() < pb.getFinishTimeLong()) {
-                output[0] += 1;
-            }
-            if (CPU.getTotalTimeLong() + CPU.getFinishTimeLong() < pb.getTotalTimeLong() + pb.getFinishTimeLong()) {
-                output[1] += 1;
+        for(Lane lane : lanes){
+            if(!lane.isPlayerLane){
+                if (lane.getBoatFinishTimeLong() < pb.getFinishTimeLong()) {
+                    output[0] += 1;
+                }
+                if (lane.getBoatTotalTimeLong() + lane.getBoatFinishTimeLong() < pb.getTotalTimeLong() + pb.getFinishTimeLong()) {
+                    output[1] += 1;
+                }
             }
         }
         return output;
