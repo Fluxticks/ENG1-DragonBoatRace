@@ -48,10 +48,14 @@ public class Lane {
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             }
             else {
-                this.pb.checkCollision(obstacle);
+                this.boat.checkForCollision(obstacle);
                 obstacle.move(deltaTime);    // Run the obstacles mover
                 obstacle.update(deltaTime);    // Update the position of the obstacle
             }
+        }
+
+        if(this.obstacles.size() < maxObstacles){
+            this.obstacles.add(spawnObstacle());
         }
 
         // Don't like this but not sure how best to do this without swapping to the structure in the old game.
@@ -71,6 +75,7 @@ public class Lane {
         this.boat.render(batch, this.pb.getInGamePos());
         renderBounds();
     }
+
     private void renderBounds(){
         Tuple<Float,Float> bounds = this.boat.getLaneBounds();
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
