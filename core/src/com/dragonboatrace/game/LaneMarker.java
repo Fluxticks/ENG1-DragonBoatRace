@@ -34,9 +34,6 @@ public class LaneMarker extends Entity {
         this.img.dispose();
     }
 
-    public void collide(Obstacle o) {
-    }
-
     public void move(float deltaTime) {
     }
 

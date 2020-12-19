@@ -1,13 +1,18 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 
     protected Vector2 pos, inGamePos, vel, inGameVel, acc, size;
+    protected int width, height;
     protected float weight, dampening;
     protected Obstacle collider;
+    private ShapeRenderer shapeRenderer;
 
     public Entity(Vector2 pos, Vector2 size, float weight) {
         this.pos = pos;
@@ -16,9 +21,12 @@ public abstract class Entity {
         this.vel = new Vector2();
         this.acc = new Vector2();
         this.size = size;
+        this.width = (int)size.x;
+        this.height = (int)size.y;
         this.weight = weight;
         this.dampening = (float) 0.2;
         this.collider = null;
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float deltaTime) {
@@ -63,6 +71,13 @@ public abstract class Entity {
         this.render(batch, new Vector2());
     }
 
+    public void renderHitBox(Vector2 relPos){
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        this.shapeRenderer.setColor(Color.RED);
+        this.shapeRenderer.rect(this.pos.x, this.pos.y - relPos.y, this.size.x, this.size.y);
+        this.shapeRenderer.end();
+    }
+
     public Vector2 getInGamePos() {
         return this.inGamePos;
     }
@@ -82,8 +97,6 @@ public abstract class Entity {
     public abstract void render(SpriteBatch batch, Vector2 relPos);
 
     public abstract void move(float deltaTime);
-
-    public abstract void collide(Obstacle o);
 
     public abstract void dispose();
 

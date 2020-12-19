@@ -335,11 +335,6 @@ public class GameScreen extends ScreenAdapter {
         );
         this.game.shapeRenderer.end();
 
-        this.game.shapeRenderer.begin(ShapeType.Line);
-        this.game.shapeRenderer.setColor(Color.RED);
-        this.game.shapeRenderer.rect(this.pb.getLaneBounds().a, 0, this.pb.getLaneBounds().b - this.pb.getLaneBounds().a, Gdx.graphics.getHeight());
-        this.game.shapeRenderer.end();
-
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.LIGHT_GRAY);
         this.game.shapeRenderer.rect(
