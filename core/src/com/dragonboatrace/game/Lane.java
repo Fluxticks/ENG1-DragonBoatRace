@@ -1,7 +1,9 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.entities.*;
 
@@ -24,11 +26,14 @@ public class Lane {
 
     public boolean isPlayerLane;
 
+    private final ShapeRenderer shapeRenderer;
+
     public Lane(Boat boatInLane, PlayerBoat pb){
         this.boat = boatInLane;
         this.obstacles = new ArrayList<>();
         this.pb = pb;
         this.isPlayerLane = (this.pb == this.boat);
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float deltaTime){
@@ -49,8 +54,9 @@ public class Lane {
             }
         }
 
-        if(this.obstacles.size() < maxObstacles){
-            this.obstacles.add(spawnObstacle());
+        // Don't like this but not sure how best to do this without swapping to the structure in the old game.
+        if(!this.isPlayerLane){
+            ((CPUBoat)this.boat).decideMovement(obstacles);
         }
 
         this.boat.move(deltaTime);
@@ -63,7 +69,14 @@ public class Lane {
             obstacle.renderHitBox(this.pb.getInGamePos());
         }
         this.boat.render(batch, this.pb.getInGamePos());
-
+        renderBounds();
+    }
+    private void renderBounds(){
+        Tuple<Float,Float> bounds = this.boat.getLaneBounds();
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        this.shapeRenderer.setColor(Color.RED);
+        this.shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
+        this.shapeRenderer.end();
     }
 
     public void updateRound(int newRound){
