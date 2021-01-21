@@ -43,16 +43,18 @@ public class Background extends Entity {
     }
 
     private void loadTextures() {
-        String[] fileNames = Gdx.files.internal("Backgrounds/catalog2.txt").readString().split("\n");
-        String[] fileNames2 = Gdx.files.internal("Backgrounds/catalog.txt").readString().split("\n");
+        String[] fileNames = Gdx.files.local("Backgrounds/catalog2.txt").readString().split("\n");
+        String[] fileNames2 = Gdx.files.local("Backgrounds/catalog.txt").readString().split("\n");
         this.allTextures = new Texture[fileNames.length];
         try {
             for (int i = 0; i < fileNames.length; i++) {
-                this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames[i]));
+                this.allTextures[i] =  new Texture(Gdx.files.local("Backgrounds/" + fileNames[i].replace("\r", "")));
+                //this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames[i]));
             }
         } catch (Exception e) {
             for (int i = 0; i < fileNames.length; i++) {
-                this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames2[i]));
+                this.allTextures[i] =  new Texture(Gdx.files.local("Backgrounds/" + fileNames2[i].replace("\r", "")));
+                //this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames2[i]));
             }
         }
     }
