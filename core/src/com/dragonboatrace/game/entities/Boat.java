@@ -33,9 +33,6 @@ public abstract class Boat extends Entity {
         this.laneBounds = laneBounds;
     }
 
-    public void collide(Obstacle o) {
-
-    }
 
     public boolean checkCollision(Obstacle o) {
         boolean colliding = super.checkCollision(o);
