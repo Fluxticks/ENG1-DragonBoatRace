@@ -14,10 +14,6 @@ public class Obstacle extends Entity {
         this.obstacleType = obstacleType;
     }
 
-    public void collide(Obstacle o) {
-
-    }
-
     public void move(float deltaTime) {
         this.obstacleType.getMover().updateVel(deltaTime, this.constantVel);
         this.vel = constantVel.cpy();

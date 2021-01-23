@@ -33,9 +33,11 @@ public abstract class Boat extends Entity {
         this.laneBounds = laneBounds;
     }
 
-    public boolean checkCollision(Obstacle o) {
-        boolean colliding = super.checkCollision(o);
+    public void checkForCollision(Obstacle o){
+        doCollision(super.checkCollision(o), o);
+    }
 
+    public void doCollision(boolean colliding, Obstacle o){
         if (colliding) {
             if (!this.collided.contains(o)) {
                 this.collided.add(o);
@@ -47,8 +49,6 @@ public abstract class Boat extends Entity {
             this.collided.remove(o);
             this.currentMaxSpeed = this.boatType.getSpeed();
         }
-
-        return colliding;
     }
 
     public void render(SpriteBatch batch, Vector2 relPos) {
@@ -173,5 +173,9 @@ public abstract class Boat extends Entity {
 
     public float getCurrentSpeed() {
         return this.vel.y;
+    }
+
+    public Tuple<Float,Float> getLaneBounds(){
+        return this.laneBounds;
     }
 }

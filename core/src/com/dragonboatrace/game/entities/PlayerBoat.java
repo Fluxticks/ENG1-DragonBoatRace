@@ -2,6 +2,7 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.Tuple;
 
@@ -48,6 +49,10 @@ public class PlayerBoat extends Boat {
         if (this.vel.y < 0) {
             this.vel.y = 0;
         }
+    }
+
+    public void render(SpriteBatch batch, Vector2 relPos){
+        super.render(batch, new Vector2());
     }
 
     @Override

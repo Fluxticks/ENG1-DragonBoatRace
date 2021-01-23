@@ -15,15 +15,16 @@ import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.Obstacle;
 import com.dragonboatrace.game.entities.ObstacleType;
 import com.dragonboatrace.game.entities.PlayerBoat;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
 public class GameScreen extends ScreenAdapter {
 
     DragonBoatRace game;
-    CPUBoat[] CPUs;
     PlayerBoat pb;
     Obstacle finishLineObstacle;    //the finish line that appears on screen
     int finishLine;                    //the y position in the game that the players have to pass to finish
@@ -31,20 +32,20 @@ public class GameScreen extends ScreenAdapter {
     int round;
     ArrayList<Obstacle> obstacleList;
     ObstacleType[] obstacles;
-    Obstacle collider;
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
+    Lane[] lanes;
     int maxObstacles, laneCount;
     long raceStartTime;
 
-    public GameScreen(DragonBoatRace game, int round, CPUBoat[] CPUs, PlayerBoat playerBoat) {
+    public GameScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat) {
         this.game = game;
-        this.create(round);
-        this.CPUs = CPUs;
+        this.lanes = lanes;
         this.pb = playerBoat;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
         this.round = round;
+        this.create(round);
     }
 
     @Override
@@ -76,6 +77,10 @@ public class GameScreen extends ScreenAdapter {
         backgrounds = new Background[backgroundCount];
         for (int i = 0; i < backgroundCount; i++) {
             backgrounds[i] = new Background(new Vector2(Gdx.graphics.getWidth() / 2f, i * 1080));
+        }
+
+        for(Lane lane : lanes){
+            lane.updateRound(this.round);
         }
 
         obstacleList = new ArrayList<>();    // Creating the empty arrayList of obstacles
@@ -137,6 +142,15 @@ public class GameScreen extends ScreenAdapter {
         for (LaneMarker l : laneMarkers) {
             l.render(game.batch, pb.getInGamePos());
         }
+
+        for(Lane lane : lanes){
+            lane.render(game.batch);
+            lane.update(deltaTime);
+        }
+
+        if (pb.getHealth() == 0) {
+            game.setScreen(new BoatDeathScreen(game));
+        }
 		
 /*
 		game.batch.begin();	// Start drawing HUD (For debugging)
@@ -159,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
 
         checkAllBoatsForFinished();
 
-        Iterator<Obstacle> obstacleIterator = obstacleList.iterator();    // Create iterator for iterating over the obstacles
+        /*Iterator<Obstacle> obstacleIterator = obstacleList.iterator();    // Create iterator for iterating over the obstacles
 
         collider = null;
 
@@ -176,7 +190,7 @@ public class GameScreen extends ScreenAdapter {
                 o.move(deltaTime);    // Run the obstacles mover
                 o.update(deltaTime);    // Update the position of the obstacle
                 if (pb.checkCollision(o)) {    // See if the players boat is colliding with the obstacle
-                    collider = o;
+                    //collider = o;
                 }
 
                 for (CPUBoat c : CPUs) {
@@ -186,11 +200,11 @@ public class GameScreen extends ScreenAdapter {
         }
         if (obstacleList.size() < maxObstacles) {
             obstacleList.add(spawnObstacle());
-        }
+        }*/
 
         finishLineObstacle.render(game.batch, pb.getInGamePos());
 
-        pb.render(game.batch);    // Render the boat
+        /*pb.render(game.batch, pb.getInGamePos());    // Render the boat
         pb.move(deltaTime);    // Move the boat based on player inputs
         pb.update(deltaTime);    // Update the position of the boat
 
@@ -202,8 +216,7 @@ public class GameScreen extends ScreenAdapter {
             c.render(game.batch, pb.getInGamePos());
             c.move(deltaTime);
             c.update(deltaTime);
-        }
-
+        }*/
 
         this.showHUD();
     }
@@ -265,6 +278,7 @@ public class GameScreen extends ScreenAdapter {
                 break;
         }
         spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
+        //spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y;        // Translate 2 screens up and relative to the player
 
         dir = spawnPos.cpy().sub(new Vector2(    // Create a vector pointing from the spawn pos to a random point on the screen
                 rand.nextFloat() * Gdx.graphics.getWidth(),
@@ -279,28 +293,31 @@ public class GameScreen extends ScreenAdapter {
 
         finishLineObstacle.getPos().y = finishLine; //this will make the finish line appear on the screen
 
-        for (CPUBoat cpu : CPUs) {
-            cpu.checkFinished(finishLine, this.raceStartTime); //this checks every cpu to see if it's finished, if it has it'll update their finishing time
+        for(Lane lane : lanes){
+            if(!lane.isPlayerLane) {
+                lane.checkBoatFinished(finishLine, this.raceStartTime);
+            }
         }
 
         if (pb.checkFinished(finishLine, this.raceStartTime)) {
             //calculate the times it would have taken or did take the cpus to finish
             //send every boats finishing time to the next screen along w the current round
 
-            for (CPUBoat cpu : CPUs) {
-                //if a cpu hasn't finished the race, it will estimate when it would have finished based on the distance it managed to travel in the time it took the player to win
-                if (!cpu.checkFinished(finishLine, this.raceStartTime)) {
-                    long timeEstimate = (long) ((pb.getFinishTimeLong()) * (finishLine / cpu.getInGamePos().y));
-                    cpu.setFinishTime(timeEstimate);
+            for(Lane lane : lanes){
+                if(!lane.isPlayerLane) {
+                    if (!lane.checkBoatFinished(finishLine, this.raceStartTime)) {
+                        long timeEstimate = (long) ((pb.getFinishTimeLong()) * (finishLine / lane.getBoatGamePos().y));
+                        lane.setBoatFinishTime(timeEstimate);
+                    }
                 }
             }
 
             if (round != 3) {
                 //go to mid round screen
-                game.setScreen(new midRoundScreen(game, round, CPUs, pb));
+                game.setScreen(new midRoundScreen(game, round, this.lanes, this.pb));
             } else {
                 //go to final results screen
-                game.setScreen(new Finale(game, CPUs, pb));
+                game.setScreen(new Finale(game, this.lanes, pb));
             }
 
         }
@@ -467,9 +484,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        pb.dispose();
-        for (CPUBoat c : this.CPUs) {
-            c.dispose();
+        for(Lane lane : lanes){
+            lane.dispose();
         }
         for (LaneMarker l : this.laneMarkers) {
             l.dispose();

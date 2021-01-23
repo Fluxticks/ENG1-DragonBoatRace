@@ -1,9 +1,11 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.dragonboatrace.game.entities.Entity;
 import com.dragonboatrace.game.entities.Obstacle;
 
@@ -42,20 +44,12 @@ public class Background extends Entity {
         this.size = new Vector2(this.img.getWidth(), this.img.getHeight());
     }
 
-    private void loadTextures() {
-        String[] fileNames = Gdx.files.local("Backgrounds/catalog2.txt").readString().split("\n");
-        String[] fileNames2 = Gdx.files.local("Backgrounds/catalog.txt").readString().split("\n");
-        this.allTextures = new Texture[fileNames.length];
-        try {
-            for (int i = 0; i < fileNames.length; i++) {
-                this.allTextures[i] =  new Texture(Gdx.files.local("Backgrounds/" + fileNames[i].replace("\r", "")));
-                //this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames[i]));
-            }
-        } catch (Exception e) {
-            for (int i = 0; i < fileNames.length; i++) {
-                this.allTextures[i] =  new Texture(Gdx.files.local("Backgrounds/" + fileNames2[i].replace("\r", "")));
-                //this.allTextures[i] = new Texture(String.format("Backgrounds/%s", fileNames2[i]));
-            }
+    private void loadTextures(){
+        FileHandle backgroundsDirectory = Gdx.files.local("Backgrounds");
+        FileHandle[] backgroundFiles = backgroundsDirectory.list();
+        this.allTextures = new Texture[backgroundFiles.length];
+        for (int i = 0; i < backgroundFiles.length; i++){
+            this.allTextures[i] = new Texture(backgroundFiles[i]);
         }
     }
 
@@ -63,9 +57,6 @@ public class Background extends Entity {
         for (Texture t : this.allTextures) {
             t.dispose();
         }
-    }
-
-    public void collide(Obstacle o) {
     }
 
     public void move(float deltaTime) {
