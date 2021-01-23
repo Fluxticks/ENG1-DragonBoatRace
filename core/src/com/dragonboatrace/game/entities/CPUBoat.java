@@ -46,6 +46,11 @@ public class CPUBoat extends Boat {
         }
     }
 
+    @Override
+    public void collide(Obstacle o) {
+
+    }
+
     //this method isnt used yet bc it sucks, I was going to use it to decide where to move the cpus intelligently but that's too hard so might just make them move randomly 
     //please ignore this method
     public void decideMovement(ArrayList<Obstacle> obstacles) {
