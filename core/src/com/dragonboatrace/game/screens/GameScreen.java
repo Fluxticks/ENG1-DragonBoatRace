@@ -37,14 +37,18 @@ public class GameScreen extends ScreenAdapter {
     Lane[] lanes;
     int maxObstacles, laneCount;
     long raceStartTime;
+    int difficulty;
+    float obstacleMultiplier;
 
-    public GameScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat) {
+    public GameScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
         this.lanes = lanes;
         this.pb = playerBoat;
+        this.difficulty = difficulty;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
         this.round = round;
+        this.obstacleMultiplier = 1;
         this.create(round);
     }
 
@@ -85,23 +89,37 @@ public class GameScreen extends ScreenAdapter {
 
         obstacleList = new ArrayList<>();    // Creating the empty arrayList of obstacles
 
-        switch (round) {    // The max number of obstacles changes from round to round
-            case 0:
-                maxObstacles = 10;
-                break;
+        switch(difficulty) {
             case 1:
-                maxObstacles = 15;
+                this.obstacleMultiplier = (float)0.5;
                 break;
             case 2:
-                maxObstacles = 20;
+                this.obstacleMultiplier = (float)1;
                 break;
             case 3:
-                maxObstacles = 30;
-                break;
-            default:
-                maxObstacles = 0;
+                this.obstacleMultiplier = (float)2;
                 break;
         }
+
+        switch (round) {    // The max number of obstacles changes from round to round
+            case 0:
+                maxObstacles = (int)(10 * this.obstacleMultiplier);
+                break;
+            case 1:
+                maxObstacles = (int)(15 * this.obstacleMultiplier);
+                break;
+            case 2:
+                maxObstacles = (int)(20 * this.obstacleMultiplier);
+                break;
+            case 3:
+                maxObstacles = (int)(30 * this.obstacleMultiplier);
+                break;
+            default:
+                maxObstacles = (int)(0 * this.obstacleMultiplier);
+                break;
+        }
+
+        System.out.println(maxObstacles);
 
         switch (round) {
             case 0:
@@ -314,7 +332,7 @@ public class GameScreen extends ScreenAdapter {
 
             if (round != 3) {
                 //go to mid round screen
-                game.setScreen(new midRoundScreen(game, round, this.lanes, this.pb));
+                game.setScreen(new midRoundScreen(game, round, this.lanes, this.pb, this.difficulty));
             } else {
                 //go to final results screen
                 game.setScreen(new Finale(game, this.lanes, pb));

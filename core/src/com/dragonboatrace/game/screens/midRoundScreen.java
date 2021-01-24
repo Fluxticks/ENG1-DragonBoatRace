@@ -18,12 +18,14 @@ public class midRoundScreen extends ScreenAdapter {
     PlayerBoat pb;
     int[] playerPositions;
     Lane[] lanes;
+    int difficulty;
 
-    public midRoundScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat) {
+    public midRoundScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
         this.lanes = lanes;
         this.round = round;
         this.pb = playerBoat;
+        this.difficulty = difficulty;
         this.game.toDispose.add(this);
         this.playerPositions = getPlayerPositions();
 
@@ -39,7 +41,7 @@ public class midRoundScreen extends ScreenAdapter {
                         lane.moveBoatToStart();
                     }
                     if (round != 3 || playerPositions[1] < 4) {
-                        game.setScreen(new GameScreen(game, round + 1, lanes, pb));
+                        game.setScreen(new GameScreen(game, round + 1, lanes, pb, difficulty));
                     } else {
                         game.setScreen(new Finale(game, lanes, pb));
                     }
