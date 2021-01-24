@@ -136,46 +136,52 @@ public class BoatChoice extends ScreenAdapter {
         game.batch.begin();
         game.batch.draw(this.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        game.batch.end();
+
+        this.boats[this.selection].render(game.batch);
+
+        game.batch.begin();
         this.font.draw(game.batch,
                 String.format("Current Selection: %s",
                         this.BoatTypes.get(this.selection).getID()),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .9f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .9f
         );
         this.font.draw(game.batch,
                 String.format("Speed: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getSpeed() / 5, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .8f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .8f
         );
         this.font.draw(game.batch,
                 String.format("Acceleration: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getAcceleration() / 5, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .7f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .7f
         );
         this.font.draw(game.batch,
                 String.format("Handling: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getHandling(), "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .6f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .6f
         );
         this.font.draw(game.batch,
                 String.format("Strength: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getMaxHealth() / 100, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .5f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .5f
         );
         this.font.draw(game.batch,
                 String.format("Weight: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getWeight(), "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .4f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .4f
         );
 
-        this.font.draw(game.batch, "Use arrow keys to select and space to confirm", Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * 0.15f);
+        this.font.draw(game.batch, "Use arrow keys to select boat", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.2f);
+        this.font.draw(game.batch, "Select difficulty by pressing the corresponding button:", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.1f);
+        this.font.draw(game.batch, "Easy (1), Normal (2), Hard (3)", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight()*0.05f);
         game.batch.end();
 
-        this.boats[this.selection].render(game.batch);
     }
 
     @Override
