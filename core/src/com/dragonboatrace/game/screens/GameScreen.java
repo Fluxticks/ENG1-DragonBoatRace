@@ -118,9 +118,7 @@ public class GameScreen extends ScreenAdapter {
                 maxObstacles = (int)(0 * this.obstacleMultiplier);
                 break;
         }
-
-        System.out.println(maxObstacles);
-
+        
         switch (round) {
             case 0:
                 finishLine = 20000;
