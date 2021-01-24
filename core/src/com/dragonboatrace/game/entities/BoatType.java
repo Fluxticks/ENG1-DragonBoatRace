@@ -5,12 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 
 public enum BoatType {
     //TYPE( ID,               speed,       acceleration,             maxHealth,           weight,        strength,           handling,          size,                          imageSrc)
-    FAST("Fast Boat",     20,    15,             100,        1,      1,          1,          new Vector2(100, 100),  "Boats/FastBoat.PNG"),
-    NORMAL("Normal Boat", 15,    10,             200,        2,      2,          2,          new Vector2(100, 100),  "Boats/NormalBoat.PNG"),
-    HEAVY("Heavy Boat",   15,    5,              400,        3,      2,          1,          new Vector2(100, 100),  "Boats/HeavyBoat.PNG"),
-    LIGHT("Light Boat",   15,    15,             100,        1,      1,          3,          new Vector2(100, 100),  "Boats/LightBoat.PNG"),
-    AGILE("Agile Boat",   15,    10,             200,        2,      2,          3,          new Vector2(100, 100),  "Boats/AgileBoat.PNG"),
-    STRONG("Strong Boat", 15,    10,             300,        3,      3,          1,          new Vector2(100, 100),  "Boats/StrongBoat.PNG");
+    FAST("Fast Boat",     20,    15,             100,        1,      1,          1,          new Vector2(41, 131),  "Boats/FastBoat.PNG"),
+    NORMAL("Normal Boat", 15,    10,             200,        2,      2,          2,          new Vector2(82, 113),  "Boats/NormalBoat.PNG"),
+    HEAVY("Heavy Boat",   15,    5,              400,        3,      2,          1,          new Vector2(75, 120),  "Boats/HeavyBoat.PNG"),
+    LIGHT("Light Boat",   15,    15,             100,        1,      1,          3,          new Vector2(62, 130),  "Boats/LightBoat.PNG"),
+    AGILE("Agile Boat",   15,    10,             200,        2,      2,          3,          new Vector2(39, 133),  "Boats/AgileBoat.PNG"),
+    STRONG("Strong Boat", 15,    10,             300,        3,      3,          1,          new Vector2(60, 129),  "Boats/StrongBoat.PNG");
 
     String ID;
     float speed, acceleration, maxHealth, weight, strength, handling;

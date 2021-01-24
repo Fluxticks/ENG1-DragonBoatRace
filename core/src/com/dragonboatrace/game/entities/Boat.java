@@ -178,4 +178,6 @@ public abstract class Boat extends Entity {
     public Tuple<Float,Float> getLaneBounds(){
         return this.laneBounds;
     }
+
+    public void collide(Obstacle o) {};
 }
