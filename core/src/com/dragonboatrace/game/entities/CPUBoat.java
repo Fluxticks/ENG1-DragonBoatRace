@@ -10,12 +10,16 @@ public class CPUBoat extends Boat {
     int difficulty;
     Vector2 startPos;
     private int dir;
+    private final float areaMulti = 0.5f;
+    private EntityHitbox areaChecker;
 
     public CPUBoat(BoatType boatType, Vector2 pos, int difficulty, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         this.difficulty = difficulty;
         this.startPos = pos;
         this.dir = 0;
+
+        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
     }
 
     @Override
@@ -62,7 +66,7 @@ public class CPUBoat extends Boat {
         float thisCenter = this.size.x/2f + this.inGamePos.x;
 
         for(Obstacle obstacle : obstacles){
-            if(this.inGamePos.x + this.size.x + paddingX > obstacle.inGamePos.x && this.inGamePos.x - paddingX < obstacle.inGamePos.x + obstacle.size.x && this.inGamePos.y < obstacle.inGamePos.y + obstacle.size.y && this.inGamePos.y + this.size.y + paddingY > obstacle.inGamePos.y){
+            if(this.areaChecker.checkCollision(obstacle.getHitbox())){
                 float obstacleCenter = obstacle.size.x/2f + obstacle.inGamePos.x;
                 obstacleInZone = true;
                 dir = decideDirection(thisCenter, obstacleCenter);
@@ -114,6 +118,7 @@ public class CPUBoat extends Boat {
             this.inGamePos.add(0, deltaY);
             this.distanceTravelled += deltaY;
         }
+        this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
     }
 
     //this is used for debugging, it tells you where they are on screen and where they are relative to the start line
