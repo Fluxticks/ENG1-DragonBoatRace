@@ -179,5 +179,15 @@ public abstract class Boat extends Entity {
         return this.laneBounds;
     }
 
-    public void collide(Obstacle o) {};
+    public void setCurrentHealth(float healthToSet){
+        this.currentHealth = healthToSet;
+    }
+
+    public void increaseYVelocity(float speedToAdd){
+        this.vel.y += speedToAdd;
+    }
+
+    public void increaseXVelocity(float speedToAdd){
+        this.vel.x += speedToAdd;
+    }
 }
