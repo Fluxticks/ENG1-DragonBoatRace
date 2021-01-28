@@ -1,4 +1,4 @@
-package com.dragonboatrace.game.entities.powerup;
+package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,17 +7,19 @@ import com.dragonboatrace.game.MovementCharacteristics;
 
 public enum PowerUpType {
 
-    HEALTH(0, 2, new Vector2(40,40), MovementCharacteristics.WANDER, ""),
-    SPEED(0, 4, new Vector2(30,30), MovementCharacteristics.WANDER, ""),
-    AGILITY(0, 3, new Vector2(25,25), MovementCharacteristics.WANDER, "");
+    HEALTH(25,0, 2, new Vector2(40,40), MovementCharacteristics.WANDER, "PowerUps/health.png"),
+    SPEED(10,0, 4, new Vector2(30,30), MovementCharacteristics.WANDER, "PowerUps/speed.png"),
+    AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.WANDER, "PowerUps/agility.png");
 
     Vector2 size;
     MovementCharacteristics mover;
     float weight;
     float speed;
+    float effect;
     Texture image;
 
-    PowerUpType(float weight, float speed, Vector2 size, MovementCharacteristics mover, String imagePath){
+    PowerUpType(float effect, float weight, float speed, Vector2 size, MovementCharacteristics mover, String imagePath){
+        this.effect = effect;
         this.weight = weight;
         this.speed = speed;
         this.size = size;
@@ -44,5 +46,9 @@ public enum PowerUpType {
 
     public float getSpeed() {
         return speed;
+    }
+
+    public float getEffect() {
+        return effect;
     }
 }

@@ -1,11 +1,9 @@
-package com.dragonboatrace.game.entities.powerup;
+package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.dragonboatrace.game.entities.Boat;
-import com.dragonboatrace.game.entities.Entity;
 
-public abstract class PowerUp extends Entity {
+public class PowerUp extends Entity {
 
     protected PowerUpType type;
     protected Vector2 constantVel;
@@ -17,7 +15,14 @@ public abstract class PowerUp extends Entity {
         this.vel = velocity;
     }
 
-    public abstract void applyEffect(Boat boatAffected);
+    public void applyEffect(Boat boatAffected){
+        switch(type){
+            case SPEED: boatAffected.increaseYVelocity(type.effect); break;
+            case HEALTH: boatAffected.setCurrentHealth(boatAffected.getHealth() + type.effect); break;
+            case AGILITY: boatAffected.increaseXVelocity(type.effect); break;
+            default: throw new NullPointerException("No power up type defined");
+        }
+    }
 
     public void move(float deltaTime){
         this.type.getMover().updateVel(deltaTime, this.constantVel);
@@ -30,5 +35,10 @@ public abstract class PowerUp extends Entity {
                 (this.pos.x), (this.pos.y - relPos.y),
                 this.type.getSize().x, this.type.getSize().y);
         batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        this.type.getImage().dispose();
     }
 }
