@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dragonboatrace.game.examples.AssetExistsExampleTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2021-01-29T16:40:23" hostname="joe-thinkpad" time="0.004">
+<testsuite name="com.dragonboatrace.game.examples.AssetExistsExampleTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2021-01-29T16:57:57" hostname="joe-thinkpad" time="0.014">
   <properties/>
-  <testcase name="badlogicLogoFileExists" classname="com.dragonboatrace.game.examples.AssetExistsExampleTest" time="0.004">
-    <failure message="java.lang.AssertionError: This test will only pass when the badlogic.jpg file coming with a new project setup has not been deleted." type="java.lang.AssertionError">java.lang.AssertionError: This test will only pass when the badlogic.jpg file coming with a new project setup has not been deleted.
-	at org.junit.Assert.fail(Assert.java:89)
-	at org.junit.Assert.assertTrue(Assert.java:42)
-	at com.dragonboatrace.game.examples.AssetExistsExampleTest.badlogicLogoFileExists(AssetExistsExampleTest.java:33)
+  <testcase name="badlogicLogoFileExists" classname="com.dragonboatrace.game.examples.AssetExistsExampleTest" time="0.014">
+    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.loadShader(ShaderProgram.java:205)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.compileShaders(ShaderProgram.java:184)
+	at com.badlogic.gdx.graphics.glutils.ShaderProgram.&lt;init&gt;(ShaderProgram.java:167)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.createDefaultShader(SpriteBatch.java:162)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:126)
+	at com.badlogic.gdx.graphics.g2d.SpriteBatch.&lt;init&gt;(SpriteBatch.java:80)
+	at com.dragonboatrace.game.DragonBoatRace.create(DragonBoatRace.java:21)
+	at com.dragonboatrace.game.examples.AssetExistsExampleTest.badlogicLogoFileExists(AssetExistsExampleTest.java:37)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
