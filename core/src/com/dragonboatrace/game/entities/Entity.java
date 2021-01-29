@@ -78,10 +78,14 @@ public abstract class Entity {
         this.render(batch, new Vector2());
     }
 
+    public Vector2 getRelPos(Vector2 relPos) {
+        return new Vector2((this.pos.x), (this.pos.y - relPos.y));
+    }
+
     public void renderHitBox(Vector2 relPos){
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         this.shapeRenderer.setColor(Color.RED);
-        this.shapeRenderer.rect(this.pos.x, this.pos.y - relPos.y, this.size.x, this.size.y);
+        this.shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
         this.shapeRenderer.end();
     }
 
