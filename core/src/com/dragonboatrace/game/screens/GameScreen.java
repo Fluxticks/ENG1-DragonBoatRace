@@ -87,8 +87,6 @@ public class GameScreen extends ScreenAdapter {
         }
 
 
-        obstacleList = new ArrayList<>();    // Creating the empty arrayList of obstacles
-
         switch(difficulty) {
             case 1:
                 this.obstacleMultiplier = (float)0.5;
@@ -116,6 +114,24 @@ public class GameScreen extends ScreenAdapter {
                 break;
             default:
                 maxObstacles = (int)(0 * this.obstacleMultiplier);
+                break;
+        }
+
+        switch (round) {
+            case 0:
+                finishLine = 20000;
+                break;
+            case 1:
+                finishLine = 24000;
+                break;
+            case 2:
+                finishLine = 28000;
+                break;
+            case 3:
+                finishLine = 30000;
+                break;
+            default:
+                finishLine = 1000;
                 break;
         }
         
