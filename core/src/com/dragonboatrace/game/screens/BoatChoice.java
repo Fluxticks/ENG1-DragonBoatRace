@@ -64,6 +64,8 @@ public class BoatChoice extends ScreenAdapter {
 
         CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
 
+        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
+
         for (int i = 0; i < laneCount - 1; i++) {
             int xpos = i;
             if (i >= (laneCount - 1) / 2) {
@@ -79,8 +81,8 @@ public class BoatChoice extends ScreenAdapter {
                             10
                     ), 0,
                     new Tuple<>(
-                            (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
-                            (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
+                            (xpos + 0) * laneWidth,
+                            (xpos + 1) * laneWidth
                     )
             );
             CPUs[i].saveStartPos();
@@ -92,8 +94,8 @@ public class BoatChoice extends ScreenAdapter {
                         Gdx.graphics.getWidth() / 2f,
                         10
                 ), new Tuple<>(
-                ((laneCount - 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2,
-                ((laneCount + 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2
+                ((laneCount - 1) / 2) * laneWidth,
+                ((laneCount + 1) / 2) * laneWidth
         )
         );    // Creating the players boat
         pb.saveStartPos();

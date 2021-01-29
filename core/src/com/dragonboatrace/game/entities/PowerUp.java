@@ -54,9 +54,10 @@ public class PowerUp extends Entity {
     }
 
     public void bounceEdge(float deltaTime){
-        this.vel.x = this.constantVel.x * -1;
-        this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
-        this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        //this.vel.x = this.constantVel.x * -1;
+        //this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        //this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        this.vel.x = 0;
     }
 
     @Override
