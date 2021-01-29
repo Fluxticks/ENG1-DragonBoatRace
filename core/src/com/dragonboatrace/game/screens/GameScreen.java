@@ -84,8 +84,9 @@ public class GameScreen extends ScreenAdapter {
         obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
+        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
         for (int i = 0; i < laneCount + 1; i++) {
-            laneMarkers[i] = new LaneMarker(new Vector2(i * Gdx.graphics.getWidth() / ((float)laneCount), 0));
+            laneMarkers[i] = new LaneMarker(new Vector2(i * laneWidth, 0));
         }
 
         int backgroundCount = 5;
