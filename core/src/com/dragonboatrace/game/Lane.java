@@ -117,21 +117,21 @@ public class Lane {
         this.shapeRenderer.end();
     }
 
-    public void updateRound(int newRound){
+    public void updateRound(int newRound, float obstacleMultiplier){
         this.round = newRound;
 
         switch (this.round) {    // The max number of obstacles changes from round to round
             case 0:
-                this.maxObstacles = 3;
+                this.maxObstacles = (int)(3 * obstacleMultiplier);
                 break;
             case 1:
-                this.maxObstacles = 4;
+                this.maxObstacles = (int)(4 * obstacleMultiplier);
                 break;
             case 2:
-                this.maxObstacles = 5;
+                this.maxObstacles = (int)(5 * obstacleMultiplier);
                 break;
             case 3:
-                this.maxObstacles = 6;
+                this.maxObstacles = (int)(6 * obstacleMultiplier);
                 break;
             default:
                 this.maxObstacles = 0;

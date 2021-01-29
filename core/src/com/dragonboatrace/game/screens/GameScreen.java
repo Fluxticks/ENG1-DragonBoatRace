@@ -34,7 +34,7 @@ public class GameScreen extends ScreenAdapter {
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
     Lane[] lanes;
-    int maxObstacles, laneCount;
+    int laneCount;
     long raceStartTime;
     int difficulty;
     float obstacleMultiplier;
@@ -67,6 +67,18 @@ public class GameScreen extends ScreenAdapter {
 
     public void create(int round) {
 
+        switch(difficulty) {
+            case 1:
+                this.obstacleMultiplier = (float)0.5;
+                break;
+            case 2:
+                this.obstacleMultiplier = (float)1;
+                break;
+            case 3:
+                this.obstacleMultiplier = (float)2;
+                break;
+        }
+
         raceStartTime = System.currentTimeMillis();
 
         obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
@@ -83,38 +95,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         for(Lane lane : lanes){
-            lane.updateRound(this.round);
-        }
-
-
-        switch(difficulty) {
-            case 1:
-                this.obstacleMultiplier = (float)0.5;
-                break;
-            case 2:
-                this.obstacleMultiplier = (float)1;
-                break;
-            case 3:
-                this.obstacleMultiplier = (float)2;
-                break;
-        }
-
-        switch (round) {    // The max number of obstacles changes from round to round
-            case 0:
-                maxObstacles = (int)(10 * this.obstacleMultiplier);
-                break;
-            case 1:
-                maxObstacles = (int)(15 * this.obstacleMultiplier);
-                break;
-            case 2:
-                maxObstacles = (int)(20 * this.obstacleMultiplier);
-                break;
-            case 3:
-                maxObstacles = (int)(30 * this.obstacleMultiplier);
-                break;
-            default:
-                maxObstacles = (int)(0 * this.obstacleMultiplier);
-                break;
+            lane.updateRound(this.round, this.obstacleMultiplier);
         }
 
         switch (round) {
