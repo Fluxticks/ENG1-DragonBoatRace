@@ -11,7 +11,7 @@ public abstract class Boat extends Entity {
     protected BoatType boatType;
     protected float currentHealth, currentMaxSpeed;
     protected ArrayList<Obstacle> collided;
-    protected float stamina, maxStamina, timePenalties, penaltyResetDelay;
+    protected float stamina, maxStamina, timePenalties, penaltyResetDelay, defaultHandling;
     protected long finishTime;
     protected boolean finished = false;
     protected float distanceTravelled; //distance travelled in one round
@@ -28,6 +28,7 @@ public abstract class Boat extends Entity {
         this.collided = new ArrayList<>();
         this.stamina = 1000;
         this.maxStamina = 1000;
+        this.defaultHandling = boatType.handling;
         this.distanceTravelled = 0;
         this.totalTime = 0;
         this.laneBounds = laneBounds;
@@ -119,11 +120,13 @@ public abstract class Boat extends Entity {
     public void moveToStart() {
         this.inGamePos = startPos.cpy();
         this.pos = startPos.cpy();
+        this.hitbox.setToPosition(this.inGamePos);
         this.vel = new Vector2();
         this.stamina = maxStamina;
         this.distanceTravelled = 0;
         this.totalTime += finishTime;
         this.finishTime = 0;
+        this.boatType.handling = defaultHandling;
         this.finished = false;
     }
 
@@ -188,6 +191,6 @@ public abstract class Boat extends Entity {
     }
 
     public void increaseXVelocity(float speedToAdd){
-        this.vel.x += speedToAdd;
+        this.boatType.handling += speedToAdd;
     }
 }

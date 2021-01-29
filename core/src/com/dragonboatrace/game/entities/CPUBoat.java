@@ -114,6 +114,7 @@ public class CPUBoat extends Boat {
             this.distanceTravelled += deltaY;
         }
         this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
+        this.hitbox.setToPosition(this.inGamePos);
     }
 
     //this is used for debugging, it tells you where they are on screen and where they are relative to the start line

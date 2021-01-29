@@ -69,5 +69,6 @@ public class PlayerBoat extends Boat {
             this.distanceTravelled += deltaY;
             this.inGamePos.add(0, deltaY);
         }
+        this.hitbox.setToPosition(this.inGamePos);
     }
 }
