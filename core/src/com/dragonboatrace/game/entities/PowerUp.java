@@ -18,7 +18,9 @@ public class PowerUp extends Entity {
     public void applyEffect(Boat boatAffected){
         switch(type){
             case SPEED: boatAffected.increaseYVelocity(type.effect); break;
-            case HEALTH: boatAffected.setCurrentHealth(boatAffected.getHealth() + type.effect); break;
+            case HEALTH:
+                boatAffected.setCurrentHealth(Math.min(boatAffected.getHealth() + type.effect, boatAffected.boatType.maxHealth));
+                break;
             case AGILITY: boatAffected.increaseXVelocity(type.effect); break;
             default: throw new NullPointerException("No power up type defined");
         }
@@ -35,6 +37,10 @@ public class PowerUp extends Entity {
                 (this.pos.x), (this.pos.y - relPos.y),
                 this.type.getSize().x, this.type.getSize().y);
         batch.end();
+    }
+
+    public void bounceEdge(){
+        this.vel.x = this.vel.x * -1;
     }
 
     @Override

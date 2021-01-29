@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.MovementCharacteristics;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public enum PowerUpType {
 
-    HEALTH(25,0, 2, new Vector2(40,40), MovementCharacteristics.WANDER, "PowerUps/health.png"),
-    SPEED(10,0, 4, new Vector2(30,30), MovementCharacteristics.WANDER, "PowerUps/speed.png"),
+    HEALTH(5,0, 2, new Vector2(40,40), MovementCharacteristics.CONSTANT, "PowerUps/health.png"),
+    SPEED(20,0, 4, new Vector2(30,30), MovementCharacteristics.WANDER, "PowerUps/speed.png"),
     AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.WANDER, "PowerUps/agility.png");
 
     Vector2 size;
@@ -25,6 +27,13 @@ public enum PowerUpType {
         this.size = size;
         this.mover = mover;
         this.image = new Texture(Gdx.files.local(imagePath));
+    }
+
+
+    public static PowerUpType chooseRandomType(){
+        int length = PowerUpType.values().length;
+        int random = ThreadLocalRandom.current().nextInt(length);
+        return PowerUpType.values()[random];
     }
 
 
