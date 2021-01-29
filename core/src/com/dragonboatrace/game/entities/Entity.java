@@ -13,6 +13,7 @@ public abstract class Entity {
     protected float weight, dampening;
     protected Obstacle collider;
     private ShapeRenderer shapeRenderer;
+    protected EntityHitbox hitbox;
 
     public Entity(Vector2 pos, Vector2 size, float weight) {
         this.pos = pos;
@@ -27,6 +28,7 @@ public abstract class Entity {
         this.dampening = (float) 0.2;
         this.collider = null;
         this.shapeRenderer = new ShapeRenderer();
+        this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
     public void update(float deltaTime) {
@@ -45,9 +47,10 @@ public abstract class Entity {
             this.vel.add(0, -deltaY);
 
         }
+        this.hitbox.setToPosition(this.inGamePos);
     }
 
-    public boolean checkCollision(Obstacle e) {
+    /*public boolean checkCollision(Obstacle e) {
         this.collider = null;
         float x1 = this.inGamePos.x;
         float y1 = this.inGamePos.y;
@@ -65,17 +68,29 @@ public abstract class Entity {
             }
         }
         return false;
+    }*/
+
+    public boolean checkCollision(Obstacle e){
+        return this.hitbox.checkCollision(e.getHitbox());
     }
 
     public void render(SpriteBatch batch) {
         this.render(batch, new Vector2());
     }
 
+    public Vector2 getRelPos(Vector2 relPos) {
+        return new Vector2((this.pos.x), (this.pos.y - relPos.y));
+    }
+
     public void renderHitBox(Vector2 relPos){
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         this.shapeRenderer.setColor(Color.RED);
-        this.shapeRenderer.rect(this.pos.x, this.pos.y - relPos.y, this.size.x, this.size.y);
+        this.shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
         this.shapeRenderer.end();
+    }
+
+    public EntityHitbox getHitbox(){
+        return this.hitbox;
     }
 
     public Vector2 getInGamePos() {
