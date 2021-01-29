@@ -58,59 +58,68 @@ public class BoatChoice extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
+    public void startGame(int difficulty){
+
+        int laneCount = 7;
+
+        CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
+
+        for (int i = 0; i < laneCount - 1; i++) {
+            int xpos = i;
+            if (i >= (laneCount - 1) / 2) {
+                xpos += 1;
+            }
+            ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(Arrays.asList(BoatType.values()));
+            cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
+            BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
+            CPUs[i] = new CPUBoat(
+                    cpuBoatType,
+                    new Vector2(
+                            (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
+                            10
+                    ), 0,
+                    new Tuple<>(
+                            (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
+                            (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
+                    )
+            );
+            CPUs[i].saveStartPos();
+        }
+
+        PlayerBoat pb = new PlayerBoat(
+                BoatTypes.get(selection),
+                new Vector2(
+                        Gdx.graphics.getWidth() / 2f,
+                        10
+                ), new Tuple<>(
+                ((laneCount - 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2,
+                ((laneCount + 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2
+        )
+        );    // Creating the players boat
+        pb.saveStartPos();
+
+        Lane[] lanes = new Lane[laneCount];
+        for(int i = 0; i < laneCount - 1; i++){
+            lanes[i] = new Lane(CPUs[i], pb);
+        }
+        lanes[laneCount-1] = new Lane(pb,pb);
+
+        game.setScreen(new GameScreen(game, 0, lanes, pb, difficulty));
+    }
+
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.SPACE) {
-
-                    int laneCount = 7;
-
-                    CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
-
-                    for (int i = 0; i < laneCount - 1; i++) {
-                        int xpos = i;
-                        if (i >= (laneCount - 1) / 2) {
-                            xpos += 1;
-                        }
-                        ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(Arrays.asList(BoatType.values()));
-                        cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
-                        BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
-                        CPUs[i] = new CPUBoat(
-                                cpuBoatType,
-                                new Vector2(
-                                        (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
-                                        10
-                                ), 0,
-                                new Tuple<>(
-                                        (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
-                                        (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
-                                )
-                        );
-                        CPUs[i].saveStartPos();
-                    }
-
-                    PlayerBoat pb = new PlayerBoat(
-                            BoatTypes.get(selection),
-                            new Vector2(
-                                    Gdx.graphics.getWidth() / 2f,
-                                    10
-                            ), new Tuple<>(
-                            ((laneCount - 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2,
-                            ((laneCount + 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2
-                    )
-                    );    // Creating the players boat
-                    pb.saveStartPos();
-
-                    Lane[] lanes = new Lane[laneCount];
-                    for(int i = 0; i < laneCount - 1; i++){
-                        lanes[i] = new Lane(CPUs[i], pb);
-                    }
-                    lanes[laneCount-1] = new Lane(pb,pb);
-
-                    game.setScreen(new GameScreen(game, 0, lanes, pb));
-                } else if (keyCode == Input.Keys.LEFT) {
+                if (keyCode == Input.Keys.NUM_1) {
+                    startGame(1);
+                } else if (keyCode == Input.Keys.NUM_2) {
+                    startGame(2);
+                } else if (keyCode == Input.Keys.NUM_3){
+                    startGame(3);
+                }else if (keyCode == Input.Keys.LEFT) {
                     selection += boats.length - 1;
                     selection %= boats.length;
                 } else if (keyCode == Input.Keys.RIGHT) {
@@ -127,46 +136,52 @@ public class BoatChoice extends ScreenAdapter {
         game.batch.begin();
         game.batch.draw(this.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        game.batch.end();
+
+        this.boats[this.selection].render(game.batch);
+
+        game.batch.begin();
         this.font.draw(game.batch,
                 String.format("Current Selection: %s",
                         this.BoatTypes.get(this.selection).getID()),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .9f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .9f
         );
         this.font.draw(game.batch,
                 String.format("Speed: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getSpeed() / 5, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .8f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .8f
         );
         this.font.draw(game.batch,
                 String.format("Acceleration: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getAcceleration() / 5, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .7f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .7f
         );
         this.font.draw(game.batch,
                 String.format("Handling: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getHandling(), "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .6f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .6f
         );
         this.font.draw(game.batch,
                 String.format("Strength: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getMaxHealth() / 100, "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .5f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .5f
         );
         this.font.draw(game.batch,
                 String.format("Weight: %s",
                         String.join("",
                                 Collections.nCopies((int) this.BoatTypes.get(this.selection).getWeight(), "█"))),
-                Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .4f
+                Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .4f
         );
 
-        this.font.draw(game.batch, "Use arrow keys to select and space to confirm", Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * 0.15f);
+        this.font.draw(game.batch, "Use arrow keys to select boat", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.2f);
+        this.font.draw(game.batch, "Select difficulty by pressing the corresponding button:", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.1f);
+        this.font.draw(game.batch, "Easy (1), Normal (2), Hard (3)", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight()*0.05f);
         game.batch.end();
 
-        this.boats[this.selection].render(game.batch);
     }
 
     @Override
