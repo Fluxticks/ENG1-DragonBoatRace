@@ -17,7 +17,7 @@ public class Lane {
 
     private PowerUp currentPower;
 
-    private final float powerChance = 0.5f;
+    private final float powerChance = 0.05f;
 
     private int round;
 
@@ -45,7 +45,7 @@ public class Lane {
         while (iter.hasNext()) {
             Obstacle obstacle = iter.next();
             Vector2 renderPos = obstacle.getRelPos(this.pb.getInGamePos());
-            if(this.checkEntityNotInLane(obstacle)){
+            if(this.checkEntityNotOnScreen(obstacle)){
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             }
             else {
@@ -85,25 +85,24 @@ public class Lane {
         //renderBounds();
     }
 
-    private boolean checkEntityNotInLane(Entity entity){
+    private boolean checkEntityNotOnScreen(Entity entity){
         Vector2 renderPos = entity.getRelPos(this.pb.getInGamePos());
         return renderPos.x > Gdx.graphics.getWidth() + 30 || renderPos.x + entity.getSize().x < -30 || renderPos.y + entity.getSize().y < -100;
         //return renderPos.x > this.boat.getLaneBounds().b + 30 || renderPos.x + entity.getSize().x < this.boat.getLaneBounds().a - 30 || renderPos.y + entity.getSize().y < -100;
     }
 
     private boolean checkPowerUpNotInEdges(){
-        Vector2 renderPos = this.currentPower.getRelPos(this.pb.getInGamePos());
-        return renderPos.x > this.boat.getLaneBounds().b + 30 || renderPos.x + this.currentPower.getSize().x < this.boat.getLaneBounds().a - 30;
+        return this.currentPower.getInGamePos().x < this.boat.getLaneBounds().a + 5 || this.currentPower.getInGamePos().x + this.currentPower.getSize().x > this.boat.getLaneBounds().b - 5;
     }
 
     private void updatePowerUp(float deltaTime){
         if(this.boat.getHitbox().checkCollision(this.currentPower.getHitbox())) {
             this.currentPower.applyEffect(this.boat);
             this.currentPower = null;
-        }else if(this.checkEntityNotInLane(this.currentPower)){
+        }else if(this.checkEntityNotOnScreen(this.currentPower)){
             this.currentPower = null;
         }else if(this.checkPowerUpNotInEdges()){
-            this.currentPower.bounceEdge();
+            this.currentPower.bounceEdge(deltaTime);
         }else{
             this.currentPower.move(deltaTime);
             this.currentPower.update(deltaTime);

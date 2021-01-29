@@ -17,6 +17,7 @@ public abstract class Boat extends Entity {
     protected float distanceTravelled; //distance travelled in one round
     protected long totalTime;
     protected Tuple<Float, Float> laneBounds;
+    private boolean noCollide = false;
 
     protected Vector2 startPos;
 
@@ -35,10 +36,11 @@ public abstract class Boat extends Entity {
     }
 
     public void checkForCollision(Obstacle o){
-        doCollision(super.checkCollision(o), o);
+        if(!this.noCollide)doCollision(super.checkCollision(o), o);
     }
 
     public void doCollision(boolean colliding, Obstacle o){
+
         if (colliding) {
             if (!this.collided.contains(o)) {
                 this.collided.add(o);
@@ -192,5 +194,18 @@ public abstract class Boat extends Entity {
 
     public void increaseXVelocity(float speedToAdd){
         this.boatType.handling += speedToAdd;
+    }
+
+    public void setCurrentStamina(float staminaToSet)
+    {
+        this.stamina = staminaToSet;
+    }
+
+    public void setTotalTime(long timeToSet){
+        this.totalTime = timeToSet;
+    }
+
+    public void setNoCollide(boolean toSet){
+        this.noCollide = toSet;
     }
 }

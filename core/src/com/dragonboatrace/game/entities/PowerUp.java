@@ -2,6 +2,7 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 
 public class PowerUp extends Entity {
 
@@ -18,12 +19,25 @@ public class PowerUp extends Entity {
     public void applyEffect(Boat boatAffected){
         switch(type){
             case SPEED: boatAffected.increaseYVelocity(type.effect); break;
-            case HEALTH:
-                boatAffected.setCurrentHealth(Math.min(boatAffected.getHealth() + type.effect, boatAffected.boatType.maxHealth));
-                break;
+            case HEALTH: boatAffected.setCurrentHealth(Math.min(boatAffected.getHealth() + type.effect, boatAffected.boatType.maxHealth)); break;
             case AGILITY: boatAffected.increaseXVelocity(type.effect); break;
+            case STAMINA: boatAffected.setCurrentStamina(Math.min(boatAffected.getStamina() + type.effect, boatAffected.maxStamina)); break;
+            case TIMER: boatAffected.setTotalTime(boatAffected.getTotalTimeLong() - (long)type.effect);
+            case NOCOLLIDE: this.noCollideEffect(boatAffected); break;
             default: throw new NullPointerException("No power up type defined");
         }
+    }
+
+    private void noCollideEffect(final Boat timedBoat){
+        timedBoat.setNoCollide(true);
+        Timer.Task countDown = new Timer.Task(){
+            @Override
+            public void run(){
+                timedBoat.setNoCollide(false);
+            }
+        };
+        Timer timer = new Timer();
+        timer.scheduleTask(countDown, this.type.effect);
     }
 
     public void move(float deltaTime){
@@ -39,8 +53,10 @@ public class PowerUp extends Entity {
         batch.end();
     }
 
-    public void bounceEdge(){
-        this.vel.x = this.vel.x * -1;
+    public void bounceEdge(float deltaTime){
+        this.vel.x = this.constantVel.x * -1;
+        this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
     }
 
     @Override

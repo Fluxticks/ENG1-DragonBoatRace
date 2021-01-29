@@ -9,9 +9,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public enum PowerUpType {
 
-    HEALTH(5,0, 2, new Vector2(40,40), MovementCharacteristics.CONSTANT, "PowerUps/health.png"),
-    SPEED(20,0, 4, new Vector2(30,30), MovementCharacteristics.WANDER, "PowerUps/speed.png"),
-    AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.WANDER, "PowerUps/agility.png");
+    HEALTH(5,0,  0, new Vector2(40,40), MovementCharacteristics.STATIC, "PowerUps/health.png"),
+    SPEED(20,0, 4, new Vector2(30,30), MovementCharacteristics.CONSTANT, "PowerUps/speed.png"),
+    STAMINA(100, 0, 4, new Vector2(35,35), MovementCharacteristics.CONSTANT, "PowerUps/stamina.png"),
+    TIMER(500, 0, 10, new Vector2(20,20), MovementCharacteristics.CONSTANT, "PowerUps/timer.png"),
+    NOCOLLIDE(5, 0, 10, new Vector2(20,20), MovementCharacteristics.CONSTANT, "PowerUps/nocollide.png"),
+    AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.CONSTANT, "PowerUps/agility.png");
 
     Vector2 size;
     MovementCharacteristics mover;
