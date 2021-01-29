@@ -30,7 +30,6 @@ public class GameScreen extends ScreenAdapter {
     int finishLine;                    //the y position in the game that the players have to pass to finish
     BitmapFont font;
     int round;
-    ArrayList<Obstacle> obstacleList;
     ObstacleType[] obstacles;
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
@@ -87,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
             lane.updateRound(this.round);
         }
 
+
         obstacleList = new ArrayList<>();    // Creating the empty arrayList of obstacles
 
         switch(difficulty) {
@@ -119,23 +119,7 @@ public class GameScreen extends ScreenAdapter {
                 break;
         }
         
-        switch (round) {
-            case 0:
-                finishLine = 20000;
-                break;
-            case 1:
-                finishLine = 24000;
-                break;
-            case 2:
-                finishLine = 28000;
-                break;
-            case 3:
-                finishLine = 30000;
-                break;
-            default:
-                finishLine = 1000;
-                break;
-        }
+
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -235,74 +219,6 @@ public class GameScreen extends ScreenAdapter {
         }*/
 
         this.showHUD();
-    }
-
-    private Obstacle spawnObstacle() {
-        Vector2 spawnPos;    // position the obstacle will spawn at
-        Vector2 dir;        // direction the obstacle will start travelling in
-        ObstacleType obs;    // type of the obstacle that will be spawned
-        int obstacleChoice;    // index of the type of obstacle that will be spawned
-        int side;            // the side of the screen the obstacle will spawn at
-        Random rand = new Random();
-
-        switch (round) {    // The types of obstacles that can spawn is dependant on the round
-            case 0:
-                obstacleChoice = rand.nextInt(2);    // The following can be spawned in round 0: {BUOY, ROCK}
-                break;
-            case 1:
-                obstacleChoice = rand.nextInt(4);    // The following can be spawned in round 1: {BUOY, ROCK, BRANCH, DUCK}
-                break;
-            case 2:
-                obstacleChoice = rand.nextInt(6);    // The following can be spawned in round 2: {BUOY, ROCK, BRANCH, DUCK, RUBBISH, LONGBOI}
-                break;
-            case 3:
-                obstacleChoice = rand.nextInt(7);    // The following can be spawned in round 3: {BUOY, ROCK, BRANCH, DUCK, RUBBISH, LONGBOI, BOAT}
-                break;
-            default:
-                obstacleChoice = -1;    // Should never be the case, -1 will cause an error, as there is something wrong.
-                break;
-        }
-
-        obs = obstacles[obstacleChoice];    // Select the obstacle type from the list
-        if (obs.getMover().getID().equals("static")) {    // Static moving obstacles can only be spawned from the top
-            side = 0;
-        } else {
-            side = rand.nextInt(3);        // Any other obstacles can spawn on any other side
-        }
-
-        switch (side) {        // Creating a spawning position along the chosen edge
-            case 0:
-                spawnPos = new Vector2(    // If spawning along the top edge, pick a random x coord and a random y within the bounds of the screen, will be translated off screen
-                        rand.nextFloat() * Gdx.graphics.getWidth(),
-                        (rand.nextFloat()) * Gdx.graphics.getHeight()
-                );
-                break;
-            case 1:
-                spawnPos = new Vector2(    // For the edge spawning, spawn slightly off screen but not enough to be deleted, and in the top 2/3rds of the side
-                        -10,
-                        rand.nextFloat() * Gdx.graphics.getHeight() * 2 / 3
-                );
-                break;
-            case 2:
-                spawnPos = new Vector2(    // Same as above
-                        Gdx.graphics.getWidth() + 10,
-                        rand.nextFloat() * Gdx.graphics.getHeight() * 2 / 3
-                );
-                break;
-            default:    // By default spawn at 0,0
-                spawnPos = new Vector2();
-                break;
-        }
-        spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
-        //spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y;        // Translate 2 screens up and relative to the player
-
-        dir = spawnPos.cpy().sub(new Vector2(    // Create a vector pointing from the spawn pos to a random point on the screen
-                rand.nextFloat() * Gdx.graphics.getWidth(),
-                rand.nextFloat() * Gdx.graphics.getHeight())
-        );
-        dir.limit(obs.getSpeed());    // Limit the vector to the max speed of the obstacle
-
-        return new Obstacle(obs, spawnPos, dir);    // Return the new obstacle
     }
 
     private void checkAllBoatsForFinished() {

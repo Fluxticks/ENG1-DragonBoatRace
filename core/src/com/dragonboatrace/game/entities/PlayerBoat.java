@@ -56,11 +56,6 @@ public class PlayerBoat extends Boat {
     }
 
     @Override
-    public void collide(Obstacle o) {
-
-    }
-
-    @Override
     public void update(float deltaTime) {
         float deltaX = this.vel.x * this.dampening;
         float deltaY = this.vel.y * this.dampening;
@@ -74,5 +69,6 @@ public class PlayerBoat extends Boat {
             this.distanceTravelled += deltaY;
             this.inGamePos.add(0, deltaY);
         }
+        this.hitbox.setToPosition(this.inGamePos);
     }
 }
