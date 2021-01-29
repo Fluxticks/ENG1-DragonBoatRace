@@ -28,6 +28,7 @@ public class PowerUp extends Entity {
         }
     }
 
+    //TODO: Run this when the player loads the game
     private void noCollideEffect(final Boat timedBoat){
         timedBoat.setNoCollide(true);
         Timer.Task countDown = new Timer.Task(){
