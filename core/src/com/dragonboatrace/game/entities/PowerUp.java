@@ -1,5 +1,6 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -8,12 +9,14 @@ public class PowerUp extends Entity {
 
     protected PowerUpType type;
     protected Vector2 constantVel;
+    protected Texture image;
 
     public PowerUp(PowerUpType type, Vector2 pos, Vector2 velocity) {
         super(pos, type.getSize(), type.getWeight());
         this.type = type;
         this.constantVel = velocity.cpy();
         this.vel = velocity;
+        this.image = new Texture(this.type.imageSrc);
     }
 
     public void applyEffect(Boat boatAffected){
@@ -47,7 +50,7 @@ public class PowerUp extends Entity {
 
     public void render(SpriteBatch batch, Vector2 relPos){
         batch.begin();
-        batch.draw(this.type.getImage(),
+        batch.draw(this.image,
                 (this.pos.x), (this.pos.y - relPos.y),
                 this.type.getSize().x, this.type.getSize().y);
         batch.end();
@@ -61,6 +64,6 @@ public class PowerUp extends Entity {
 
     @Override
     public void dispose() {
-        this.type.getImage().dispose();
+        this.image.dispose();
     }
 }

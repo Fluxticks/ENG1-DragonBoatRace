@@ -1,5 +1,6 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.Tuple;
@@ -18,6 +19,7 @@ public abstract class Boat extends Entity {
     protected long totalTime;
     protected Tuple<Float, Float> laneBounds;
     private boolean noCollide = false;
+    protected Texture image;
 
     protected Vector2 startPos;
 
@@ -33,6 +35,9 @@ public abstract class Boat extends Entity {
         this.distanceTravelled = 0;
         this.totalTime = 0;
         this.laneBounds = laneBounds;
+        if (!this.boatType.imageSrc.equals("Testing"))
+            this.image = new Texture(this.boatType.imageSrc);
+
     }
 
     public void checkForCollision(Obstacle o){
@@ -56,7 +61,7 @@ public abstract class Boat extends Entity {
 
     public void render(SpriteBatch batch, Vector2 relPos) {
         batch.begin();
-        batch.draw(this.boatType.getImage(),
+        batch.draw(this.image,
                 (this.pos.x), (this.pos.y - relPos.y),
                 this.size.x, this.size.y);
         batch.end();
@@ -133,7 +138,7 @@ public abstract class Boat extends Entity {
     }
 
     public void dispose() {
-        this.boatType.getImage().dispose();
+        this.image.dispose();
     }
 
     public boolean isFinished(int finishLine) {

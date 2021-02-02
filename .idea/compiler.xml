@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.6">
-      <module name="ENG1-DragonBoatRace.core.test" target="1.7" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.6" />
   </component>
 </project>

@@ -14,10 +14,13 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.dragonboatrace.game.examples;
+package com.dragonboatrace.game;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.badlogic.gdx.math.Vector2;
+import com.dragonboatrace.game.entities.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +30,15 @@ import com.badlogic.gdx.Gdx;
 import com.dragonboatrace.game.GdxTestRunner;
 
 @RunWith(GdxTestRunner.class)
-public class AssetExistsExampleTest {
+public class BoatTest {
 
-	@Test
-	public void badlogicLogoFileNotExists() {
-		Assert.assertFalse("This test will only pass when the badlogic.jpg file coming with a new project setup has not been deleted.", Gdx.files
-				.internal("../android/assets/badlogic.jpg").exists());
-	}
+
+    Boat testingBoat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 100f));
+    Obstacle testingObstacle = new Obstacle(ObstacleType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
+
+    @Test
+    public void getTotalTimeString(){
+        testingBoat.setTotalTime(100000);
+        Assert.assertEquals(testingBoat.getTotalTimeString(), "1 Minutes and 40 Seconds");
+    }
 }

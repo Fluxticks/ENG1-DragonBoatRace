@@ -14,8 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.dragonboatrace.game.examples;
+package com.dragonboatrace.game;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
@@ -26,12 +27,13 @@ import com.badlogic.gdx.Gdx;
 
 import com.dragonboatrace.game.GdxTestRunner;
 
-@RunWith(GdxTestRunner.class)
-public class AssetExistsExampleTest {
+// @RunWith(GdxTestRunner.class)   Only add if Gdx needed!
+public class TupleTest {
 
-	@Test
-	public void badlogicLogoFileNotExists() {
-		Assert.assertFalse("This test will only pass when the badlogic.jpg file coming with a new project setup has not been deleted.", Gdx.files
-				.internal("../android/assets/badlogic.jpg").exists());
-	}
+    Tuple testingTuple = new Tuple(10, 20);
+
+    @Test
+    public void toStringTest() {
+        Assert.assertEquals(testingTuple.toString(), "Tuple<10, 20>");
+    }
 }

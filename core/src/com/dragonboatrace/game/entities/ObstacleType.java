@@ -14,13 +14,16 @@ public enum ObstacleType {
     RUBBISH(   "rubbish" ,     1.5f,   new Vector2(50, 50),                                                 3,      "Obstacles/garbage.png",    MovementCharacteristics.STATIC),
     LONGBOI(   "longboi",      2,      new Vector2(50, 50),                                                 4,      "Obstacles/longboi.png",    MovementCharacteristics.STATIC),
     BOAT(      "boat",         5,      new Vector2(50, 50),                                                 5,      "Obstacles/shipwreck.png",  MovementCharacteristics.STATIC),
-    FINISHLINE("finish",       0,      new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() * .185f), 0,      "Obstacles/finishline.png", MovementCharacteristics.STATIC);
-    
+    FINISHLINE("finish",       0,      new Vector2(50, 50), 1,      "Obstacles/finishline.png", MovementCharacteristics.STATIC),
+    TESTING("testing",       0,      new Vector2(50, 50), 0,      "Testing", MovementCharacteristics.STATIC);
+
+
+
     String ID;
     float weight;
     Vector2 size;
     float speed;
-    Texture image;
+    String imageSrc;
     MovementCharacteristics mover;
 
     ObstacleType(String ID, float weight, Vector2 size, float speed, String imageSrc, MovementCharacteristics mover){
@@ -28,7 +31,7 @@ public enum ObstacleType {
         this.weight = weight;
         this.size = size;
         this.speed = speed;
-        this.image = new Texture(imageSrc);
+        this.imageSrc = imageSrc;
         this.mover = mover;
     }
 
@@ -48,8 +51,8 @@ public enum ObstacleType {
         return this.speed;
     }
 
-    public Texture getImage(){
-        return this.image;
+    public String getImageSrc(){
+        return this.imageSrc;
     }
 
     public MovementCharacteristics getMover() {
