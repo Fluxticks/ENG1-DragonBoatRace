@@ -33,6 +33,13 @@ import com.dragonboatrace.game.GdxTestRunner;
 public class BoatTest {
 
     @Test
+    public void getFinishTimeStringTest(){
+        PlayerBoat testingBoat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 100f));
+        testingBoat.setFinishTime(100000);
+        Assert.assertEquals(testingBoat.getFinishTimeString(), "1 Minutes and 40 Seconds");
+    }
+
+    @Test
     public void getTotalTimeStringTest(){
         PlayerBoat testingBoat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 100f));
         testingBoat.setTotalTime(100000);
