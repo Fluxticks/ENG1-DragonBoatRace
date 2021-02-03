@@ -34,7 +34,8 @@ public class Lane {
         this.obstacles = new ArrayList<>();
         this.currentPower = null;
         this.pb = pb;
-        this.isPlayerLane = (this.pb == this.boat);
+        //this.isPlayerLane = (this.pb == this.boat);
+        this.isPlayerLane = boatInLane instanceof PlayerBoat;
     }
 
     public void update(float deltaTime){

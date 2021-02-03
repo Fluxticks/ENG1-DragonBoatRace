@@ -142,7 +142,7 @@ public abstract class Boat extends Entity {
     }
 
     public boolean isFinished(int finishLine) {
-        return this.distanceTravelled > finishLine;
+        return this.distanceTravelled >= finishLine;
     }
 
     public void setFinishTime(long finishTime) {
@@ -215,4 +215,6 @@ public abstract class Boat extends Entity {
     }
 
     public BoatType getBoatType() { return this.boatType; }
+
+    public void setDistanceTravelled(float newDistance){ this.distanceTravelled = newDistance; }
 }
