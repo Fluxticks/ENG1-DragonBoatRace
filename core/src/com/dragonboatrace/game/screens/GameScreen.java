@@ -15,6 +15,11 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.*;
 import com.dragonboatrace.game.entities.*;
 
+import com.dragonboatrace.game.entities.CPUBoat;
+import com.dragonboatrace.game.entities.Obstacle;
+import com.dragonboatrace.game.entities.ObstacleType;
+import com.dragonboatrace.game.entities.PlayerBoat;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,28 +29,30 @@ import java.util.Random;
 public class GameScreen extends ScreenAdapter {
 
     DragonBoatRace game;
-    CPUBoat[] CPUs;
     PlayerBoat pb;
     Obstacle finishLineObstacle;    //the finish line that appears on screen
     int finishLine;                    //the y position in the game that the players have to pass to finish
     BitmapFont font;
     int round;
-    ArrayList<Obstacle> obstacleList;
     ObstacleType[] obstacles;
-    Obstacle collider;
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
-    int maxObstacles, laneCount;
+    Lane[] lanes;
+    int laneCount;
     long raceStartTime;
+    int difficulty;
+    float obstacleMultiplier;
 
-    public GameScreen(DragonBoatRace game, int round, CPUBoat[] CPUs, PlayerBoat playerBoat) {
+    public GameScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
-        this.create(round);
-        this.CPUs = CPUs;
+        this.lanes = lanes;
         this.pb = playerBoat;
+        this.difficulty = difficulty;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
         this.round = round;
+        this.obstacleMultiplier = 1;
+        this.create(round);
     }
 
     public GameScreen(DragonBoatRace game, JsonValue jsonString) {
@@ -113,13 +120,26 @@ public class GameScreen extends ScreenAdapter {
 
     public void create(int round) {
 
+        switch(difficulty) {
+            case 1:
+                this.obstacleMultiplier = (float)0.5;
+                break;
+            case 2:
+                this.obstacleMultiplier = (float)1;
+                break;
+            case 3:
+                this.obstacleMultiplier = (float)2;
+                break;
+        }
+
         raceStartTime = System.currentTimeMillis();
 
         obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
+        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
         for (int i = 0; i < laneCount + 1; i++) {
-            laneMarkers[i] = new LaneMarker(new Vector2(i * Gdx.graphics.getWidth() / ((float)laneCount), 0));
+            laneMarkers[i] = new LaneMarker(new Vector2(i * laneWidth, 0));
         }
 
         int backgroundCount = 5;
@@ -128,24 +148,8 @@ public class GameScreen extends ScreenAdapter {
             backgrounds[i] = new Background(new Vector2(Gdx.graphics.getWidth() / 2f, i * 1080));
         }
 
-        obstacleList = new ArrayList<>();    // Creating the empty arrayList of obstacles
-
-        switch (round) {    // The max number of obstacles changes from round to round
-            case 0:
-                maxObstacles = 10;
-                break;
-            case 1:
-                maxObstacles = 15;
-                break;
-            case 2:
-                maxObstacles = 20;
-                break;
-            case 3:
-                maxObstacles = 30;
-                break;
-            default:
-                maxObstacles = 0;
-                break;
+        for(Lane lane : lanes){
+            lane.updateRound(this.round, this.obstacleMultiplier);
         }
 
         switch (round) {
@@ -165,6 +169,8 @@ public class GameScreen extends ScreenAdapter {
                 finishLine = 1000;
                 break;
         }
+        
+
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -186,6 +192,15 @@ public class GameScreen extends ScreenAdapter {
 
         for (LaneMarker l : laneMarkers) {
             l.render(game.batch, pb.getInGamePos());
+        }
+
+        for(Lane lane : lanes){
+            lane.render(game.batch);
+            lane.update(deltaTime);
+        }
+
+        if (pb.getHealth() == 0) {
+            game.setScreen(new BoatDeathScreen(game));
         }
 		
 /*
@@ -209,7 +224,7 @@ public class GameScreen extends ScreenAdapter {
 
         checkAllBoatsForFinished();
 
-        Iterator<Obstacle> obstacleIterator = obstacleList.iterator();    // Create iterator for iterating over the obstacles
+        /*Iterator<Obstacle> obstacleIterator = obstacleList.iterator();    // Create iterator for iterating over the obstacles
 
         collider = null;
 
@@ -226,7 +241,7 @@ public class GameScreen extends ScreenAdapter {
                 o.move(deltaTime);    // Run the obstacles mover
                 o.update(deltaTime);    // Update the position of the obstacle
                 if (pb.checkCollision(o)) {    // See if the players boat is colliding with the obstacle
-                    collider = o;
+                    //collider = o;
                 }
 
                 for (CPUBoat c : CPUs) {
@@ -236,11 +251,11 @@ public class GameScreen extends ScreenAdapter {
         }
         if (obstacleList.size() < maxObstacles) {
             obstacleList.add(spawnObstacle());
-        }
+        }*/
 
         finishLineObstacle.render(game.batch, pb.getInGamePos());
 
-        pb.render(game.batch);    // Render the boat
+        /*pb.render(game.batch, pb.getInGamePos());    // Render the boat
         pb.move(deltaTime);    // Move the boat based on player inputs
         pb.update(deltaTime);    // Update the position of the boat
 
@@ -252,105 +267,40 @@ public class GameScreen extends ScreenAdapter {
             c.render(game.batch, pb.getInGamePos());
             c.move(deltaTime);
             c.update(deltaTime);
-        }
-
+        }*/
 
         this.showHUD();
-    }
-
-    private Obstacle spawnObstacle() {
-        Vector2 spawnPos;    // position the obstacle will spawn at
-        Vector2 dir;        // direction the obstacle will start travelling in
-        ObstacleType obs;    // type of the obstacle that will be spawned
-        int obstacleChoice;    // index of the type of obstacle that will be spawned
-        int side;            // the side of the screen the obstacle will spawn at
-        Random rand = new Random();
-
-        switch (round) {    // The types of obstacles that can spawn is dependant on the round
-            case 0:
-                obstacleChoice = rand.nextInt(2);    // The following can be spawned in round 0: {BUOY, ROCK}
-                break;
-            case 1:
-                obstacleChoice = rand.nextInt(4);    // The following can be spawned in round 1: {BUOY, ROCK, BRANCH, DUCK}
-                break;
-            case 2:
-                obstacleChoice = rand.nextInt(6);    // The following can be spawned in round 2: {BUOY, ROCK, BRANCH, DUCK, RUBBISH, LONGBOI}
-                break;
-            case 3:
-                obstacleChoice = rand.nextInt(7);    // The following can be spawned in round 3: {BUOY, ROCK, BRANCH, DUCK, RUBBISH, LONGBOI, BOAT}
-                break;
-            default:
-                obstacleChoice = -1;    // Should never be the case, -1 will cause an error, as there is something wrong.
-                break;
-        }
-
-        obs = obstacles[obstacleChoice];    // Select the obstacle type from the list
-        if (obs.getMover().getID().equals("static")) {    // Static moving obstacles can only be spawned from the top
-            side = 0;
-        } else {
-            side = rand.nextInt(3);        // Any other obstacles can spawn on any other side
-        }
-
-        switch (side) {        // Creating a spawning position along the chosen edge
-            case 0:
-                spawnPos = new Vector2(    // If spawning along the top edge, pick a random x coord and a random y within the bounds of the screen, will be translated off screen
-                        rand.nextFloat() * Gdx.graphics.getWidth(),
-                        (rand.nextFloat()) * Gdx.graphics.getHeight()
-                );
-                break;
-            case 1:
-                spawnPos = new Vector2(    // For the edge spawning, spawn slightly off screen but not enough to be deleted, and in the top 2/3rds of the side
-                        -10,
-                        rand.nextFloat() * Gdx.graphics.getHeight() * 2 / 3
-                );
-                break;
-            case 2:
-                spawnPos = new Vector2(    // Same as above
-                        Gdx.graphics.getWidth() + 10,
-                        rand.nextFloat() * Gdx.graphics.getHeight() * 2 / 3
-                );
-                break;
-            default:    // By default spawn at 0,0
-                spawnPos = new Vector2();
-                break;
-        }
-        spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
-
-        dir = spawnPos.cpy().sub(new Vector2(    // Create a vector pointing from the spawn pos to a random point on the screen
-                rand.nextFloat() * Gdx.graphics.getWidth(),
-                rand.nextFloat() * Gdx.graphics.getHeight())
-        );
-        dir.limit(obs.getSpeed());    // Limit the vector to the max speed of the obstacle
-
-        return new Obstacle(obs, spawnPos, dir);    // Return the new obstacle
     }
 
     private void checkAllBoatsForFinished() {
 
         finishLineObstacle.getPos().y = finishLine; //this will make the finish line appear on the screen
 
-        for (CPUBoat cpu : CPUs) {
-            cpu.checkFinished(finishLine, this.raceStartTime); //this checks every cpu to see if it's finished, if it has it'll update their finishing time
+        for(Lane lane : lanes){
+            if(!lane.isPlayerLane) {
+                lane.checkBoatFinished(finishLine, this.raceStartTime);
+            }
         }
 
         if (pb.checkFinished(finishLine, this.raceStartTime)) {
             //calculate the times it would have taken or did take the cpus to finish
             //send every boats finishing time to the next screen along w the current round
 
-            for (CPUBoat cpu : CPUs) {
-                //if a cpu hasn't finished the race, it will estimate when it would have finished based on the distance it managed to travel in the time it took the player to win
-                if (!cpu.checkFinished(finishLine, this.raceStartTime)) {
-                    long timeEstimate = (long) ((pb.getFinishTimeLong()) * (finishLine / cpu.getInGamePos().y));
-                    cpu.setFinishTime(timeEstimate);
+            for(Lane lane : lanes){
+                if(!lane.isPlayerLane) {
+                    if (!lane.checkBoatFinished(finishLine, this.raceStartTime)) {
+                        long timeEstimate = (long) ((pb.getFinishTimeLong()) * (finishLine / lane.getBoatGamePos().y));
+                        lane.setBoatFinishTime(timeEstimate);
+                    }
                 }
             }
 
             if (round != 3) {
                 //go to mid round screen
-                game.setScreen(new midRoundScreen(game, round, CPUs, pb));
+                game.setScreen(new midRoundScreen(game, round, this.lanes, this.pb, this.difficulty));
             } else {
                 //go to final results screen
-                game.setScreen(new Finale(game, CPUs, pb));
+                game.setScreen(new Finale(game, this.lanes, pb));
             }
 
         }
@@ -517,9 +467,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        pb.dispose();
-        for (CPUBoat c : this.CPUs) {
-            c.dispose();
+        for(Lane lane : lanes){
+            lane.dispose();
         }
         for (LaneMarker l : this.laneMarkers) {
             l.dispose();

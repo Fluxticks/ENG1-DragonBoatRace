@@ -7,6 +7,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
+import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 import com.dragonboatrace.game.screens.TitleScreen;
@@ -14,13 +15,13 @@ import com.dragonboatrace.game.screens.TitleScreen;
 public class Finale extends ScreenAdapter {
 
     DragonBoatRace game;
-    CPUBoat[] CPUs;
+    Lane[] lanes;
     PlayerBoat pb;
     int[] playerPositions;
 
-    public Finale(DragonBoatRace game, CPUBoat[] CPUs, PlayerBoat pb) {
+    public Finale(DragonBoatRace game, Lane[] lanes, PlayerBoat pb) {
         this.game = game;
-        this.CPUs = CPUs;
+        this.lanes = lanes;
         this.pb = pb;
         this.playerPositions = getPlayerPositions();
     }
@@ -77,14 +78,18 @@ public class Finale extends ScreenAdapter {
         //element 1 of the output is the players position in all races
 
         int[] output = {1, 1};
-        for (CPUBoat CPU : CPUs) {
-            if (CPU.getFinishTimeLong() < pb.getFinishTimeLong()) {
-                output[0] += 1;
-            }
-            if (CPU.getTotalTimeLong() < pb.getTotalTimeLong()) {
-                output[1] += 1;
+
+        for(Lane lane : lanes){
+            if(!lane.isPlayerLane){
+                if (lane.getBoatFinishTimeLong() < pb.getFinishTimeLong()) {
+                    output[0] += 1;
+                }
+                if (lane.getBoatTotalTimeLong() < pb.getTotalTimeLong()) {
+                    output[1] += 1;
+                }
             }
         }
+
         return output;
     }
 

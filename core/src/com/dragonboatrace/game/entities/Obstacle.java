@@ -57,10 +57,6 @@ public class Obstacle extends Entity {
         this.obstacleType.getImage().dispose();
     }
 
-    public Vector2 getRelPos(Vector2 relPos) {
-        return new Vector2((this.pos.x), (this.pos.y - relPos.y));
-    }
-
     public ObstacleType getType() {
         return this.obstacleType;
     }

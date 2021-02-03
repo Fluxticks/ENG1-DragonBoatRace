@@ -2,6 +2,7 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
@@ -56,9 +57,8 @@ public class PlayerBoat extends Boat {
         }
     }
 
-    @Override
-    public void collide(Obstacle o) {
-
+    public void render(SpriteBatch batch, Vector2 relPos){
+        super.render(batch, new Vector2());
     }
 
     @Override
@@ -75,5 +75,6 @@ public class PlayerBoat extends Boat {
             this.distanceTravelled += deltaY;
             this.inGamePos.add(0, deltaY);
         }
+        this.hitbox.setToPosition(this.inGamePos);
     }
 }

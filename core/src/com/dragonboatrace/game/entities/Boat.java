@@ -13,12 +13,13 @@ public abstract class Boat extends Entity {
     protected BoatType boatType;
     protected float currentHealth, currentMaxSpeed;
     protected ArrayList<Obstacle> collided;
-    protected float stamina, maxStamina, timePenalties, penaltyResetDelay;
+    protected float stamina, maxStamina, timePenalties, penaltyResetDelay, defaultHandling;
     protected long finishTime;
     protected boolean finished = false;
     protected float distanceTravelled; //distance travelled in one round
     protected long totalTime;
     protected Tuple<Float, Float> laneBounds;
+    private boolean noCollide = false;
 
     protected Vector2 startPos;
 
@@ -30,6 +31,7 @@ public abstract class Boat extends Entity {
         this.collided = new ArrayList<>();
         this.stamina = 1000;
         this.maxStamina = 1000;
+        this.defaultHandling = boatType.handling;
         this.distanceTravelled = 0;
         this.totalTime = 0;
         this.laneBounds = laneBounds;
@@ -69,6 +71,11 @@ public abstract class Boat extends Entity {
     public boolean checkCollision(Obstacle o) {
         boolean colliding = super.checkCollision(o);
 
+    public void checkForCollision(Obstacle o){
+        if(!this.noCollide)doCollision(super.checkCollision(o), o);
+    }
+
+    public void doCollision(boolean colliding, Obstacle o){
         if (colliding) {
             if (!this.collided.contains(o)) {
                 this.collided.add(o);
@@ -80,8 +87,6 @@ public abstract class Boat extends Entity {
             this.collided.remove(o);
             this.currentMaxSpeed = this.boatType.getSpeed();
         }
-
-        return colliding;
     }
 
     public void render(SpriteBatch batch, Vector2 relPos) {
@@ -156,11 +161,13 @@ public abstract class Boat extends Entity {
     public void moveToStart() {
         this.inGamePos = startPos.cpy();
         this.pos = startPos.cpy();
+        this.hitbox.setToPosition(this.inGamePos);
         this.vel = new Vector2();
         this.stamina = maxStamina;
         this.distanceTravelled = 0;
         this.totalTime += finishTime;
         this.finishTime = 0;
+        this.boatType.handling = defaultHandling;
         this.finished = false;
     }
 
@@ -210,5 +217,34 @@ public abstract class Boat extends Entity {
 
     public float getCurrentSpeed() {
         return this.vel.y;
+    }
+
+    public Tuple<Float,Float> getLaneBounds(){
+        return this.laneBounds;
+    }
+
+    public void setCurrentHealth(float healthToSet){
+        this.currentHealth = healthToSet;
+    }
+
+    public void increaseYVelocity(float speedToAdd){
+        this.vel.y += speedToAdd;
+    }
+
+    public void increaseXVelocity(float speedToAdd){
+        this.boatType.handling += speedToAdd;
+    }
+
+    public void setCurrentStamina(float staminaToSet)
+    {
+        this.stamina = staminaToSet;
+    }
+
+    public void setTotalTime(long timeToSet){
+        this.totalTime = timeToSet;
+    }
+
+    public void setNoCollide(boolean toSet){
+        this.noCollide = toSet;
     }
 }

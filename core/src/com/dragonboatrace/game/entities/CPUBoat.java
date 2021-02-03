@@ -4,15 +4,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
+import java.util.ArrayList;
+
 public class CPUBoat extends Boat {
 
     int difficulty;
     Vector2 startPos;
+    private int dir;
+    private final float areaMulti = 0.5f;
+    private EntityHitbox areaChecker;
 
     public CPUBoat(BoatType boatType, Vector2 pos, int difficulty, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         this.difficulty = difficulty;
         this.startPos = pos;
+        this.dir = 0;
+
+        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
     }
 
     public CPUBoat(JsonValue jsonString) {
@@ -30,6 +38,8 @@ public class CPUBoat extends Boat {
             this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         }
 
+        this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)),0);
+
         //this part stops them if they break
         if (this.currentHealth <= 0) {
             this.vel = new Vector2();
@@ -46,24 +56,51 @@ public class CPUBoat extends Boat {
         }
     }
 
-    @Override
-    public void collide(Obstacle o) {
-
-    }
-
     //this method isnt used yet bc it sucks, I was going to use it to decide where to move the cpus intelligently but that's too hard so might just make them move randomly 
     //please ignore this method
-    public void decideMovement(float deltaTime, Obstacle[] obstacles) {
+    public void decideMovement(ArrayList<Obstacle> obstacles) {
 
-        Obstacle closestObstacle = obstacles[0];
+        // The amount on each side to check for obstacles
+        int paddingX = 5;
+        int paddingY = 75;
+        boolean obstacleInZone = false;
+        float thisCenter = this.size.x/2f + this.inGamePos.x;
 
-        for (Obstacle i : obstacles) {
-            Vector2 obstaclePos = i.getRelPos(pos);
-            if (obstaclePos.y > 0) {
-                if (obstaclePos.y < closestObstacle.getRelPos(pos).y) {
-                    closestObstacle = i;
-                }
+        for(Obstacle obstacle : obstacles){
+            if(this.areaChecker.checkCollision(obstacle.getHitbox())){
+                float obstacleCenter = obstacle.size.x/2f + obstacle.inGamePos.x;
+                obstacleInZone = true;
+                dir = decideDirection(thisCenter, obstacleCenter);
+                break;
             }
+        }
+
+        if(!obstacleInZone){
+            float laneCenter = (laneBounds.b + laneBounds.a)/2f;
+            if(thisCenter + 100 < laneCenter){
+                this.dir = 1;
+            }else if(thisCenter - 100 > laneCenter){
+                this.dir = -1;
+            }else{
+                this.dir = 0;
+            }
+        }
+    }
+
+    private int decideDirection(float thisCenter, float obstacleCenter){
+
+        // Try to stay in the lane.
+        if(this.inGamePos.x - 10 < this.laneBounds.a){
+            return 1;
+        }else if(this.inGamePos.x + this.size.x + 10 > this.laneBounds.b){
+            return -1;
+        }
+
+        // If the obstacle is to the right of our center move to the left.
+        if(thisCenter < obstacleCenter){
+            return -1;
+        }else{
+            return 1;
         }
     }
 
@@ -82,6 +119,8 @@ public class CPUBoat extends Boat {
             this.inGamePos.add(0, deltaY);
             this.distanceTravelled += deltaY;
         }
+        this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
+        this.hitbox.setToPosition(this.inGamePos);
     }
 
     public int getDifficulty(){

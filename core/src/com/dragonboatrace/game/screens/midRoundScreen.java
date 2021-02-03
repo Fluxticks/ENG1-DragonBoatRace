@@ -7,22 +7,25 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
+import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
 public class midRoundScreen extends ScreenAdapter {
 
     DragonBoatRace game;
-    CPUBoat[] CPUs;
     int round;
     PlayerBoat pb;
     int[] playerPositions;
+    Lane[] lanes;
+    int difficulty;
 
-    public midRoundScreen(DragonBoatRace game, int round, CPUBoat[] CPUs, PlayerBoat playerBoat) {
+    public midRoundScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
-        this.CPUs = CPUs;
+        this.lanes = lanes;
         this.round = round;
         this.pb = playerBoat;
+        this.difficulty = difficulty;
         this.game.toDispose.add(this);
         this.playerPositions = getPlayerPositions();
 
@@ -34,20 +37,16 @@ public class midRoundScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.SPACE) {
-                    pb.moveToStart();
-
-                    for (CPUBoat CPU : CPUs) {
-                        CPU.moveToStart();
+                    for(Lane lane : lanes){
+                        lane.moveBoatToStart();
                     }
                     if (round != 3 || playerPositions[1] < 4) {
-                        game.setScreen(new GameScreen(game, round + 1, CPUs, pb));
+                        game.setScreen(new GameScreen(game, round + 1, lanes, pb, difficulty));
                     } else {
-                        game.setScreen(new Finale(game, CPUs, pb));
+                        game.setScreen(new Finale(game, lanes, pb));
                     }
                     //this will move every cpu boat to the 'start'
                     //really it just moves them to be at the same position as the player
-
-
                 }
                 return true;
             }
@@ -85,12 +84,14 @@ public class midRoundScreen extends ScreenAdapter {
         //element 1 of the output is the players position in all races
 
         int[] output = {1, 1};
-        for (CPUBoat CPU : CPUs) {
-            if (CPU.getFinishTimeLong() < pb.getFinishTimeLong()) {
-                output[0] += 1;
-            }
-            if (CPU.getTotalTimeLong() + CPU.getFinishTimeLong() < pb.getTotalTimeLong() + pb.getFinishTimeLong()) {
-                output[1] += 1;
+        for(Lane lane : lanes){
+            if(!lane.isPlayerLane){
+                if (lane.getBoatFinishTimeLong() < pb.getFinishTimeLong()) {
+                    output[0] += 1;
+                }
+                if (lane.getBoatTotalTimeLong() + lane.getBoatFinishTimeLong() < pb.getTotalTimeLong() + pb.getFinishTimeLong()) {
+                    output[1] += 1;
+                }
             }
         }
         return output;

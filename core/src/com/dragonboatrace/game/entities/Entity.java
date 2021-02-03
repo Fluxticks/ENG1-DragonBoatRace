@@ -1,24 +1,34 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 
     protected Vector2 pos, inGamePos, vel, inGameVel, acc, size;
+    protected int width, height;
     protected float weight, dampening;
     protected Obstacle collider;
+    private ShapeRenderer shapeRenderer;
+    protected EntityHitbox hitbox;
 
     public Entity(Vector2 pos, Vector2 size, float weight) {
         this.pos = pos;
-        this.inGamePos = new Vector2(pos.x, pos.y);
+        this.inGamePos = new Vector2(pos);
         this.inGameVel = new Vector2();
         this.vel = new Vector2();
         this.acc = new Vector2();
         this.size = size;
+        this.width = (int)size.x;
+        this.height = (int)size.y;
         this.weight = weight;
         this.dampening = (float) 0.2;
         this.collider = null;
+        this.shapeRenderer = new ShapeRenderer();
+        this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
     public void update(float deltaTime) {
@@ -37,9 +47,10 @@ public abstract class Entity {
             this.vel.add(0, -deltaY);
 
         }
+        this.hitbox.setToPosition(this.inGamePos);
     }
 
-    public boolean checkCollision(Obstacle e) {
+    /*public boolean checkCollision(Obstacle e) {
         this.collider = null;
         float x1 = this.inGamePos.x;
         float y1 = this.inGamePos.y;
@@ -57,16 +68,34 @@ public abstract class Entity {
             }
         }
         return false;
+    }*/
+
+    public boolean checkCollision(Obstacle e){
+        return this.hitbox.checkCollision(e.getHitbox());
     }
 
     public void render(SpriteBatch batch) {
         this.render(batch, new Vector2());
     }
 
+    public Vector2 getRelPos(Vector2 relPos) {
+        return new Vector2((this.pos.x), (this.pos.y - relPos.y));
+    }
+
+    public void renderHitBox(Vector2 relPos){
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        this.shapeRenderer.setColor(Color.RED);
+        this.shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
+        this.shapeRenderer.end();
+    }
+
+    public EntityHitbox getHitbox(){
+        return this.hitbox;
+    }
+
     public Vector2 getInGamePos() {
         return this.inGamePos;
     }
-
 
     public Vector2 getVel() {
         return this.vel;
@@ -83,8 +112,6 @@ public abstract class Entity {
     public abstract void render(SpriteBatch batch, Vector2 relPos);
 
     public abstract void move(float deltaTime);
-
-    public abstract void collide(Obstacle o);
 
     public abstract void dispose();
 
