@@ -19,9 +19,8 @@ package com.dragonboatrace.game;
 import static org.junit.Assert.assertTrue;
 
 import com.badlogic.gdx.math.Vector2;
-import com.dragonboatrace.game.entities.Obstacle;
-import com.dragonboatrace.game.entities.ObstacleType;
-import org.junit.Assert;
+import com.dragonboatrace.game.entities.PowerUp;
+import com.dragonboatrace.game.entities.PowerUpType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,22 +29,10 @@ import com.badlogic.gdx.Gdx;
 import com.dragonboatrace.game.GdxTestRunner;
 
 @RunWith(GdxTestRunner.class)
-public class ObstacleTest {
-
-    Obstacle testingObstacle = new Obstacle(ObstacleType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
+public class PowerUpTest {
 
     @Test
-    public void obstacleInstantiationTest() {
-        Obstacle testingObstacle = new Obstacle(ObstacleType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
-
-        // Obstacle Type Test
-        Assert.assertEquals(testingObstacle.getType(), ObstacleType.TESTING);
-        // Pos Test
-        Assert.assertEquals(testingObstacle.getPos(), new Vector2(0, 0));
-        // Vel Test
-        Assert.assertEquals(testingObstacle.getVel(), new Vector2(0, 0));
-        // Size Test
-        Assert.assertEquals(testingObstacle.getSize(), testingObstacle.getType().getSize());
-
+    public void templateTest() {
+        PowerUp testingPowerup = new PowerUp(PowerUpType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
     }
 }
