@@ -38,6 +38,7 @@ public class GameScreen extends ScreenAdapter {
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
     Lane[] lanes;
+    CPUBoat[] CPUs;
     int laneCount;
     long raceStartTime;
     int difficulty;
