@@ -51,6 +51,10 @@ public class Lane {
         for(JsonValue o : jsonString.get("obstacles")){
             this.obstacles.add(new Obstacle(o));
         }
+        this.isPlayerLane = jsonString.getInt("isPlayer") == 1;
+        this.currentPower = null;
+        this.pb = null;
+
     }
 
     public String save() {

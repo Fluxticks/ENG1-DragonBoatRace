@@ -190,6 +190,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         for (Background b : backgrounds) {
+            System.out.println(pb.getInGamePos());
             b.render(game.batch, pb.getInGamePos());
         }
 

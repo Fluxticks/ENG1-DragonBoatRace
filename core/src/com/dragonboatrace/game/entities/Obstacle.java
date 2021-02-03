@@ -22,6 +22,8 @@ public class Obstacle extends Entity {
                 new Json().fromJson(ObstacleType.class,jsonString.getString("type")).getWeight());
         this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
         this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
+        this.obstacleType = new Json().fromJson(ObstacleType.class,jsonString.getString("type"));
+
     }
 
     public String save() {

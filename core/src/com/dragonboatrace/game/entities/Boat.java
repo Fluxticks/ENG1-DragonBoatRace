@@ -39,6 +39,7 @@ public abstract class Boat extends Entity {
 
     public Boat(JsonValue jsonString) {
         super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
+                new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y")),
                 new Json().fromJson(BoatType.class,jsonString.getString("type")).getSize().cpy(),
                 new Json().fromJson(BoatType.class,jsonString.getString("type")).getWeight());
         this.boatType = new Json().fromJson(BoatType.class,jsonString.getString("type"));
@@ -50,10 +51,15 @@ public abstract class Boat extends Entity {
         this.currentMaxSpeed = this.boatType.getSpeed();
         this.maxStamina = 1000;
         this.collided = new ArrayList<>();
+//        this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
+//        this.inGamePos.y = jsonString.get("inGamePos").getFloat("y");
+        this.hitbox.movePosition(this.inGamePos);
+
+
     }
 
     public String save() {
-    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}}" ,
+    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}}" ,
                 this.boatType,
                 this.currentHealth,
                 this.stamina,
@@ -64,7 +70,9 @@ public abstract class Boat extends Entity {
                 this.inGamePos.x,
                 this.inGamePos.y,
                 this.pos.x,
-                this.pos.y
+                this.pos.y,
+                this.vel.x,
+                this.vel.y
         );
     }
 
