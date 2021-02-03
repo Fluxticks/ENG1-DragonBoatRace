@@ -37,7 +37,14 @@ public class BoatTest {
     Obstacle testingObstacle = new Obstacle(ObstacleType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
 
     @Test
-    public void getTotalTimeString(){
+    public void getFinishTimeStringTest(){
+        testingBoat.setFinishTime(100000);
+        Assert.assertEquals(testingBoat.getFinishTimeString(), "1 Minutes and 40 Seconds");
+    }
+
+
+    @Test
+    public void getTotalTimeStringTest(){
         testingBoat.setTotalTime(100000);
         Assert.assertEquals(testingBoat.getTotalTimeString(), "1 Minutes and 40 Seconds");
     }
