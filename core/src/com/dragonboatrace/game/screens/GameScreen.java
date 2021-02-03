@@ -59,16 +59,25 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(DragonBoatRace game, JsonValue jsonString) {
         this.game = game;
         this.round = jsonString.getInt("round");
-        this.create(this.round);
-        this.pb = new PlayerBoat(jsonString.get("player"));
+        this.difficulty = jsonString.getInt("difficulty");
+        this.obstacleMultiplier = 1;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
 
-        ArrayList<CPUBoat> tempCPUS = new ArrayList<CPUBoat>();
-        for (JsonValue cpu : jsonString.get("cpus")) {
-            tempCPUS.add(new CPUBoat(cpu));
+        ArrayList<Lane> tempLanes = new ArrayList<Lane>();
+        for (JsonValue lane : jsonString.get("lanes")) {
+            Lane tempLane = new Lane(lane);
+            tempLanes.add(tempLane);
+            if(tempLane.isPlayerLane) {
+                this.pb = (PlayerBoat) tempLane.getBoat();
+            }
         }
-        this.CPUs = tempCPUS.toArray(new CPUBoat[0]);
+        this.lanes = tempLanes.toArray(new Lane[0]);
+
+        for(Lane lane : lanes) {
+            lane.setPb(this.pb);
+        }
+        this.create(this.round);
     }
 
     @Override
@@ -97,26 +106,19 @@ public class GameScreen extends ScreenAdapter {
 
     public void save(int saveSlot, FileHandle file){
         Json json = new Json();
-        String[] obstacleStrings = new String[obstacleList.size()];
-        String[] cpuStrings = new String[CPUs.length];
+        String[] laneStrings = new String[this.lanes.length];
 
-        for(int i = 0; i < obstacleStrings.length; i++){
-            obstacleStrings[i] = obstacleList.get(i).save();
+        for(int i = 0; i < laneStrings.length; i++){
+            laneStrings[i] = this.lanes[i].save();
         }
 
-        for(int i = 0; i < CPUs.length; i++){
-            cpuStrings[i] = CPUs[i].save();
-        }
-
-        String saveString = String.format("{round:%d, player:%s, obstacles:%s, cpus:%s}",
+        String saveString = String.format("{round:%d, difficulty:%d, lanes:%s}",
                 this.round,
-                this.pb.save(),
-                Arrays.toString(obstacleStrings),
-                Arrays.toString(cpuStrings)
+                this.difficulty,
+                Arrays.toString(laneStrings)
         );
 
         file.writeString(json.prettyPrint(saveString), false);
-
     }
 
     public void create(int round) {

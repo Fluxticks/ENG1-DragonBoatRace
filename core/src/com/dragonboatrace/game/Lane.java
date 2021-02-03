@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.entities.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,7 +31,6 @@ public class Lane {
 
     public boolean isPlayerLane;
 
-    private final ShapeRenderer shapeRenderer;
 
     public Lane(Boat boatInLane, PlayerBoat pb){
         this.boat = boatInLane;
@@ -37,7 +38,31 @@ public class Lane {
         this.currentPower = null;
         this.pb = pb;
         this.isPlayerLane = (this.pb == this.boat);
-        this.shapeRenderer = new ShapeRenderer();
+    }
+
+    public Lane(JsonValue jsonString) {
+        if(jsonString.getInt("isPlayer") == 1) {
+            this.boat = new PlayerBoat(jsonString.get("boat"));
+        } else {
+            this.boat = new CPUBoat(jsonString.get("boat"));
+        }
+
+        this.obstacles = new ArrayList<>();
+        for(JsonValue o : jsonString.get("obstacles")){
+            this.obstacles.add(new Obstacle(o));
+        }
+    }
+
+    public String save() {
+        String[] obstacleStrings = new String[this.obstacles.size()];
+        for(int i = 0; i < obstacleStrings.length; i++) {
+            obstacleStrings[i] = this.obstacles.get(i).save();
+        }
+
+        return String.format("{boat:%s, obstacles:%s, isPlayer:%d}",
+                this.boat.save(),
+                Arrays.toString(obstacleStrings),
+                this.isPlayerLane ? 1 : 0);
     }
 
     public void update(float deltaTime){
@@ -109,12 +134,12 @@ public class Lane {
         }
     }
 
-    private void renderBounds(){
+    private void renderBounds(ShapeRenderer shapeRenderer){
         Tuple<Float,Float> bounds = this.boat.getLaneBounds();
-        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        this.shapeRenderer.setColor(Color.RED);
-        this.shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
-        this.shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
+        shapeRenderer.end();
     }
 
     public void updateRound(int newRound, float obstacleMultiplier){
@@ -245,6 +270,14 @@ public class Lane {
 
     public void setBoatFinishTime(long finishTime){
         this.boat.setFinishTime(finishTime);
+    }
+
+    public Boat getBoat(){
+        return this.boat;
+    }
+
+    public void setPb(PlayerBoat pb) {
+        this.pb = pb;
     }
 
     public Vector2 getBoatGamePos(){

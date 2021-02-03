@@ -129,22 +129,18 @@ public class BoatChoice extends ScreenAdapter {
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
 
+                } else if (keyCode == Input.Keys.NUM_1) {
+                    startGame(1);
+                } else if (keyCode == Input.Keys.NUM_2) {
+                    startGame(2);
+                } else if (keyCode == Input.Keys.NUM_3) {
+                    startGame(3);
                 } else if (keyCode == Input.Keys.LEFT) {
-
-                    if (keyCode == Input.Keys.NUM_1) {
-                        startGame(1);
-                    } else if (keyCode == Input.Keys.NUM_2) {
-                        startGame(2);
-                    } else if (keyCode == Input.Keys.NUM_3) {
-                        startGame(3);
-                    } else if (keyCode == Input.Keys.LEFT) {
-                        selection += boats.length - 1;
-                        selection %= boats.length;
-                    } else if (keyCode == Input.Keys.RIGHT) {
-                        selection++;
-                        selection %= boats.length;
-                    }
-                    return true;
+                    selection += boats.length - 1;
+                    selection %= boats.length;
+                } else if (keyCode == Input.Keys.RIGHT) {
+                    selection++;
+                    selection %= boats.length;
                 }
                 return true;
             }
