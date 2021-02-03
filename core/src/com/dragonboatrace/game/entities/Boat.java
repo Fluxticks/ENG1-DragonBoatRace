@@ -216,5 +216,7 @@ public abstract class Boat extends Entity {
 
     public BoatType getBoatType() { return this.boatType; }
 
-    public void setDistanceTravelled(float newDistance){ this.distanceTravelled = newDistance; }
+    public void setDistanceTravelled(float newDistance){
+        this.distanceTravelled = newDistance;
+    }
 }
