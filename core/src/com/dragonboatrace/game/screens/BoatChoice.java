@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.Tuple;
@@ -21,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class BoatChoice extends ScreenAdapter {
     DragonBoatRace game;
@@ -115,6 +124,54 @@ public class BoatChoice extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
+                if (keyCode == Input.Keys.F6) {
+                    FileHandle file = Gdx.files.local("bin/save1.json");
+                    JsonValue jsonString = new JsonReader().parse(file);
+                    game.setScreen(new GameScreen(game, jsonString));
+
+                } else if (keyCode == Input.Keys.SPACE) {
+
+                    int laneCount = 7;
+
+                    CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
+
+                    for (int i = 0; i < laneCount - 1; i++) {
+                        int xpos = i;
+                        if (i >= (laneCount - 1) / 2) {
+                            xpos += 1;
+                        }
+                        ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(Arrays.asList(BoatType.values()));
+                        cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
+                        BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
+                        CPUs[i] = new CPUBoat(
+                                cpuBoatType,
+                                new Vector2(
+                                        (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
+                                        10
+                                ), 0,
+                                new Tuple<>(
+                                        (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
+                                        (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
+                                )
+                        );
+                        CPUs[i].saveStartPos();
+                    }
+
+                    PlayerBoat pb = new PlayerBoat(
+                            BoatTypes.get(selection),
+                            new Vector2(
+                                    Gdx.graphics.getWidth() / 2f,
+                                    10
+                            ), new Tuple<>(
+                            ((laneCount - 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2,
+                            ((laneCount + 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2
+                    )
+                    );    // Creating the players boat
+                    pb.saveStartPos();
+
+                    game.setScreen(new GameScreen(game, 0, CPUs, pb));
+                } else if (keyCode == Input.Keys.LEFT) {
+
                 if (keyCode == Input.Keys.NUM_1) {
                     startGame(1);
                 } else if (keyCode == Input.Keys.NUM_2) {

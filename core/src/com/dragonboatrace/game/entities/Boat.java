@@ -2,6 +2,8 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
 import java.util.ArrayList;
@@ -35,12 +37,45 @@ public abstract class Boat extends Entity {
         this.laneBounds = laneBounds;
     }
 
+    public Boat(JsonValue jsonString) {
+        super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
+                new Json().fromJson(BoatType.class,jsonString.getString("type")).getSize().cpy(),
+                new Json().fromJson(BoatType.class,jsonString.getString("type")).getWeight());
+        this.boatType = new Json().fromJson(BoatType.class,jsonString.getString("type"));
+        this.currentHealth = jsonString.getFloat("health");
+        this.stamina = jsonString.getFloat("stamina");
+        this.distanceTravelled = jsonString.getFloat("distance");
+        this.totalTime = jsonString.getInt("totalTime");
+        this.laneBounds = new Tuple<Float, Float>(jsonString.get("laneBounds").getFloat("x"), jsonString.get("laneBounds").getFloat("y"));
+        this.currentMaxSpeed = this.boatType.getSpeed();
+        this.maxStamina = 1000;
+        this.collided = new ArrayList<>();
+    }
+
+    public String save() {
+    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}}" ,
+                this.boatType,
+                this.currentHealth,
+                this.stamina,
+                this.distanceTravelled,
+                this.totalTime,
+                this.laneBounds.a,
+                this.laneBounds.b,
+                this.inGamePos.x,
+                this.inGamePos.y,
+                this.pos.x,
+                this.pos.y
+        );
+    }
+
+    public boolean checkCollision(Obstacle o) {
+        boolean colliding = super.checkCollision(o);
+
     public void checkForCollision(Obstacle o){
         if(!this.noCollide)doCollision(super.checkCollision(o), o);
     }
 
     public void doCollision(boolean colliding, Obstacle o){
-
         if (colliding) {
             if (!this.collided.contains(o)) {
                 this.collided.add(o);
@@ -113,6 +148,10 @@ public abstract class Boat extends Entity {
 
     public long getTotalTimeLong(){
         return this.totalTime;
+    }
+
+    public Tuple<Float, Float> getLaneBounds(){
+        return this.laneBounds;
     }
 
     public void saveStartPos() {
