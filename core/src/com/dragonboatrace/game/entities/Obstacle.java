@@ -2,6 +2,8 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Obstacle extends Entity {
     protected ObstacleType obstacleType;
@@ -12,6 +14,14 @@ public class Obstacle extends Entity {
         this.vel = vel;
         this.constantVel = vel.cpy();
         this.obstacleType = obstacleType;
+    }
+
+    public Obstacle(JsonValue jsonString) {
+        super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
+                new Json().fromJson(ObstacleType.class,jsonString.getString("type")).getSize().cpy(),
+                new Json().fromJson(ObstacleType.class,jsonString.getString("type")).getWeight());
+        this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
+        this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
     }
 
     public String save() {

@@ -36,15 +36,22 @@ public abstract class Boat extends Entity {
     }
 
     public Boat(JsonValue jsonString) {
-        super(new Vector2(jsonString.get("pos").getInt("x"), jsonString.get("pos").getInt("y")),
+        super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
                 new Json().fromJson(BoatType.class,jsonString.getString("type")).getSize().cpy(),
                 new Json().fromJson(BoatType.class,jsonString.getString("type")).getWeight());
         this.boatType = new Json().fromJson(BoatType.class,jsonString.getString("type"));
-        this.currentHealth = jsonString.getInt("health");
+        this.currentHealth = jsonString.getFloat("health");
+        this.stamina = jsonString.getFloat("stamina");
+        this.distanceTravelled = jsonString.getFloat("distance");
+        this.totalTime = jsonString.getInt("totalTime");
+        this.laneBounds = new Tuple<Float, Float>(jsonString.get("laneBounds").getFloat("x"), jsonString.get("laneBounds").getFloat("y"));
+        this.currentMaxSpeed = this.boatType.getSpeed();
+        this.maxStamina = 1000;
+        this.collided = new ArrayList<>();
     }
 
     public String save() {
-    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, pos:{x:%f, y:%f}}" ,
+    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}}" ,
                 this.boatType,
                 this.currentHealth,
                 this.stamina,
@@ -53,7 +60,9 @@ public abstract class Boat extends Entity {
                 this.laneBounds.a,
                 this.laneBounds.b,
                 this.inGamePos.x,
-                this.inGamePos.y
+                this.inGamePos.y,
+                this.pos.x,
+                this.pos.y
         );
     }
 

@@ -73,9 +73,8 @@ public class BoatChoice extends ScreenAdapter {
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.F6) {
                     FileHandle file = Gdx.files.local("bin/save1.json");
-                    JsonValue json = new JsonReader().parse(file);
-                    int round = json.getInt("round");
-                    System.out.println(round);
+                    JsonValue jsonString = new JsonReader().parse(file);
+                    game.setScreen(new GameScreen(game, jsonString));
 
                 } else if (keyCode == Input.Keys.SPACE) {
 

@@ -48,9 +48,19 @@ public class GameScreen extends ScreenAdapter {
         this.round = round;
     }
 
-    public GameScreen(DragonBoatRace game, JsonValue jsonFile) {
+    public GameScreen(DragonBoatRace game, JsonValue jsonString) {
         this.game = game;
-        this.create(round);
+        this.round = jsonString.getInt("round");
+        this.create(this.round);
+        this.pb = new PlayerBoat(jsonString.get("player"));
+        this.game.toDispose.add(this);
+        this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
+
+        ArrayList<CPUBoat> tempCPUS = new ArrayList<CPUBoat>();
+        for (JsonValue cpu : jsonString.get("cpus")) {
+            tempCPUS.add(new CPUBoat(cpu));
+        }
+        this.CPUs = tempCPUS.toArray(new CPUBoat[0]);
     }
 
     @Override
@@ -90,15 +100,14 @@ public class GameScreen extends ScreenAdapter {
             cpuStrings[i] = CPUs[i].save();
         }
 
-        String saveString = String.format("{slot:%d, round:%d, player:%s, obstacles:%s, cpus:%s}",
-                saveSlot,
+        String saveString = String.format("{round:%d, player:%s, obstacles:%s, cpus:%s}",
                 this.round,
                 this.pb.save(),
                 Arrays.toString(obstacleStrings),
                 Arrays.toString(cpuStrings)
         );
 
-        file.writeString(json.toJson(saveString), false);
+        file.writeString(json.prettyPrint(saveString), false);
 
     }
 

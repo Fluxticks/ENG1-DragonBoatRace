@@ -1,6 +1,7 @@
 package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
 public class CPUBoat extends Boat {
@@ -12,6 +13,11 @@ public class CPUBoat extends Boat {
         super(boatType, pos, laneBounds);
         this.difficulty = difficulty;
         this.startPos = pos;
+    }
+
+    public CPUBoat(JsonValue jsonString) {
+        super(jsonString);
+        startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
     }
 
     @Override
