@@ -51,9 +51,9 @@ public abstract class Boat extends Entity {
         this.currentMaxSpeed = this.boatType.getSpeed();
         this.maxStamina = 1000;
         this.collided = new ArrayList<>();
-//        this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
-//        this.inGamePos.y = jsonString.get("inGamePos").getFloat("y");
-        this.hitbox.movePosition(this.inGamePos);
+        this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
+        this.inGamePos.y = jsonString.get("inGamePos").getFloat("y");
+        this.hitbox.setToPosition(this.inGamePos);
 
 
     }

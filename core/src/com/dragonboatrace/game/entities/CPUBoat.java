@@ -80,9 +80,13 @@ public class CPUBoat extends Boat {
 
         if(!obstacleInZone){
             float laneCenter = (laneBounds.b + laneBounds.a)/2f;
-            if(thisCenter + 100 < laneCenter){
+            System.out.println(this.inGamePos.x);
+            System.out.println(laneBounds.toString());
+            System.out.println(laneCenter);
+
+            if(thisCenter + this.size.x < laneCenter){
                 this.dir = 1;
-            }else if(thisCenter - 100 > laneCenter){
+            }else if(thisCenter - this.size.x > laneCenter){
                 this.dir = -1;
             }else{
                 this.dir = 0;

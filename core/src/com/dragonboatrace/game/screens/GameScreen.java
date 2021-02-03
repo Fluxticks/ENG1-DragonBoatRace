@@ -92,12 +92,16 @@ public class GameScreen extends ScreenAdapter {
                 if (keyCode == Input.Keys.F1) {
                     FileHandle file = Gdx.files.local("bin/save1.json");
                     save(1, file);
+                    System.exit(0);
                 } else if (keyCode == Input.Keys.F2) {
                     FileHandle file = Gdx.files.local("bin/save2.json");
                     save(2, file);
+                    System.exit(0);
                 } else if (keyCode == Input.Keys.F3) {
                     FileHandle file = Gdx.files.local("bin/save3.json");
                     save(3, file);
+                    System.exit(0);
+
                 }
                 return true;
             }
@@ -190,7 +194,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         for (Background b : backgrounds) {
-            System.out.println(pb.getInGamePos());
             b.render(game.batch, pb.getInGamePos());
         }
 
