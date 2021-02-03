@@ -37,6 +37,22 @@ public class BoatTest {
     Obstacle testingObstacle = new Obstacle(ObstacleType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
 
     @Test
+    public void boatInstantiationTest(){
+        // Boat Type Test
+        Assert.assertEquals(testingBoat.getBoatType(), BoatType.TESTING);
+        // Pos Test
+        Assert.assertEquals(testingBoat.getPos(), new Vector2(0,0));
+        // Lane Bounds Test
+        Assert.assertEquals(testingBoat.getLaneBounds().toString(), new Tuple<Float, Float>(0f, 100f).toString());
+        // Current Health Test
+        Assert.assertEquals(testingBoat.getHealth(), BoatType.TESTING.getMaxHealth(), 0.01);
+        // Current Stamina Test
+        Assert.assertEquals(testingBoat.getStamina(), 1000, 0.01);
+        // Max Speed Test
+        Assert.assertEquals(testingBoat.getMaxSpeed(), BoatType.TESTING.getSpeed(), 0.01);
+    }
+
+    @Test
     public void getFinishTimeStringTest(){
         testingBoat.setFinishTime(100000);
         Assert.assertEquals(testingBoat.getFinishTimeString(), "1 Minutes and 40 Seconds");

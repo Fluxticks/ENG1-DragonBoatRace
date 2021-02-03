@@ -213,4 +213,6 @@ public abstract class Boat extends Entity {
     public void setNoCollide(boolean toSet){
         this.noCollide = toSet;
     }
+
+    public BoatType getBoatType() { return this.boatType; }
 }
