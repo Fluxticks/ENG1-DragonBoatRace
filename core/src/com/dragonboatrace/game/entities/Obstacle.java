@@ -14,6 +14,18 @@ public class Obstacle extends Entity {
         this.obstacleType = obstacleType;
     }
 
+    public String save() {
+        return String.format("{type:%s, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}, constantVel:{x:%f, y:%f}}",
+                this.obstacleType,
+                this.inGamePos.x,
+                this.inGamePos.y,
+                this.vel.x,
+                this.vel.y,
+                this.constantVel.x,
+                this.constantVel.y
+                );
+    }
+
     public void collide(Obstacle o) {
 
     }

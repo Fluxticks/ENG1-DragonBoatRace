@@ -2,6 +2,8 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
 import java.util.ArrayList;
@@ -31,6 +33,28 @@ public abstract class Boat extends Entity {
         this.distanceTravelled = 0;
         this.totalTime = 0;
         this.laneBounds = laneBounds;
+    }
+
+    public Boat(JsonValue jsonString) {
+        super(new Vector2(jsonString.get("pos").getInt("x"), jsonString.get("pos").getInt("y")),
+                new Json().fromJson(BoatType.class,jsonString.getString("type")).getSize().cpy(),
+                new Json().fromJson(BoatType.class,jsonString.getString("type")).getWeight());
+        this.boatType = new Json().fromJson(BoatType.class,jsonString.getString("type"));
+        this.currentHealth = jsonString.getInt("health");
+    }
+
+    public String save() {
+    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, pos:{x:%f, y:%f}}" ,
+                this.boatType,
+                this.currentHealth,
+                this.stamina,
+                this.distanceTravelled,
+                this.totalTime,
+                this.laneBounds.a,
+                this.laneBounds.b,
+                this.inGamePos.x,
+                this.inGamePos.y
+        );
     }
 
     public boolean checkCollision(Obstacle o) {
@@ -110,6 +134,10 @@ public abstract class Boat extends Entity {
 
     public long getTotalTimeLong(){
         return this.totalTime;
+    }
+
+    public Tuple<Float, Float> getLaneBounds(){
+        return this.laneBounds;
     }
 
     public void saveStartPos() {

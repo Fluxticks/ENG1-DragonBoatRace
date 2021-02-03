@@ -1,6 +1,6 @@
 package com.dragonboatrace.game;
 
-public class Tuple<A, B> {
+public class Tuple<A, B>{
     public A a;
     public B b;
 

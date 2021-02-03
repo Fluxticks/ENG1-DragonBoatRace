@@ -1,22 +1,23 @@
 package com.dragonboatrace.game.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.*;
-import com.dragonboatrace.game.entities.CPUBoat;
-import com.dragonboatrace.game.entities.Obstacle;
-import com.dragonboatrace.game.entities.ObstacleType;
-import com.dragonboatrace.game.entities.PlayerBoat;
+import com.dragonboatrace.game.entities.*;
+
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -47,6 +48,11 @@ public class GameScreen extends ScreenAdapter {
         this.round = round;
     }
 
+    public GameScreen(DragonBoatRace game, JsonValue jsonFile) {
+        this.game = game;
+        this.create(round);
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -56,9 +62,44 @@ public class GameScreen extends ScreenAdapter {
                     game.dispose();
                     System.exit(0);
                 }
+                if (keyCode == Input.Keys.F1) {
+                    FileHandle file = Gdx.files.local("bin/save1.json");
+                    save(1, file);
+                } else if (keyCode == Input.Keys.F2) {
+                    FileHandle file = Gdx.files.local("bin/save2.json");
+                    save(2, file);
+                } else if (keyCode == Input.Keys.F3) {
+                    FileHandle file = Gdx.files.local("bin/save3.json");
+                    save(3, file);
+                }
                 return true;
             }
         });
+    }
+
+    public void save(int saveSlot, FileHandle file){
+        Json json = new Json();
+        String[] obstacleStrings = new String[obstacleList.size()];
+        String[] cpuStrings = new String[CPUs.length];
+
+        for(int i = 0; i < obstacleStrings.length; i++){
+            obstacleStrings[i] = obstacleList.get(i).save();
+        }
+
+        for(int i = 0; i < CPUs.length; i++){
+            cpuStrings[i] = CPUs[i].save();
+        }
+
+        String saveString = String.format("{slot:%d, round:%d, player:%s, obstacles:%s, cpus:%s}",
+                saveSlot,
+                this.round,
+                this.pb.save(),
+                Arrays.toString(obstacleStrings),
+                Arrays.toString(cpuStrings)
+        );
+
+        file.writeString(json.toJson(saveString), false);
+
     }
 
     public void create(int round) {

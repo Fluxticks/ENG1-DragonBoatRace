@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Tuple;
 import com.dragonboatrace.game.entities.Boat;
@@ -20,6 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class BoatChoice extends ScreenAdapter {
     DragonBoatRace game;
@@ -62,7 +71,13 @@ public class BoatChoice extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.SPACE) {
+                if (keyCode == Input.Keys.F6) {
+                    FileHandle file = Gdx.files.local("bin/save1.json");
+                    JsonValue json = new JsonReader().parse(file);
+                    int round = json.getInt("round");
+                    System.out.println(round);
+
+                } else if (keyCode == Input.Keys.SPACE) {
 
                     int laneCount = 7;
 

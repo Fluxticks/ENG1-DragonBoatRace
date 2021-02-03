@@ -78,6 +78,10 @@ public class CPUBoat extends Boat {
         }
     }
 
+    public int getDifficulty(){
+        return this.difficulty;
+    }
+
     //this is used for debugging, it tells you where they are on screen and where they are relative to the start line
     public String getCurrentPos() {
         return this.pos.toString() + " , " + this.inGamePos.toString();
