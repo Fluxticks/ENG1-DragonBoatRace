@@ -51,8 +51,10 @@ public class Lane {
         for(JsonValue o : jsonString.get("obstacles")){
             this.obstacles.add(new Obstacle(o));
         }
+
+
         this.isPlayerLane = jsonString.getInt("isPlayer") == 1;
-        this.currentPower = null;
+        this.currentPower = new PowerUp(jsonString.get("powerup"));
         this.pb = null;
 
     }
@@ -63,9 +65,10 @@ public class Lane {
             obstacleStrings[i] = this.obstacles.get(i).save();
         }
 
-        return String.format("{boat:%s, obstacles:%s, isPlayer:%d}",
+        return String.format("{boat:%s, obstacles:%s, powerup:%s, isPlayer:%d}",
                 this.boat.save(),
                 Arrays.toString(obstacleStrings),
+                this.currentPower.save(),
                 this.isPlayerLane ? 1 : 0);
     }
 

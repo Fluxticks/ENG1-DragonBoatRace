@@ -2,6 +2,8 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 
 public class PowerUp extends Entity {
@@ -14,6 +16,28 @@ public class PowerUp extends Entity {
         this.type = type;
         this.constantVel = velocity.cpy();
         this.vel = velocity;
+    }
+
+    public PowerUp(JsonValue jsonString) {
+        super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
+                new Json().fromJson(PowerUpType.class,jsonString.getString("type")).getSize(),
+                new Json().fromJson(PowerUpType.class,jsonString.getString("type")).getWeight());
+        this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
+        this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
+        this.type = new Json().fromJson(PowerUpType.class,jsonString.getString("type"));
+
+    }
+
+    public String save() {
+        return String.format("{type:%s, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}, constantVel:{x:%f, y:%f}}",
+                this.type,
+                this.inGamePos.x,
+                this.inGamePos.y,
+                this.vel.x,
+                this.vel.y,
+                this.constantVel.x,
+                this.constantVel.y
+        );
     }
 
     public void applyEffect(Boat boatAffected){
