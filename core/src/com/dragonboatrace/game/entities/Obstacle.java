@@ -14,7 +14,7 @@ public class Obstacle extends Entity {
         this.vel = vel;
         this.constantVel = vel.cpy();
         this.obstacleType = obstacleType;
-        if (this.obstacleType.imageSrc != "Testing"){
+        if (!this.obstacleType.imageSrc.equals("Testing")){
             this.image = new Texture(this.obstacleType.imageSrc);
         }
     }

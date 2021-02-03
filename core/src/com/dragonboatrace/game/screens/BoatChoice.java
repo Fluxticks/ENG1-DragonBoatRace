@@ -78,7 +78,7 @@ public class BoatChoice extends ScreenAdapter {
                     new Vector2(
                             (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
                             10
-                    ), 0,
+                    ),
                     new Tuple<>(
                             (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
                             (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
