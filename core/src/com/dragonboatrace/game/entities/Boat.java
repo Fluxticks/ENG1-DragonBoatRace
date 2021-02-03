@@ -68,12 +68,7 @@ public abstract class Boat extends Entity {
         );
     }
 
-    public boolean checkCollision(Obstacle o) {
-        boolean colliding = super.checkCollision(o);
 
-    public void checkForCollision(Obstacle o){
-        if(!this.noCollide)doCollision(super.checkCollision(o), o);
-    }
 
     public void doCollision(boolean colliding, Obstacle o){
         if (colliding) {
@@ -86,6 +81,12 @@ public abstract class Boat extends Entity {
         } else if (this.collided.contains(o)) {
             this.collided.remove(o);
             this.currentMaxSpeed = this.boatType.getSpeed();
+        }
+    }
+
+    public void checkForCollision(Obstacle o){
+        if(!this.noCollide){
+            doCollision(super.checkCollision(o), o);
         }
     }
 
@@ -217,10 +218,6 @@ public abstract class Boat extends Entity {
 
     public float getCurrentSpeed() {
         return this.vel.y;
-    }
-
-    public Tuple<Float,Float> getLaneBounds(){
-        return this.laneBounds;
     }
 
     public void setCurrentHealth(float healthToSet){
