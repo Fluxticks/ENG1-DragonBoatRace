@@ -16,7 +16,9 @@ public class PowerUp extends Entity {
         this.type = type;
         this.constantVel = velocity.cpy();
         this.vel = velocity;
-        this.image = new Texture(this.type.imageSrc);
+        if (!this.type.imageSrc.equals("Testing")) {
+            this.image = new Texture(this.type.imageSrc);
+        }
     }
 
     public void applyEffect(Boat boatAffected){
@@ -61,6 +63,12 @@ public class PowerUp extends Entity {
         this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
         this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
     }
+
+    public PowerUpType getType() { return this.type; }
+
+    public Vector2 getConstantVel() { return this.constantVel; }
+
+    public void setVel(Vector2 newVel) { this.vel = newVel; }
 
     @Override
     public void dispose() {

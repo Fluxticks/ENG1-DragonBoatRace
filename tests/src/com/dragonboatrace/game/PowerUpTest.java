@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.entities.PowerUp;
 import com.dragonboatrace.game.entities.PowerUpType;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,7 +33,19 @@ import com.dragonboatrace.game.GdxTestRunner;
 public class PowerUpTest {
 
     @Test
-    public void templateTest() {
+    public void powerUpInitialisationTest() {
         PowerUp testingPowerup = new PowerUp(PowerUpType.TESTING, new Vector2(0, 0), new Vector2(0, 0));
+
+        //Type Test
+        Assert.assertEquals(testingPowerup.getType(), PowerUpType.TESTING);
+
+        // Velocity test
+        Assert.assertEquals(testingPowerup.getVel(), new Vector2(0, 0));
+
+        // Constant velocity test event after vel changed
+        Assert.assertEquals(testingPowerup.getConstantVel(), new Vector2(0, 0));
+        testingPowerup.setVel(new Vector2(10, 10));
+        Assert.assertEquals(testingPowerup.getConstantVel(), new Vector2(0, 0));
+
     }
 }
