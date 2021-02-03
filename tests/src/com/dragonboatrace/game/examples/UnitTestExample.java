@@ -18,10 +18,12 @@ package com.dragonboatrace.game.examples;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class UnitTestExample {
 
+	@Ignore
 	@Test
 	public void oneEqualsOne() {
 		assertEquals(1, 1);

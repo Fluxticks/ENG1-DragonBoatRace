@@ -19,6 +19,7 @@ package com.dragonboatrace.game.examples;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,6 +30,7 @@ import com.dragonboatrace.game.GdxTestRunner;
 @RunWith(GdxTestRunner.class)
 public class AssetExistsExampleTest {
 
+	@Ignore
 	@Test
 	public void badlogicLogoFileNotExists() {
 		Assert.assertFalse("This test will only pass when the badlogic.jpg file coming with a new project setup has not been deleted.", Gdx.files

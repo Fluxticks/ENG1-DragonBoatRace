@@ -18,6 +18,7 @@ package com.dragonboatrace.game.examples;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,6 +29,7 @@ import com.dragonboatrace.game.GdxTestRunner;
 // @RunWith(GdxTestRunner.class)   Only add if Gdx needed!
 public class TestTemplate {
 
+    @Ignore
     @Test
     public void templateTest() {
         assertTrue(1==1);
