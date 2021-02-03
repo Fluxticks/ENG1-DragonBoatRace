@@ -29,15 +29,12 @@ public class Lane {
 
     public boolean isPlayerLane;
 
-    private final ShapeRenderer shapeRenderer;
-
     public Lane(Boat boatInLane, PlayerBoat pb){
         this.boat = boatInLane;
         this.obstacles = new ArrayList<>();
         this.currentPower = null;
         this.pb = pb;
         this.isPlayerLane = (this.pb == this.boat);
-        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float deltaTime){
@@ -109,17 +106,23 @@ public class Lane {
         }
     }
 
-    private void renderBounds(){
+    private void renderBounds(ShapeRenderer renderer){
         Tuple<Float,Float> bounds = this.boat.getLaneBounds();
-        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        this.shapeRenderer.setColor(Color.RED);
-        this.shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
-        this.shapeRenderer.end();
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.RED);
+        renderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
+        renderer.end();
     }
 
-    public void updateRound(int newRound, float obstacleMultiplier){
+    public int updateRound(int newRound, float obstacleMultiplier){
         this.round = newRound;
 
+        int offset = 3;
+
+        this.maxObstacles  = (int)((offset+newRound) * obstacleMultiplier);
+        return this.maxObstacles;
+
+        /*
         switch (this.round) {    // The max number of obstacles changes from round to round
             case 0:
                 this.maxObstacles = (int)(3 * obstacleMultiplier);
@@ -136,7 +139,7 @@ public class Lane {
             default:
                 this.maxObstacles = 0;
                 break;
-        }
+        }*/
     }
 
     public void updateMaxObstacles(int newObstacleCount){

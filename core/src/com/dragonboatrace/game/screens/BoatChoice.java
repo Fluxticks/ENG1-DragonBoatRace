@@ -35,6 +35,7 @@ public class BoatChoice extends ScreenAdapter {
         this.selection = 0;
         this.boatScale = 7;
         this.BoatTypes = new ArrayList<>(EnumSet.allOf(BoatType.class));
+        this.BoatTypes.remove(BoatType.TESTING);
         this.background = new Texture("menus/boatSelection.png");
         this.game.toDispose.add(this);
 
