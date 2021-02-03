@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.dragonboatrace.game;
+package com.dragonboatrace.game.examples;
 
 import static org.junit.Assert.assertTrue;
 
