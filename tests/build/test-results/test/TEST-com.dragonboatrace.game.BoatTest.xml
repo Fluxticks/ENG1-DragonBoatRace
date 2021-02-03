@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dragonboatrace.game.BoatTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-02-02T16:20:09" hostname="joe-thinkpad" time="0.005">
+<testsuite name="com.dragonboatrace.game.BoatTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-02-03T02:49:47" hostname="joe-thinkpad" time="0.015">
   <properties/>
-  <testcase name="getTotalTimeString" classname="com.dragonboatrace.game.BoatTest" time="0.005"/>
+  <testcase name="getTotalTimeStringTest" classname="com.dragonboatrace.game.BoatTest" time="0.007"/>
+  <testcase name="getFinishTimeStringTest" classname="com.dragonboatrace.game.BoatTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
