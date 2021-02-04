@@ -83,7 +83,7 @@ public class SaveLoadTest {
         JsonValue jsonString = new JsonReader().parse(file);
         PlayerBoat boatOutput = new PlayerBoat(jsonString);
         // Check Type is loaded correctly
-        Assert.assertEquals(boatKnown.getBoatType(), boatOutput.getBoatType());
+        /*Assert.assertEquals(boatKnown.getBoatType(), boatOutput.getBoatType());
         // Check Health is loaded correctly
         Assert.assertEquals(boatKnown.getHealth(), boatOutput.getHealth(), 0.0);
         // Check Stamina is loaded correctly
@@ -99,19 +99,55 @@ public class SaveLoadTest {
         // Check Pos is loaded correctly
         Assert.assertEquals(boatKnown.getPos(), boatOutput.getPos());
         // Check Vel is loaded correctly
-        Assert.assertEquals(boatKnown.getVel(), boatOutput.getVel());
+        Assert.assertEquals(boatKnown.getVel(), boatOutput.getVel());*/
+        Assert.assertEquals(boatKnown, boatOutput);
     }
 
+    @Test
     public void _1_loadObstacleTest(){
-
+        Obstacle obstacleKnown = new Obstacle(ObstacleType.TESTING,new Vector2(), new Vector2());
+        FileHandle file = Gdx.files.local("TestingSaves/obstacleSaveTest.json");
+        JsonValue jsonString = new JsonReader().parse(file);
+        Obstacle obstacleOutput = new Obstacle(jsonString);
+        /*// Check Type is loaded correctly
+        Assert.assertEquals(obstacleKnown.getType(), obstacleOutput.getType());
+        // Check In-Game pos is loaded correctly
+        Assert.assertEquals(obstacleKnown.getInGamePos(), obstacleOutput.getInGamePos());
+        // Check Vel is loaded correctly
+        Assert.assertEquals(obstacleKnown.getVel(), obstacleOutput.getVel());
+        // Check Constant Vel is loaded correctly
+        Assert.assertEquals(obstacleKnown.getConstantVel(), obstacleOutput.getConstantVel());*/
+        Assert.assertEquals(obstacleKnown, obstacleOutput);
     }
 
+    @Test
     public void _1_loadPowerUpTest(){
-
+        PowerUp powerKnown = new PowerUp(PowerUpType.TESTING, new Vector2(), new Vector2());
+        FileHandle file = Gdx.files.local("TestingSaves/powerUpSaveTest.json");
+        JsonValue jsonString = new JsonReader().parse(file);
+        PowerUp powerOutput = new PowerUp(jsonString);
+        /*// Check Type is loaded correctly
+        Assert.assertEquals(powerKnown.getType(), powerOutput.getType());
+        // Check In-Game pos is loaded correctly
+        Assert.assertEquals(powerKnown.getInGamePos(), powerOutput.getInGamePos());
+        // Check Vel is loaded correctly
+        Assert.assertEquals(powerKnown.getVel(), powerOutput.getVel());
+        // Check Constant Vel is loaded correctly
+        Assert.assertEquals(powerKnown.getConstantVel(), powerOutput.getConstantVel());*/
+        Assert.assertEquals(powerKnown, powerOutput);
     }
 
+    @Test
     public void _1_loadLaneTest(){
-
+        PlayerBoat boat = new PlayerBoat(BoatType.TESTING,new Vector2(), new Tuple<Float, Float>(0f, 500f));
+        Lane laneKnown = new Lane(boat, boat);
+        laneKnown.updateRound(1, 0.5f);
+        FileHandle file = Gdx.files.local("TestingSaves/laneSaveTest.json");
+        JsonValue jsonString = new JsonReader().parse(file);
+        System.out.println(jsonString.get("powerup"));
+        Lane laneOutput = new Lane(jsonString);
+        laneOutput.setPb(boat);
+        Assert.assertEquals(laneKnown, laneOutput);
     }
 
 }
