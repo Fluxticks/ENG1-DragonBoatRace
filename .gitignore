@@ -34,3 +34,5 @@ gradle-app.setting
 # Project exclude paths
 /core/build/
 /desktop/build/
+/tests/build/
+/tests/TestingSaves/
