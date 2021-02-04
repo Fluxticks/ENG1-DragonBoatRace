@@ -5,26 +5,21 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.*;
-import com.dragonboatrace.game.entities.*;
 
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.Obstacle;
 import com.dragonboatrace.game.entities.ObstacleType;
 import com.dragonboatrace.game.entities.PlayerBoat;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Random;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -91,15 +86,15 @@ public class GameScreen extends ScreenAdapter {
                 }
                 if (keyCode == Input.Keys.F1) {
                     FileHandle file = Gdx.files.local("bin/save1.json");
-                    save(1, file);
+                    makeSave(1, file);
                     System.exit(0);
                 } else if (keyCode == Input.Keys.F2) {
                     FileHandle file = Gdx.files.local("bin/save2.json");
-                    save(2, file);
+                    makeSave(2, file);
                     System.exit(0);
                 } else if (keyCode == Input.Keys.F3) {
                     FileHandle file = Gdx.files.local("bin/save3.json");
-                    save(3, file);
+                    makeSave(3, file);
                     System.exit(0);
 
                 }
@@ -108,8 +103,7 @@ public class GameScreen extends ScreenAdapter {
         });
     }
 
-    public void save(int saveSlot, FileHandle file){
-        Json json = new Json();
+    public void makeSave(int saveSlot, FileHandle file){
         String[] laneStrings = new String[this.lanes.length];
 
         for(int i = 0; i < laneStrings.length; i++){
@@ -122,7 +116,18 @@ public class GameScreen extends ScreenAdapter {
                 Arrays.toString(laneStrings)
         );
 
-        file.writeString(json.prettyPrint(saveString), false);
+        saveJSONString(saveString, file);
+    }
+
+    public static boolean saveJSONString(String jsonString, FileHandle file){
+        try{
+            Json json = new Json();
+            file.writeString(json.prettyPrint(jsonString), false);
+            return true;
+        }catch(GdxRuntimeException e){
+            return false;
+        }
+
     }
 
     public void create(int round) {
