@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
 public class PlayerBoat extends Boat {
@@ -12,6 +13,11 @@ public class PlayerBoat extends Boat {
     public PlayerBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         startPos = pos;
+    }
+
+    public PlayerBoat(JsonValue jsonString) {
+        super(jsonString);
+        startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
     }
 
     @Override

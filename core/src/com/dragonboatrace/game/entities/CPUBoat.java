@@ -1,6 +1,7 @@
 package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
 import java.util.ArrayList;
@@ -18,6 +19,14 @@ public class CPUBoat extends Boat {
         this.dir = 0;
 
         this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
+    }
+
+    public CPUBoat(JsonValue jsonString) {
+        super(jsonString);
+        startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
+        this.dir = 0;
+        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
+
     }
 
     @Override
@@ -66,9 +75,10 @@ public class CPUBoat extends Boat {
 
         if(!obstacleInZone){
             float laneCenter = (laneBounds.b + laneBounds.a)/2f;
-            if(thisCenter + 100 < laneCenter){
+
+            if(thisCenter + this.size.x < laneCenter){
                 this.dir = 1;
-            }else if(thisCenter - 100 > laneCenter){
+            }else if(thisCenter - this.size.x > laneCenter){
                 this.dir = -1;
             }else{
                 this.dir = 0;
@@ -110,6 +120,10 @@ public class CPUBoat extends Boat {
         }
         this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
         this.hitbox.setToPosition(this.inGamePos);
+    }
+
+    public int getDifficulty(){
+        return this.difficulty;
     }
 
     //this is used for debugging, it tells you where they are on screen and where they are relative to the start line

@@ -1,16 +1,20 @@
 package com.dragonboatrace.game.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.*;
+import com.dragonboatrace.game.entities.*;
+
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.Obstacle;
 import com.dragonboatrace.game.entities.ObstacleType;
@@ -34,6 +38,7 @@ public class GameScreen extends ScreenAdapter {
     LaneMarker[] laneMarkers;
     Background[] backgrounds;
     Lane[] lanes;
+    CPUBoat[] CPUs;
     int laneCount;
     long raceStartTime;
     int difficulty;
@@ -51,6 +56,30 @@ public class GameScreen extends ScreenAdapter {
         this.create(round);
     }
 
+    public GameScreen(DragonBoatRace game, JsonValue jsonString) {
+        this.game = game;
+        this.round = jsonString.getInt("round");
+        this.difficulty = jsonString.getInt("difficulty");
+        this.obstacleMultiplier = 1;
+        this.game.toDispose.add(this);
+        this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
+
+        ArrayList<Lane> tempLanes = new ArrayList<Lane>();
+        for (JsonValue lane : jsonString.get("lanes")) {
+            Lane tempLane = new Lane(lane);
+            tempLanes.add(tempLane);
+            if(tempLane.isPlayerLane) {
+                this.pb = (PlayerBoat) tempLane.getBoat();
+            }
+        }
+        this.lanes = tempLanes.toArray(new Lane[0]);
+
+        for(Lane lane : lanes) {
+            lane.setPb(this.pb);
+        }
+        this.create(this.round);
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -60,9 +89,40 @@ public class GameScreen extends ScreenAdapter {
                     game.dispose();
                     System.exit(0);
                 }
+                if (keyCode == Input.Keys.F1) {
+                    FileHandle file = Gdx.files.local("bin/save1.json");
+                    save(1, file);
+                    System.exit(0);
+                } else if (keyCode == Input.Keys.F2) {
+                    FileHandle file = Gdx.files.local("bin/save2.json");
+                    save(2, file);
+                    System.exit(0);
+                } else if (keyCode == Input.Keys.F3) {
+                    FileHandle file = Gdx.files.local("bin/save3.json");
+                    save(3, file);
+                    System.exit(0);
+
+                }
                 return true;
             }
         });
+    }
+
+    public void save(int saveSlot, FileHandle file){
+        Json json = new Json();
+        String[] laneStrings = new String[this.lanes.length];
+
+        for(int i = 0; i < laneStrings.length; i++){
+            laneStrings[i] = this.lanes[i].save();
+        }
+
+        String saveString = String.format("{round:%d, difficulty:%d, lanes:%s}",
+                this.round,
+                this.difficulty,
+                Arrays.toString(laneStrings)
+        );
+
+        file.writeString(json.prettyPrint(saveString), false);
     }
 
     public void create(int round) {
@@ -84,8 +144,9 @@ public class GameScreen extends ScreenAdapter {
         obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
+        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
         for (int i = 0; i < laneCount + 1; i++) {
-            laneMarkers[i] = new LaneMarker(new Vector2(i * Gdx.graphics.getWidth() / ((float)laneCount), 0));
+            laneMarkers[i] = new LaneMarker(new Vector2(i * laneWidth, 0));
         }
 
         int backgroundCount = 5;

@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.Tuple;
@@ -21,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class BoatChoice extends ScreenAdapter {
     DragonBoatRace game;
@@ -65,6 +74,8 @@ public class BoatChoice extends ScreenAdapter {
 
         CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
 
+        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
+
         for (int i = 0; i < laneCount - 1; i++) {
             int xpos = i;
             if (i >= (laneCount - 1) / 2) {
@@ -80,8 +91,8 @@ public class BoatChoice extends ScreenAdapter {
                             10
                     ),
                     new Tuple<>(
-                            (xpos + 0) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2,
-                            (xpos + 1) * (Gdx.graphics.getWidth() / (laneCount)) - cpuBoatType.getSize().x / 2
+                            (xpos + 0) * laneWidth,
+                            (xpos + 1) * laneWidth
                     )
             );
             CPUs[i].saveStartPos();
@@ -93,8 +104,8 @@ public class BoatChoice extends ScreenAdapter {
                         Gdx.graphics.getWidth() / 2f,
                         10
                 ), new Tuple<>(
-                ((laneCount - 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2,
-                ((laneCount + 1) / 2) * (Gdx.graphics.getWidth() / (laneCount)) - BoatTypes.get(selection).getSize().x / 2
+                ((laneCount - 1) / 2) * laneWidth,
+                ((laneCount + 1) / 2) * laneWidth
         )
         );    // Creating the players boat
         pb.saveStartPos();
@@ -114,13 +125,18 @@ public class BoatChoice extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.NUM_1) {
+                if (keyCode == Input.Keys.F6) {
+                    FileHandle file = Gdx.files.local("bin/save1.json");
+                    JsonValue jsonString = new JsonReader().parse(file);
+                    game.setScreen(new GameScreen(game, jsonString));
+
+                } else if (keyCode == Input.Keys.NUM_1) {
                     startGame(1);
                 } else if (keyCode == Input.Keys.NUM_2) {
                     startGame(2);
-                } else if (keyCode == Input.Keys.NUM_3){
+                } else if (keyCode == Input.Keys.NUM_3) {
                     startGame(3);
-                }else if (keyCode == Input.Keys.LEFT) {
+                } else if (keyCode == Input.Keys.LEFT) {
                     selection += boats.length - 1;
                     selection %= boats.length;
                 } else if (keyCode == Input.Keys.RIGHT) {

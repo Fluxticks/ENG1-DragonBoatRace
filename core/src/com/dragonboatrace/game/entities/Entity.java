@@ -18,7 +18,6 @@ public abstract class Entity {
     public Entity(Vector2 pos, Vector2 size, float weight) {
         this.pos = pos;
         this.inGamePos = new Vector2(pos);
-        this.inGameVel = new Vector2();
         this.vel = new Vector2();
         this.acc = new Vector2();
         this.size = size;
@@ -30,6 +29,24 @@ public abstract class Entity {
         //this.shapeRenderer = new ShapeRenderer();
         this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
+
+    public Entity(Vector2 pos, Vector2 vel, Vector2 size, float weight) {
+        this.pos = pos;
+        this.inGamePos = new Vector2(pos);
+        this.vel = new Vector2(vel);
+        this.size = size;
+        this.width = (int)size.x;
+        this.height = (int)size.y;
+        this.weight = weight;
+        this.dampening = (float) 0.2;
+        this.collider = null;
+        this.shapeRenderer = new ShapeRenderer();
+        this.hitbox = new EntityHitbox(this.inGamePos, this.size);
+    }
+
+
+
+
 
     public void update(float deltaTime) {
         float deltaX = this.vel.x * this.dampening / (deltaTime * 60);

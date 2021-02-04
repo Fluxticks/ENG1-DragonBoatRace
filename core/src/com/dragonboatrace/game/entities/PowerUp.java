@@ -3,6 +3,8 @@ package com.dragonboatrace.game.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 
 public class PowerUp extends Entity {
@@ -21,6 +23,28 @@ public class PowerUp extends Entity {
         }
     }
 
+    public PowerUp(JsonValue jsonString) {
+        super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
+                new Json().fromJson(PowerUpType.class,jsonString.getString("type")).getSize(),
+                new Json().fromJson(PowerUpType.class,jsonString.getString("type")).getWeight());
+        this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
+        this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
+        this.type = new Json().fromJson(PowerUpType.class,jsonString.getString("type"));
+
+    }
+
+    public String save() {
+        return String.format("{type:%s, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}, constantVel:{x:%f, y:%f}}",
+                this.type,
+                this.inGamePos.x,
+                this.inGamePos.y,
+                this.vel.x,
+                this.vel.y,
+                this.constantVel.x,
+                this.constantVel.y
+        );
+    }
+
     public void applyEffect(Boat boatAffected){
         switch(type){
             case SPEED: boatAffected.increaseYVelocity(type.effect); break;
@@ -33,6 +57,7 @@ public class PowerUp extends Entity {
         }
     }
 
+    //TODO: Run this when the player loads the game
     private void noCollideEffect(final Boat timedBoat){
         timedBoat.setNoCollide(true);
         Timer.Task countDown = new Timer.Task(){
@@ -59,9 +84,10 @@ public class PowerUp extends Entity {
     }
 
     public void bounceEdge(float deltaTime){
-        this.vel.x = this.constantVel.x * -1;
-        this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
-        this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        //this.vel.x = this.constantVel.x * -1;
+        //this.pos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        //this.inGamePos.x += (this.vel.x * - 1 + 5) * deltaTime;
+        this.vel.x = 0;
     }
 
     public PowerUpType getType() { return this.type; }
