@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.entities.Entity;
-import com.dragonboatrace.game.entities.Obstacle;
 
 public class LaneMarker extends Entity {
 

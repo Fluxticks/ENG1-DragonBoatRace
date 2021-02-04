@@ -21,15 +21,8 @@ import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class BoatChoice extends ScreenAdapter {
     DragonBoatRace game;

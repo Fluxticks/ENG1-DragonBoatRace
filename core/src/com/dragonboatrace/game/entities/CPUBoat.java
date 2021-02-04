@@ -18,14 +18,14 @@ public class CPUBoat extends Boat {
         this.startPos = pos;
         this.dir = 0;
 
-        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
+        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
     }
 
     public CPUBoat(JsonValue jsonString) {
         super(jsonString);
         startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
         this.dir = 0;
-        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x*(this.areaMulti/2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x*this.areaMulti, this.size.y));
+        this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
 
     }
 
@@ -39,7 +39,7 @@ public class CPUBoat extends Boat {
             this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         }
 
-        this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)),0);
+        this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)), 0);
 
         //this part stops them if they break
         if (this.currentHealth <= 0) {
@@ -62,49 +62,49 @@ public class CPUBoat extends Boat {
     public void decideMovement(ArrayList<Obstacle> obstacles) {
 
         boolean obstacleInZone = false;
-        float thisCenter = this.size.x/2f + this.inGamePos.x;
+        float thisCenter = this.size.x / 2f + this.inGamePos.x;
 
-        for(Obstacle obstacle : obstacles){
-            if(this.areaChecker.checkCollision(obstacle.getHitbox())){
-                float obstacleCenter = obstacle.size.x/2f + obstacle.inGamePos.x;
+        for (Obstacle obstacle : obstacles) {
+            if (this.areaChecker.checkCollision(obstacle.getHitbox())) {
+                float obstacleCenter = obstacle.size.x / 2f + obstacle.inGamePos.x;
                 obstacleInZone = true;
                 dir = decideDirection(thisCenter, obstacleCenter);
                 break;
             }
         }
 
-        if(!obstacleInZone){
-            float laneCenter = (laneBounds.b + laneBounds.a)/2f;
+        if (!obstacleInZone) {
+            float laneCenter = (laneBounds.b + laneBounds.a) / 2f;
 
-            if(thisCenter + this.size.x < laneCenter){
+            if (thisCenter + this.size.x < laneCenter) {
                 this.dir = 1;
-            }else if(thisCenter - this.size.x > laneCenter){
+            } else if (thisCenter - this.size.x > laneCenter) {
                 this.dir = -1;
-            }else{
+            } else {
                 this.dir = 0;
             }
         }
     }
 
-    private int decideDirection(float thisCenter, float obstacleCenter){
+    private int decideDirection(float thisCenter, float obstacleCenter) {
 
         // Try to stay in the lane.
-        if(this.inGamePos.x - 10 < this.laneBounds.a){
+        if (this.inGamePos.x - 10 < this.laneBounds.a) {
             return 1;
-        }else if(this.inGamePos.x + this.size.x + 10 > this.laneBounds.b){
+        } else if (this.inGamePos.x + this.size.x + 10 > this.laneBounds.b) {
             return -1;
         }
 
         // If the obstacle is to the right of our center move to the left.
-        if(thisCenter < obstacleCenter){
+        if (thisCenter < obstacleCenter) {
             return -1;
-        }else{
+        } else {
             return 1;
         }
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         return super.equals(obj);
     }
 

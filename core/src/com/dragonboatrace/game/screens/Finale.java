@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
-import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
-import com.dragonboatrace.game.screens.TitleScreen;
 
 public class Finale extends ScreenAdapter {
 
@@ -79,8 +77,8 @@ public class Finale extends ScreenAdapter {
 
         int[] output = {1, 1};
 
-        for(Lane lane : lanes){
-            if(!lane.isPlayerLane){
+        for (Lane lane : lanes) {
+            if (!lane.isPlayerLane) {
                 if (lane.getBoatFinishTimeLong() < pb.getFinishTimeLong()) {
                     output[0] += 1;
                 }

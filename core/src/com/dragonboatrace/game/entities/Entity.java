@@ -1,6 +1,5 @@
 package com.dragonboatrace.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -20,8 +19,8 @@ public abstract class Entity {
         this.vel = new Vector2();
         this.acc = new Vector2();
         this.size = size;
-        this.width = (int)size.x;
-        this.height = (int)size.y;
+        this.width = (int) size.x;
+        this.height = (int) size.y;
         this.weight = weight;
         this.dampening = (float) 0.2;
         this.collider = null;
@@ -34,8 +33,8 @@ public abstract class Entity {
         this.inGamePos = new Vector2(pos);
         this.vel = new Vector2(vel);
         this.size = size;
-        this.width = (int)size.x;
-        this.height = (int)size.y;
+        this.width = (int) size.x;
+        this.height = (int) size.y;
         this.weight = weight;
         this.dampening = (float) 0.2;
         this.collider = null;
@@ -43,21 +42,20 @@ public abstract class Entity {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj == null){
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if(obj.getClass() == this.getClass()){
-            Entity objEntity = (Entity)obj;
+        if (obj.getClass() == this.getClass()) {
+            Entity objEntity = (Entity) obj;
             boolean inGame = objEntity.getInGamePos().equals(this.getInGamePos());
             boolean actualPos = objEntity.getPos().equals(this.getPos());
             boolean actualVel = objEntity.getVel().equals(this.getVel());
             return inGame && actualPos && actualVel;
-        }else{
+        } else {
             return false;
         }
     }
-
 
 
     public void update(float deltaTime) {
@@ -99,7 +97,7 @@ public abstract class Entity {
         return false;
     }*/
 
-    public boolean checkCollision(Obstacle e){
+    public boolean checkCollision(Obstacle e) {
         return this.hitbox.checkCollision(e.getHitbox());
     }
 
@@ -111,14 +109,14 @@ public abstract class Entity {
         return new Vector2((this.pos.x), (this.pos.y - relPos.y));
     }
 
-    public void renderHitBox(Vector2 relPos, ShapeRenderer shapeRenderer){
+    public void renderHitBox(Vector2 relPos, ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
         shapeRenderer.end();
     }
 
-    public EntityHitbox getHitbox(){
+    public EntityHitbox getHitbox() {
         return this.hitbox;
     }
 

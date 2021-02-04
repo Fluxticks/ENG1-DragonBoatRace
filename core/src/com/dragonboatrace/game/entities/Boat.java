@@ -17,7 +17,7 @@ public abstract class Boat extends Entity {
     protected float stamina, maxStamina, timePenalties, penaltyResetDelay, defaultHandling;
     protected long finishTime;
     protected boolean finished = false;
-    protected float distanceTravelled; //distance travelled in one round
+    protected float distanceTravelled;
     protected long totalTime;
     protected Tuple<Float, Float> laneBounds;
     private boolean noCollide = false;
@@ -45,9 +45,9 @@ public abstract class Boat extends Entity {
     public Boat(JsonValue jsonString) {
         super(new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y")),
                 new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y")),
-                new Json().fromJson(BoatType.class,jsonString.getString("type")).getSize().cpy(),
-                new Json().fromJson(BoatType.class,jsonString.getString("type")).getWeight());
-        this.boatType = new Json().fromJson(BoatType.class,jsonString.getString("type"));
+                new Json().fromJson(BoatType.class, jsonString.getString("type")).getSize().cpy(),
+                new Json().fromJson(BoatType.class, jsonString.getString("type")).getWeight());
+        this.boatType = new Json().fromJson(BoatType.class, jsonString.getString("type"));
         this.currentHealth = jsonString.getFloat("health");
         this.stamina = jsonString.getFloat("stamina");
         this.distanceTravelled = jsonString.getFloat("distance");
@@ -66,12 +66,12 @@ public abstract class Boat extends Entity {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj == null){
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if(obj.getClass() == this.getClass()){
-            Boat objBoat = (Boat)obj;
+        if (obj.getClass() == this.getClass()) {
+            Boat objBoat = (Boat) obj;
             boolean type = objBoat.getType() == this.getType();
             boolean health = objBoat.getHealth() == this.getHealth();
             boolean stamina = objBoat.getStamina() == this.getStamina();
@@ -79,13 +79,13 @@ public abstract class Boat extends Entity {
             boolean time = objBoat.getTotalTimeLong() == this.getTotalTimeLong();
             boolean bounds = objBoat.getLaneBounds().equals(this.getLaneBounds());
             return type && health && stamina && travelled && time && bounds && super.equals(obj);
-        }else{
+        } else {
             return false;
         }
     }
 
     public String save() {
-    return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}}" ,
+        return String.format("{type:%s, health:%f, stamina:%f, distance:%f, totalTime:%d, laneBounds:{x:%f, y:%f}, inGamePos:{x:%f, y:%f}, pos:{x:%f, y:%f}, vel:{x:%f, y:%f}}",
                 this.boatType,
                 this.currentHealth,
                 this.stamina,
@@ -103,8 +103,7 @@ public abstract class Boat extends Entity {
     }
 
 
-
-    public void doCollision(boolean colliding, Obstacle o){
+    public void doCollision(boolean colliding, Obstacle o) {
         if (colliding) {
             if (!this.collided.contains(o)) {
                 this.collided.add(o);
@@ -118,8 +117,8 @@ public abstract class Boat extends Entity {
         }
     }
 
-    public void checkForCollision(Obstacle o){
-        if(!this.noCollide){
+    public void checkForCollision(Obstacle o) {
+        if (!this.noCollide) {
             doCollision(super.checkCollision(o), o);
         }
     }
@@ -181,11 +180,11 @@ public abstract class Boat extends Entity {
         }
     }
 
-    public long getTotalTimeLong(){
+    public long getTotalTimeLong() {
         return this.totalTime;
     }
 
-    public Tuple<Float, Float> getLaneBounds(){
+    public Tuple<Float, Float> getLaneBounds() {
         return this.laneBounds;
     }
 
@@ -254,34 +253,35 @@ public abstract class Boat extends Entity {
         return this.vel.y;
     }
 
-    public void setCurrentHealth(float healthToSet){
+    public void setCurrentHealth(float healthToSet) {
         this.currentHealth = healthToSet;
     }
 
-    public void increaseYVelocity(float speedToAdd){
+    public void increaseYVelocity(float speedToAdd) {
         this.vel.y += speedToAdd;
     }
 
-    public void increaseXVelocity(float speedToAdd){
+    public void increaseXVelocity(float speedToAdd) {
         this.boatType.handling += speedToAdd;
     }
 
-    public void setCurrentStamina(float staminaToSet)
-    {
+    public void setCurrentStamina(float staminaToSet) {
         this.stamina = staminaToSet;
     }
 
-    public void setTotalTime(long timeToSet){
+    public void setTotalTime(long timeToSet) {
         this.totalTime = timeToSet;
     }
 
-    public void setNoCollide(boolean toSet){
+    public void setNoCollide(boolean toSet) {
         this.noCollide = toSet;
     }
 
-    public BoatType getBoatType() { return this.boatType; }
+    public BoatType getBoatType() {
+        return this.boatType;
+    }
 
-    public void setDistanceTravelled(float newDistance){
+    public void setDistanceTravelled(float newDistance) {
         this.distanceTravelled = newDistance;
     }
 }

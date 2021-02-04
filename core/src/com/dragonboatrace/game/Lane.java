@@ -32,7 +32,7 @@ public class Lane {
     public boolean isPlayerLane;
 
 
-    public Lane(Boat boatInLane, PlayerBoat pb){
+    public Lane(Boat boatInLane, PlayerBoat pb) {
         this.boat = boatInLane;
         this.obstacles = new ArrayList<>();
         this.currentPower = null;
@@ -42,22 +42,22 @@ public class Lane {
     }
 
     public Lane(JsonValue jsonString) {
-        if(jsonString.getInt("isPlayer") == 1) {
+        if (jsonString.getInt("isPlayer") == 1) {
             this.boat = new PlayerBoat(jsonString.get("boat"));
         } else {
             this.boat = new CPUBoat(jsonString.get("boat"));
         }
 
         this.obstacles = new ArrayList<>();
-        for(JsonValue o : jsonString.get("obstacles")){
+        for (JsonValue o : jsonString.get("obstacles")) {
             this.obstacles.add(new Obstacle(o));
         }
 
 
         this.isPlayerLane = jsonString.getInt("isPlayer") == 1;
-        if(jsonString.get("powerup").get(0) != null){
+        if (jsonString.get("powerup").get(0) != null) {
             this.currentPower = new PowerUp(jsonString.get("powerup"));
-        }else{
+        } else {
             this.currentPower = null;
         }
         this.pb = null;
@@ -65,29 +65,29 @@ public class Lane {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj == null){
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if(obj.getClass() == this.getClass()){
-            Lane objLane = (Lane)obj;
-            if(objLane.obstacles.size() != this.obstacles.size()){
+        if (obj.getClass() == this.getClass()) {
+            Lane objLane = (Lane) obj;
+            if (objLane.obstacles.size() != this.obstacles.size()) {
                 return false;
             }
             boolean obstacleBool = true;
-            for(int i = 0; i < obstacles.size(); i++){
+            for (int i = 0; i < obstacles.size(); i++) {
                 obstacleBool = obstacleBool && objLane.obstacles.get(i).equals(this.obstacles.get(i));
             }
             boolean powerBool = false;
-            if(this.currentPower != null){
+            if (this.currentPower != null) {
                 powerBool = this.currentPower.equals(objLane.getCurrentPower());
-            }else if(this.currentPower == null && objLane.getCurrentPower() == null){
+            } else if (this.currentPower == null && objLane.getCurrentPower() == null) {
                 powerBool = true;
             }
             boolean boatBool = this.boat.equals(objLane.getBoat());
             boolean pbBool = this.pb.equals(objLane.pb);
             return obstacleBool && powerBool && boatBool && pbBool;
-        }else{
+        } else {
             return false;
         }
     }
@@ -98,104 +98,103 @@ public class Lane {
 
     public String save() {
         String[] obstacleStrings = new String[this.obstacles.size()];
-        for(int i = 0; i < obstacleStrings.length; i++) {
+        for (int i = 0; i < obstacleStrings.length; i++) {
             obstacleStrings[i] = this.obstacles.get(i).save();
         }
 
         return String.format("{boat:%s, obstacles:%s, powerup:%s, isPlayer:%d}",
                 this.boat.save(),
                 Arrays.toString(obstacleStrings),
-                (this.currentPower!=null)?this.currentPower.save():null,
+                (this.currentPower != null) ? this.currentPower.save() : null,
                 this.isPlayerLane ? 1 : 0);
 
-    
-   }
 
-    public void update(float deltaTime){
+    }
+
+    public void update(float deltaTime) {
         ListIterator<Obstacle> iter = obstacles.listIterator();
         while (iter.hasNext()) {
             Obstacle obstacle = iter.next();
             Vector2 renderPos = obstacle.getRelPos(this.pb.getInGamePos());
-            if(this.checkEntityNotOnScreen(obstacle)){
+            if (this.checkEntityNotOnScreen(obstacle)) {
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
-            }
-            else {
+            } else {
                 this.boat.checkForCollision(obstacle);
                 obstacle.move(deltaTime);    // Run the obstacles mover
                 obstacle.update(deltaTime);    // Update the position of the obstacle
             }
         }
 
-        if(this.obstacles.size() < maxObstacles){
+        if (this.obstacles.size() < maxObstacles) {
             this.obstacles.add(spawnObstacle());
         }
 
-        if(this.currentPower != null){
+        if (this.currentPower != null) {
             updatePowerUp(deltaTime);
-        }else{
+        } else {
             this.currentPower = spawnPowerUp();
         }
 
         // Don't like this but not sure how best to do this without swapping to the structure in the old game.
-        if(!this.isPlayerLane){
-            ((CPUBoat)this.boat).decideMovement(obstacles);
+        if (!this.isPlayerLane) {
+            ((CPUBoat) this.boat).decideMovement(obstacles);
         }
 
         this.boat.move(deltaTime);
         this.boat.update(deltaTime);
     }
 
-    public void render(SpriteBatch batch){
-        for(Obstacle obstacle : this.obstacles){
+    public void render(SpriteBatch batch) {
+        for (Obstacle obstacle : this.obstacles) {
             obstacle.render(batch, this.pb.getInGamePos());
             //obstacle.renderHitBox(this.pb.getInGamePos());
         }
-        if(this.currentPower!=null)this.currentPower.render(batch, this.pb.getInGamePos());
+        if (this.currentPower != null) this.currentPower.render(batch, this.pb.getInGamePos());
         this.boat.render(batch, this.pb.getInGamePos());
         //this.boat.renderHitBox(this.pb.getInGamePos());
         //renderBounds();
     }
 
-    private boolean checkEntityNotOnScreen(Entity entity){
+    private boolean checkEntityNotOnScreen(Entity entity) {
         Vector2 renderPos = entity.getRelPos(this.pb.getInGamePos());
         return renderPos.x > Gdx.graphics.getWidth() + 30 || renderPos.x + entity.getSize().x < -30 || renderPos.y + entity.getSize().y < -100;
         //return renderPos.x > this.boat.getLaneBounds().b + 30 || renderPos.x + entity.getSize().x < this.boat.getLaneBounds().a - 30 || renderPos.y + entity.getSize().y < -100;
     }
 
-    private boolean checkPowerUpNotInEdges(){
+    private boolean checkPowerUpNotInEdges() {
         return this.currentPower.getInGamePos().x < this.boat.getLaneBounds().a + 5 || this.currentPower.getInGamePos().x + this.currentPower.getSize().x > this.boat.getLaneBounds().b - 5;
     }
 
-    private void updatePowerUp(float deltaTime){
-        if(this.boat.getHitbox().checkCollision(this.currentPower.getHitbox())) {
+    private void updatePowerUp(float deltaTime) {
+        if (this.boat.getHitbox().checkCollision(this.currentPower.getHitbox())) {
             this.currentPower.applyEffect(this.boat);
             this.currentPower = null;
-        }else if(this.checkEntityNotOnScreen(this.currentPower)){
+        } else if (this.checkEntityNotOnScreen(this.currentPower)) {
             this.currentPower = null;
-        }else if(this.checkPowerUpNotInEdges()){
+        } else if (this.checkPowerUpNotInEdges()) {
             this.currentPower.bounceEdge(deltaTime);
-        }else{
+        } else {
             this.currentPower.move(deltaTime);
             this.currentPower.update(deltaTime);
         }
     }
 
 
-    private void renderBounds(ShapeRenderer shapeRenderer){
-        Tuple<Float,Float> bounds = this.boat.getLaneBounds();
+    private void renderBounds(ShapeRenderer shapeRenderer) {
+        Tuple<Float, Float> bounds = this.boat.getLaneBounds();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
+        shapeRenderer.rect(bounds.a, 0, bounds.b - bounds.a, Gdx.graphics.getHeight());
         shapeRenderer.end();
 
     }
 
-    public int updateRound(int newRound, float obstacleMultiplier){
+    public int updateRound(int newRound, float obstacleMultiplier) {
         this.round = newRound;
 
         int offset = 3;
 
-        this.maxObstacles  = (int)((offset+newRound) * obstacleMultiplier);
+        this.maxObstacles = (int) ((offset + newRound) * obstacleMultiplier);
         return this.maxObstacles;
 
         /*
@@ -218,7 +217,7 @@ public class Lane {
         }*/
     }
 
-    public void updateMaxObstacles(int newObstacleCount){
+    public void updateMaxObstacles(int newObstacleCount) {
         this.maxObstacles = newObstacleCount;
     }
 
@@ -267,11 +266,11 @@ public class Lane {
         return new Obstacle(obs, spawnPos, dir);    // Return the new obstacle
     }
 
-    private PowerUp spawnPowerUp(){
+    private PowerUp spawnPowerUp() {
 
         float random = ThreadLocalRandom.current().nextFloat();
 
-        if(random <= this.powerChance){
+        if (random <= this.powerChance) {
             int side;
             Vector2 spawnPos;
             Vector2 dir;
@@ -288,12 +287,12 @@ public class Lane {
             );
             dir.limit(randomType.getSpeed());    // Limit the vector to the max speed of the obstacle
             return new PowerUp(randomType, spawnPos, dir);
-        }else{
+        } else {
             return null;
         }
     }
 
-    private Vector2 createObstacleOnSide(int side){
+    private Vector2 createObstacleOnSide(int side) {
         Vector2 spawnPos;
         if (side == 0) {
             spawnPos = new Vector2(    // If spawning along the top edge, pick a random x coord and a random y within the bounds of the screen, will be translated off screen
@@ -306,27 +305,27 @@ public class Lane {
                     ThreadLocalRandom.current().nextFloat() * Gdx.graphics.getHeight() * 2 / 3
             );
         }
-        spawnPos.x = (float)ThreadLocalRandom.current().nextDouble(this.boat.getLaneBounds().a, this.boat.getLaneBounds().b);
+        spawnPos.x = (float) ThreadLocalRandom.current().nextDouble(this.boat.getLaneBounds().a, this.boat.getLaneBounds().b);
         spawnPos.y = 2 * Gdx.graphics.getHeight() - spawnPos.y + this.pb.getInGamePos().y;        // Translate 2 screens up and relative to the player
 
         return spawnPos;
     }
 
-    public void moveBoatToStart(){
+    public void moveBoatToStart() {
         this.boat.moveToStart();
         this.currentPower = null;
         this.obstacles = new ArrayList<>();
     }
 
-    public boolean checkBoatFinished(int finishTime, long startTime){
-        return this.boat.checkFinished(finishTime,startTime);
+    public boolean checkBoatFinished(int finishTime, long startTime) {
+        return this.boat.checkFinished(finishTime, startTime);
     }
 
-    public void setBoatFinishTime(long finishTime){
+    public void setBoatFinishTime(long finishTime) {
         this.boat.setFinishTime(finishTime);
     }
 
-    public Boat getBoat(){
+    public Boat getBoat() {
         return this.boat;
     }
 
@@ -334,7 +333,7 @@ public class Lane {
         this.pb = pb;
     }
 
-    public Vector2 getBoatGamePos(){
+    public Vector2 getBoatGamePos() {
         return this.boat.getInGamePos();
     }
 
@@ -346,8 +345,8 @@ public class Lane {
         return this.boat.getTotalTimeLong();
     }
 
-    public void dispose(){
-        for(Obstacle obstacle : obstacles){
+    public void dispose() {
+        for (Obstacle obstacle : obstacles) {
             obstacle.dispose();
         }
         this.boat.dispose();

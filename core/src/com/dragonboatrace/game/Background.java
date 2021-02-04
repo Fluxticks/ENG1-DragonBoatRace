@@ -5,9 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.dragonboatrace.game.entities.Entity;
-import com.dragonboatrace.game.entities.Obstacle;
 
 public class Background extends Entity {
 
@@ -44,11 +42,11 @@ public class Background extends Entity {
         this.size = new Vector2(this.img.getWidth(), this.img.getHeight());
     }
 
-    private void loadTextures(){
+    private void loadTextures() {
         FileHandle backgroundsDirectory = Gdx.files.local("Backgrounds");
         FileHandle[] backgroundFiles = backgroundsDirectory.list();
         this.allTextures = new Texture[backgroundFiles.length];
-        for (int i = 0; i < backgroundFiles.length; i++){
+        for (int i = 0; i < backgroundFiles.length; i++) {
             this.allTextures[i] = new Texture(backgroundFiles[i]);
         }
     }

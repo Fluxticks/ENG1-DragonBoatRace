@@ -47,7 +47,7 @@ public class Obstacle extends Entity {
 
     @Override
     public boolean equals(Object obj){
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
         if(obj.getClass() == this.getClass()){

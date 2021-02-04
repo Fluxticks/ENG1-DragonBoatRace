@@ -1,6 +1,9 @@
 package com.dragonboatrace.game.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,8 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.dragonboatrace.game.*;
-
+import com.dragonboatrace.game.Background;
+import com.dragonboatrace.game.DragonBoatRace;
+import com.dragonboatrace.game.Lane;
+import com.dragonboatrace.game.LaneMarker;
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.Obstacle;
 import com.dragonboatrace.game.entities.ObstacleType;
@@ -63,13 +68,13 @@ public class GameScreen extends ScreenAdapter {
         for (JsonValue lane : jsonString.get("lanes")) {
             Lane tempLane = new Lane(lane);
             tempLanes.add(tempLane);
-            if(tempLane.isPlayerLane) {
+            if (tempLane.isPlayerLane) {
                 this.pb = (PlayerBoat) tempLane.getBoat();
             }
         }
         this.lanes = tempLanes.toArray(new Lane[0]);
 
-        for(Lane lane : lanes) {
+        for (Lane lane : lanes) {
             lane.setPb(this.pb);
         }
         this.create(this.round);
@@ -103,10 +108,10 @@ public class GameScreen extends ScreenAdapter {
         });
     }
 
-    public void makeSave(int saveSlot, FileHandle file){
+    public void makeSave(int saveSlot, FileHandle file) {
         String[] laneStrings = new String[this.lanes.length];
 
-        for(int i = 0; i < laneStrings.length; i++){
+        for (int i = 0; i < laneStrings.length; i++) {
             laneStrings[i] = this.lanes[i].save();
         }
 
@@ -119,12 +124,12 @@ public class GameScreen extends ScreenAdapter {
         saveJSONString(saveString, file);
     }
 
-    public static boolean saveJSONString(String jsonString, FileHandle file){
-        try{
+    public static boolean saveJSONString(String jsonString, FileHandle file) {
+        try {
             Json json = new Json();
             file.writeString(json.prettyPrint(jsonString), false);
             return true;
-        }catch(GdxRuntimeException e){
+        } catch (GdxRuntimeException e) {
             return false;
         }
 
@@ -132,15 +137,15 @@ public class GameScreen extends ScreenAdapter {
 
     public void create(int round) {
 
-        switch(difficulty) {
+        switch (difficulty) {
             case 1:
-                this.obstacleMultiplier = (float)0.5;
+                this.obstacleMultiplier = (float) 0.5;
                 break;
             case 2:
-                this.obstacleMultiplier = (float)1;
+                this.obstacleMultiplier = (float) 1;
                 break;
             case 3:
-                this.obstacleMultiplier = (float)2;
+                this.obstacleMultiplier = (float) 2;
                 break;
         }
 
@@ -149,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
         obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
-        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
+        float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
         for (int i = 0; i < laneCount + 1; i++) {
             laneMarkers[i] = new LaneMarker(new Vector2(i * laneWidth, 0));
         }
@@ -160,7 +165,7 @@ public class GameScreen extends ScreenAdapter {
             backgrounds[i] = new Background(new Vector2(Gdx.graphics.getWidth() / 2f, i * 1080));
         }
 
-        for(Lane lane : lanes){
+        for (Lane lane : lanes) {
             lane.updateRound(this.round, this.obstacleMultiplier);
         }
 
@@ -181,7 +186,6 @@ public class GameScreen extends ScreenAdapter {
                 finishLine = 1000;
                 break;
         }
-        
 
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
@@ -206,7 +210,7 @@ public class GameScreen extends ScreenAdapter {
             l.render(game.batch, pb.getInGamePos());
         }
 
-        for(Lane lane : lanes){
+        for (Lane lane : lanes) {
             lane.render(game.batch);
             lane.update(deltaTime);
         }
@@ -288,8 +292,8 @@ public class GameScreen extends ScreenAdapter {
 
         finishLineObstacle.getPos().y = finishLine; //this will make the finish line appear on the screen
 
-        for(Lane lane : lanes){
-            if(!lane.isPlayerLane) {
+        for (Lane lane : lanes) {
+            if (!lane.isPlayerLane) {
                 lane.checkBoatFinished(finishLine, this.raceStartTime);
             }
         }
@@ -298,8 +302,8 @@ public class GameScreen extends ScreenAdapter {
             //calculate the times it would have taken or did take the cpus to finish
             //send every boats finishing time to the next screen along w the current round
 
-            for(Lane lane : lanes){
-                if(!lane.isPlayerLane) {
+            for (Lane lane : lanes) {
+                if (!lane.isPlayerLane) {
                     if (!lane.checkBoatFinished(finishLine, this.raceStartTime)) {
                         long timeEstimate = (long) ((pb.getFinishTimeLong()) * (finishLine / lane.getBoatGamePos().y));
                         lane.setBoatFinishTime(timeEstimate);
@@ -479,7 +483,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        for(Lane lane : lanes){
+        for (Lane lane : lanes) {
             lane.dispose();
         }
         for (LaneMarker l : this.laneMarkers) {

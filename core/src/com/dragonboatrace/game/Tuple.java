@@ -1,6 +1,6 @@
 package com.dragonboatrace.game;
 
-public class Tuple<A, B>{
+public class Tuple<A, B> {
     public A a;
     public B b;
 
@@ -10,11 +10,11 @@ public class Tuple<A, B>{
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj.getClass() == Tuple.class){
-            Tuple objT = (Tuple)obj;
+    public boolean equals(Object obj) {
+        if (obj.getClass() == Tuple.class) {
+            Tuple objT = (Tuple) obj;
             return this.a.equals(objT.a) && this.b.equals(objT.b);
-        }else{
+        } else {
             return false;
         }
     }

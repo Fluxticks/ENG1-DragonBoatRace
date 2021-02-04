@@ -58,11 +58,11 @@ public class PlayerBoat extends Boat {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
-    public void render(SpriteBatch batch, Vector2 relPos){
+    public void render(SpriteBatch batch, Vector2 relPos) {
         super.render(batch, new Vector2());
     }
 

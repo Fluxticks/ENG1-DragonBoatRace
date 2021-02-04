@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
-import com.dragonboatrace.game.screens.TitleScreen;
 
 public class BoatDeathScreen extends ScreenAdapter {
 

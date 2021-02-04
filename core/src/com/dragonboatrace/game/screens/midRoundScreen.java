@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
-import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
 public class midRoundScreen extends ScreenAdapter {
@@ -37,7 +36,7 @@ public class midRoundScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.SPACE) {
-                    for(Lane lane : lanes){
+                    for (Lane lane : lanes) {
                         lane.moveBoatToStart();
                     }
                     if (round != 3 || playerPositions[1] < 4) {
@@ -84,8 +83,8 @@ public class midRoundScreen extends ScreenAdapter {
         //element 1 of the output is the players position in all races
 
         int[] output = {1, 1};
-        for(Lane lane : lanes){
-            if(!lane.isPlayerLane){
+        for (Lane lane : lanes) {
+            if (!lane.isPlayerLane) {
                 if (lane.getBoatFinishTimeLong() < pb.getFinishTimeLong()) {
                     output[0] += 1;
                 }

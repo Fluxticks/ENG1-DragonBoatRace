@@ -1,22 +1,19 @@
 package com.dragonboatrace.game.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.MovementCharacteristics;
 
 public enum ObstacleType {
     //          ID,                Weight,       Size,                                                                      speed,        imageSrc,                           mover
-    BUOY(      "buoy",         3,      new Vector2(50, 50),                                                 0,      "Obstacles/buoy.png",       MovementCharacteristics.STATIC),
-    ROCK(      "rock",         4,      new Vector2(50, 50),                                                 0,      "Obstacles/rocks.png",      MovementCharacteristics.STATIC),
-    BRANCH(    "branch",       1.5f,   new Vector2(50, 50),                                                 1,      "Obstacles/log.png",        MovementCharacteristics.CONSTANT),
-    DUCK(      "duck",         2,      new Vector2(50, 50),                                                 2,      "Obstacles/duck.png",       MovementCharacteristics.WANDER),
-    RUBBISH(   "rubbish" ,     1.5f,   new Vector2(50, 50),                                                 3,      "Obstacles/garbage.png",    MovementCharacteristics.STATIC),
-    LONGBOI(   "longboi",      2,      new Vector2(50, 50),                                                 4,      "Obstacles/longboi.png",    MovementCharacteristics.STATIC),
-    BOAT(      "boat",         5,      new Vector2(50, 50),                                                 5,      "Obstacles/shipwreck.png",  MovementCharacteristics.STATIC),
-    FINISHLINE("finish",       0,      new Vector2(50, 50), 1,      "Obstacles/finishline.png", MovementCharacteristics.STATIC),
-    TESTING("testing",       0,      new Vector2(50, 50), 0,      "Testing", MovementCharacteristics.STATIC);
-
+    BUOY("buoy", 3, new Vector2(50, 50), 0, "Obstacles/buoy.png", MovementCharacteristics.STATIC),
+    ROCK("rock", 4, new Vector2(50, 50), 0, "Obstacles/rocks.png", MovementCharacteristics.STATIC),
+    BRANCH("branch", 1.5f, new Vector2(50, 50), 1, "Obstacles/log.png", MovementCharacteristics.CONSTANT),
+    DUCK("duck", 2, new Vector2(50, 50), 2, "Obstacles/duck.png", MovementCharacteristics.WANDER),
+    RUBBISH("rubbish", 1.5f, new Vector2(50, 50), 3, "Obstacles/garbage.png", MovementCharacteristics.STATIC),
+    LONGBOI("longboi", 2, new Vector2(50, 50), 4, "Obstacles/longboi.png", MovementCharacteristics.STATIC),
+    BOAT("boat", 5, new Vector2(50, 50), 5, "Obstacles/shipwreck.png", MovementCharacteristics.STATIC),
+    FINISHLINE("finish", 0, new Vector2(50, 50), 1, "Obstacles/finishline.png", MovementCharacteristics.STATIC),
+    TESTING("testing", 0, new Vector2(50, 50), 0, "Testing", MovementCharacteristics.STATIC);
 
 
     String ID;
@@ -26,7 +23,7 @@ public enum ObstacleType {
     String imageSrc;
     MovementCharacteristics mover;
 
-    ObstacleType(String ID, float weight, Vector2 size, float speed, String imageSrc, MovementCharacteristics mover){
+    ObstacleType(String ID, float weight, Vector2 size, float speed, String imageSrc, MovementCharacteristics mover) {
         this.ID = ID;
         this.weight = weight;
         this.size = size;
@@ -35,15 +32,15 @@ public enum ObstacleType {
         this.mover = mover;
     }
 
-    public String getID(){
+    public String getID() {
         return this.ID;
     }
 
-    public float getWeight(){
+    public float getWeight() {
         return this.weight;
     }
 
-    public Vector2 getSize(){
+    public Vector2 getSize() {
         return this.size;
     }
 
@@ -51,7 +48,7 @@ public enum ObstacleType {
         return this.speed;
     }
 
-    public String getImageSrc(){
+    public String getImageSrc() {
         return this.imageSrc;
     }
 
