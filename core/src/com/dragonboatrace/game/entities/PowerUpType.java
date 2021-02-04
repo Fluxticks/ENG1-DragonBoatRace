@@ -14,14 +14,16 @@ public enum PowerUpType {
     STAMINA(100, 0, 4, new Vector2(35,35), MovementCharacteristics.CONSTANT, "PowerUps/stamina.png"),
     TIMER(500, 0, 10, new Vector2(20,20), MovementCharacteristics.CONSTANT, "PowerUps/timer.png"),
     NOCOLLIDE(5, 0, 10, new Vector2(20,20), MovementCharacteristics.CONSTANT, "PowerUps/nocollide.png"),
-    AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.CONSTANT, "PowerUps/agility.png");
+    AGILITY(3,0, 3, new Vector2(25,25), MovementCharacteristics.CONSTANT, "PowerUps/agility.png"),
+    TESTING(3,0, 3, new Vector2(25,25), MovementCharacteristics.CONSTANT, "Testing");
+
 
     Vector2 size;
     MovementCharacteristics mover;
     float weight;
     float speed;
     float effect;
-    Texture image;
+    String imageSrc;
 
     PowerUpType(float effect, float weight, float speed, Vector2 size, MovementCharacteristics mover, String imagePath){
         this.effect = effect;
@@ -29,7 +31,7 @@ public enum PowerUpType {
         this.speed = speed;
         this.size = size;
         this.mover = mover;
-        this.image = new Texture(Gdx.files.local(imagePath));
+        this.imageSrc = imagePath;
     }
 
 
@@ -40,8 +42,8 @@ public enum PowerUpType {
     }
 
 
-    public Texture getImage() {
-        return image;
+    public String getImageSrc() {
+        return imageSrc;
     }
 
     public Vector2 getSize() {

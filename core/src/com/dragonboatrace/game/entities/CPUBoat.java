@@ -8,15 +8,13 @@ import java.util.ArrayList;
 
 public class CPUBoat extends Boat {
 
-    int difficulty;
     Vector2 startPos;
     private int dir;
     private final float areaMulti = 0.5f;
     private EntityHitbox areaChecker;
 
-    public CPUBoat(BoatType boatType, Vector2 pos, int difficulty, Tuple<Float, Float> laneBounds) {
+    public CPUBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
-        this.difficulty = difficulty;
         this.startPos = pos;
         this.dir = 0;
 
@@ -63,9 +61,6 @@ public class CPUBoat extends Boat {
     //please ignore this method
     public void decideMovement(ArrayList<Obstacle> obstacles) {
 
-        // The amount on each side to check for obstacles
-        int paddingX = 5;
-        int paddingY = 75;
         boolean obstacleInZone = false;
         float thisCenter = this.size.x/2f + this.inGamePos.x;
 

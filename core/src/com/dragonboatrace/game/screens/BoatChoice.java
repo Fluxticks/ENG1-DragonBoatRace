@@ -44,6 +44,7 @@ public class BoatChoice extends ScreenAdapter {
         this.selection = 0;
         this.boatScale = 7;
         this.BoatTypes = new ArrayList<>(EnumSet.allOf(BoatType.class));
+        this.BoatTypes.remove(BoatType.TESTING);
         this.background = new Texture("menus/boatSelection.png");
         this.game.toDispose.add(this);
 
@@ -80,7 +81,7 @@ public class BoatChoice extends ScreenAdapter {
             if (i >= (laneCount - 1) / 2) {
                 xpos += 1;
             }
-            ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(Arrays.asList(BoatType.values()));
+            ArrayList<BoatType> cpuBoatTypes = (ArrayList<BoatType>) this.BoatTypes.clone();
             cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
             BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
             CPUs[i] = new CPUBoat(
@@ -88,7 +89,7 @@ public class BoatChoice extends ScreenAdapter {
                     new Vector2(
                             (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
                             10
-                    ), 0,
+                    ),
                     new Tuple<>(
                             (xpos + 0) * laneWidth,
                             (xpos + 1) * laneWidth

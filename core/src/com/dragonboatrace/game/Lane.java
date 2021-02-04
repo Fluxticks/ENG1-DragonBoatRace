@@ -70,7 +70,9 @@ public class Lane {
                 Arrays.toString(obstacleStrings),
                 this.currentPower.save(),
                 this.isPlayerLane ? 1 : 0);
-    }
+
+    
+   }
 
     public void update(float deltaTime){
         ListIterator<Obstacle> iter = obstacles.listIterator();
@@ -141,17 +143,25 @@ public class Lane {
         }
     }
 
+
     private void renderBounds(ShapeRenderer shapeRenderer){
         Tuple<Float,Float> bounds = this.boat.getLaneBounds();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(bounds.a, 0, bounds.b-bounds.a, Gdx.graphics.getHeight());
         shapeRenderer.end();
+
     }
 
-    public void updateRound(int newRound, float obstacleMultiplier){
+    public int updateRound(int newRound, float obstacleMultiplier){
         this.round = newRound;
 
+        int offset = 3;
+
+        this.maxObstacles  = (int)((offset+newRound) * obstacleMultiplier);
+        return this.maxObstacles;
+
+        /*
         switch (this.round) {    // The max number of obstacles changes from round to round
             case 0:
                 this.maxObstacles = (int)(3 * obstacleMultiplier);
@@ -168,7 +178,7 @@ public class Lane {
             default:
                 this.maxObstacles = 0;
                 break;
-        }
+        }*/
     }
 
     public void updateMaxObstacles(int newObstacleCount){
