@@ -104,6 +104,11 @@ public class CPUBoat extends Boat {
     }
 
     @Override
+    public boolean equals(Object obj){
+        return super.equals(obj);
+    }
+
+    @Override
     public void update(float deltaTime) {
         float deltaX = this.vel.x * this.dampening;
         float deltaY = this.vel.y * this.dampening;

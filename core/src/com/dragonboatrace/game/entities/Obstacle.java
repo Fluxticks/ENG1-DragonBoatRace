@@ -45,6 +45,24 @@ public class Obstacle extends Entity {
                 );
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(obj.getClass() == this.getClass()){
+            Obstacle objObs = (Obstacle)obj;
+            boolean constantVelBool = objObs.getConstantVel().equals(this.getConstantVel());
+            return constantVelBool && super.equals(obj);
+        }else{
+            return false;
+        }
+    }
+
+    public Vector2 getConstantVel(){
+        return this.constantVel;
+    }
+
     public void collide(Obstacle o) {
 
     }

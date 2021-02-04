@@ -60,6 +60,20 @@ public class PowerUp extends Entity {
         }
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(obj.getClass() == this.getClass()){
+            PowerUp objObs = (PowerUp) obj;
+            boolean constantVelBool = objObs.getConstantVel().equals(this.getConstantVel());
+            return constantVelBool && super.equals(obj);
+        }else{
+            return false;
+        }
+    }
+
     //TODO: Run this when the player loads the game
     private void noCollideEffect(final Boat timedBoat){
         timedBoat.setNoCollide(true);

@@ -42,7 +42,21 @@ public abstract class Entity {
         this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
-
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(obj.getClass() == this.getClass()){
+            Entity objEntity = (Entity)obj;
+            boolean inGame = objEntity.getInGamePos().equals(this.getInGamePos());
+            boolean actualPos = objEntity.getPos().equals(this.getPos());
+            boolean actualVel = objEntity.getVel().equals(this.getVel());
+            return inGame && actualPos && actualVel;
+        }else{
+            return false;
+        }
+    }
 
 
 

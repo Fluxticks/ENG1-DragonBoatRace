@@ -52,7 +52,7 @@ public abstract class Boat extends Entity {
         this.stamina = jsonString.getFloat("stamina");
         this.distanceTravelled = jsonString.getFloat("distance");
         this.totalTime = jsonString.getInt("totalTime");
-        this.laneBounds = new Tuple<Float, Float>(jsonString.get("laneBounds").getFloat("x"), jsonString.get("laneBounds").getFloat("y"));
+        this.laneBounds = new Tuple<>(jsonString.get("laneBounds").getFloat("x"), jsonString.get("laneBounds").getFloat("y"));
         this.currentMaxSpeed = this.boatType.getSpeed();
         this.maxStamina = 1000;
         this.collided = new ArrayList<>();
@@ -63,6 +63,25 @@ public abstract class Boat extends Entity {
             this.image = new Texture(this.boatType.imageSrc);
 
 
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(obj.getClass() == this.getClass()){
+            Boat objBoat = (Boat)obj;
+            boolean type = objBoat.getType() == this.getType();
+            boolean health = objBoat.getHealth() == this.getHealth();
+            boolean stamina = objBoat.getStamina() == this.getStamina();
+            boolean travelled = Float.compare(objBoat.getDistanceTravelled(), this.getDistanceTravelled()) != 1;
+            boolean time = objBoat.getTotalTimeLong() == this.getTotalTimeLong();
+            boolean bounds = objBoat.getLaneBounds().equals(this.getLaneBounds());
+            return type && health && stamina && travelled && time && bounds && super.equals(obj);
+        }else{
+            return false;
+        }
     }
 
     public String save() {

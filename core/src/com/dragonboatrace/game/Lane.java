@@ -55,9 +55,45 @@ public class Lane {
 
 
         this.isPlayerLane = jsonString.getInt("isPlayer") == 1;
-        this.currentPower = new PowerUp(jsonString.get("powerup"));
+        if(jsonString.get("powerup").get(0) != null){
+            this.currentPower = new PowerUp(jsonString.get("powerup"));
+        }else{
+            this.currentPower = null;
+        }
         this.pb = null;
 
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(obj.getClass() == this.getClass()){
+            Lane objLane = (Lane)obj;
+            if(objLane.obstacles.size() != this.obstacles.size()){
+                return false;
+            }
+            boolean obstacleBool = true;
+            for(int i = 0; i < obstacles.size(); i++){
+                obstacleBool = obstacleBool && objLane.obstacles.get(i).equals(this.obstacles.get(i));
+            }
+            boolean powerBool = false;
+            if(this.currentPower != null){
+                powerBool = this.currentPower.equals(objLane.getCurrentPower());
+            }else if(this.currentPower == null && objLane.getCurrentPower() == null){
+                powerBool = true;
+            }
+            boolean boatBool = this.boat.equals(objLane.getBoat());
+            boolean pbBool = this.pb.equals(objLane.pb);
+            return obstacleBool && powerBool && boatBool && pbBool;
+        }else{
+            return false;
+        }
+    }
+
+    public PowerUp getCurrentPower() {
+        return currentPower;
     }
 
     public String save() {
