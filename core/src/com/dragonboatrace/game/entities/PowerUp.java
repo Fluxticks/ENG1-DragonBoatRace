@@ -30,6 +30,9 @@ public class PowerUp extends Entity {
         this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
         this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
         this.type = new Json().fromJson(PowerUpType.class,jsonString.getString("type"));
+        if (!this.type.imageSrc.equals("Testing")) {
+            this.image = new Texture(this.type.imageSrc);
+        }
 
     }
 

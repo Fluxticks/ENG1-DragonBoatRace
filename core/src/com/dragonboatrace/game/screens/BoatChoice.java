@@ -130,6 +130,16 @@ public class BoatChoice extends ScreenAdapter {
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
 
+                }else if (keyCode == Input.Keys.F7) {
+                    FileHandle file = Gdx.files.local("bin/save2.json");
+                    JsonValue jsonString = new JsonReader().parse(file);
+                    game.setScreen(new GameScreen(game, jsonString));
+
+                } else if (keyCode == Input.Keys.F8) {
+                    FileHandle file = Gdx.files.local("bin/save3.json");
+                    JsonValue jsonString = new JsonReader().parse(file);
+                    game.setScreen(new GameScreen(game, jsonString));
+
                 } else if (keyCode == Input.Keys.NUM_1) {
                     startGame(1);
                 } else if (keyCode == Input.Keys.NUM_2) {

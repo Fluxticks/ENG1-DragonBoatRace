@@ -4,34 +4,49 @@ difficulty: 2
 lanes: [
 	{
 		boat: {
-			type: STRONG
-			health: 297.0
-			stamina: 700.0
-			distance: 2214.843506
+			type: AGILE
+			health: 200.0
+			stamina: 1000.0
+			distance: 804.608765
 			totalTime: 0
 			laneBounds: {
 				x: 0.0
 				y: 274.285706
 			}
 			inGamePos: {
-				x: 51.430294
-				y: 2224.84375
+				x: 91.567314
+				y: 814.608765
 			}
 			pos: {
-				x: 51.430294
-				y: 2224.84375
+				x: 91.567314
+				y: 814.608765
 			}
 			vel: {
-				x: 8.23E-4
-				y: 14.886402
+				x: 0.0
+				y: 15.071809
 			}
 		}
 		obstacles: [
 			{
+				type: ROCK
+				pos: {
+					x: 219.425568
+					y: 1213.667725
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
 				type: BUOY
 				pos: {
-					x: 111.302818
-					y: 2007.797852
+					x: 180.970154
+					y: 2017.766479
 				}
 				vel: {
 					x: 0.0
@@ -43,25 +58,10 @@ lanes: [
 				}
 			}
 			{
-				type: ROCK
+				type: BUOY
 				pos: {
-					x: 213.182236
-					y: 3070.024414
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: ROCK
-				pos: {
-					x: 242.404312
-					y: 3217.611084
+					x: 159.998032
+					y: 1887.657471
 				}
 				vel: {
 					x: 0.0
@@ -74,52 +74,52 @@ lanes: [
 			}
 		]
 		powerup: {
-			type: STAMINA
+			type: HEALTH
 			pos: {
-				x: 4.88375
-				y: 2350.869873
+				x: 176.655426
+				y: 1889.854492
 			}
 			vel: {
 				x: 0.0
-				y: 3.087065
+				y: 0.0
 			}
 			constantVel: {
-				x: -1.001598
-				y: 3.87257
+				x: 0.0
+				y: 0.0
 			}
 		}
 		isPlayer: 0
 	}
 	{
 		boat: {
-			type: LIGHT
-			health: 96.0
-			stamina: 600.0
-			distance: 1615.778809
+			type: STRONG
+			health: 300.0
+			stamina: 1000.0
+			distance: 804.608765
 			totalTime: 0
 			laneBounds: {
 				x: 274.285706
 				y: 548.571411
 			}
 			inGamePos: {
-				x: 359.21051
-				y: 1625.778809
+				x: 325.824188
+				y: 814.608765
 			}
 			pos: {
-				x: 359.21051
-				y: 1625.778809
+				x: 325.824188
+				y: 814.608765
 			}
 			vel: {
 				x: 0.0
-				y: 3.580161
+				y: 15.071809
 			}
 		}
 		obstacles: [
 			{
 				type: ROCK
 				pos: {
-					x: 354.171936
-					y: 1942.709473
+					x: 474.051208
+					y: 1412.697998
 				}
 				vel: {
 					x: 0.0
@@ -131,10 +131,10 @@ lanes: [
 				}
 			}
 			{
-				type: ROCK
+				type: BUOY
 				pos: {
-					x: 542.471008
-					y: 3345.560547
+					x: 502.999939
+					y: 1703.679443
 				}
 				vel: {
 					x: 0.0
@@ -146,10 +146,10 @@ lanes: [
 				}
 			}
 			{
-				type: ROCK
+				type: BUOY
 				pos: {
-					x: 502.462006
-					y: 3621.207764
+					x: 364.477905
+					y: 1198.012451
 				}
 				vel: {
 					x: 0.0
@@ -162,67 +162,52 @@ lanes: [
 			}
 		]
 		powerup: {
-			type: AGILITY
+			type: HEALTH
 			pos: {
-				x: 419.09964
-				y: 4002.795898
+				x: 342.259399
+				y: 1444.161987
 			}
 			vel: {
-				x: -0.380427
-				y: 2.169135
+				x: 0.0
+				y: 0.0
 			}
 			constantVel: {
-				x: -0.518236
-				y: 2.9549
+				x: 0.0
+				y: 0.0
 			}
 		}
 		isPlayer: 0
 	}
 	{
 		boat: {
-			type: LIGHT
-			health: 92.0
-			stamina: 200.0
-			distance: 1980.595703
+			type: HEAVY
+			health: 400.0
+			stamina: 1000.0
+			distance: 579.470093
 			totalTime: 0
 			laneBounds: {
 				x: 548.571411
 				y: 822.857117
 			}
 			inGamePos: {
-				x: 598.105103
-				y: 1990.595703
+				x: 578.108398
+				y: 589.470154
 			}
 			pos: {
-				x: 598.105103
-				y: 1990.595703
+				x: 578.108398
+				y: 589.470154
 			}
 			vel: {
-				x: -5.0E-6
-				y: 15.115097
+				x: 0.0
+				y: 15.03875
 			}
 		}
 		obstacles: [
 			{
 				type: BUOY
 				pos: {
-					x: 731.333008
-					y: 3458.719727
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: BUOY
-				pos: {
-					x: 553.013184
-					y: 3408.602295
+					x: 669.110901
+					y: 1967.970215
 				}
 				vel: {
 					x: 0.0
@@ -236,8 +221,23 @@ lanes: [
 			{
 				type: ROCK
 				pos: {
-					x: 745.212402
-					y: 3602.887207
+					x: 810.487122
+					y: 1426.830444
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: ROCK
+				pos: {
+					x: 563.596008
+					y: 1273.818604
 				}
 				vel: {
 					x: 0.0
@@ -252,16 +252,104 @@ lanes: [
 		powerup: {
 			type: NOCOLLIDE
 			pos: {
-				x: 792.299011
-				y: 4331.921387
+				x: 813.126526
+				y: 1386.982666
 			}
 			vel: {
-				x: 0.440584
-				y: 7.327574
+				x: 0.0
+				y: 7.409308
 			}
 			constantVel: {
-				x: 0.600184
-				y: 9.981973
+				x: -6.715814
+				y: 7.409308
+			}
+		}
+		isPlayer: 0
+	}
+	{
+		boat: {
+			type: HEAVY
+			health: 400.0
+			stamina: 1000.0
+			distance: 579.470093
+			totalTime: 0
+			laneBounds: {
+				x: 1097.142822
+				y: 1371.428467
+			}
+			inGamePos: {
+				x: 1126.679565
+				y: 589.470154
+			}
+			pos: {
+				x: 1126.679565
+				y: 589.470154
+			}
+			vel: {
+				x: 0.0
+				y: 15.03875
+			}
+		}
+		obstacles: [
+			{
+				type: BUOY
+				pos: {
+					x: 1341.837524
+					y: 1617.134521
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: ROCK
+				pos: {
+					x: 1156.174805
+					y: 1604.622681
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: ROCK
+				pos: {
+					x: 1259.260376
+					y: 1452.783691
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+		]
+		powerup: {
+			type: HEALTH
+			pos: {
+				x: 1304.708252
+				y: 1983.525391
+			}
+			vel: {
+				x: 0.0
+				y: 0.0
+			}
+			constantVel: {
+				x: 0.0
+				y: 0.0
 			}
 		}
 		isPlayer: 0
@@ -271,31 +359,119 @@ lanes: [
 			type: LIGHT
 			health: 100.0
 			stamina: 1000.0
-			distance: 2285.507324
+			distance: 880.294617
 			totalTime: 0
 			laneBounds: {
-				x: 1097.142822
-				y: 1371.428467
+				x: 1371.428467
+				y: 1645.714233
 			}
 			inGamePos: {
-				x: 1157.959351
-				y: 2295.507324
+				x: 1430.088013
+				y: 890.294556
 			}
 			pos: {
-				x: 1157.959351
-				y: 2295.507324
+				x: 1430.088013
+				y: 890.294556
 			}
 			vel: {
 				x: 0.0
-				y: 14.829952
+				y: 15.117169
+			}
+		}
+		obstacles: [
+			{
+				type: ROCK
+				pos: {
+					x: 1448.992554
+					y: 1633.165894
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: ROCK
+				pos: {
+					x: 1627.439209
+					y: 1416.07312
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: BUOY
+				pos: {
+					x: 1623.712646
+					y: 2000.422974
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+		]
+		powerup: {
+			type: AGILITY
+			pos: {
+				x: 1376.389648
+				y: 2107.097412
+			}
+			vel: {
+				x: 0.0
+				y: 2.384744
+			}
+			constantVel: {
+				x: -0.487573
+				y: 2.960114
+			}
+		}
+		isPlayer: 0
+	}
+	{
+		boat: {
+			type: NORMAL
+			health: 200.0
+			stamina: 1000.0
+			distance: 804.608765
+			totalTime: 0
+			laneBounds: {
+				x: 1645.714233
+				y: 1920.0
+			}
+			inGamePos: {
+				x: 1668.748291
+				y: 814.608765
+			}
+			pos: {
+				x: 1668.748291
+				y: 814.608765
+			}
+			vel: {
+				x: 0.0
+				y: 15.071809
 			}
 		}
 		obstacles: [
 			{
 				type: BUOY
 				pos: {
-					x: 1333.706177
-					y: 2137.602783
+					x: 1744.124023
+					y: 1333.908569
 				}
 				vel: {
 					x: 0.0
@@ -307,10 +483,10 @@ lanes: [
 				}
 			}
 			{
-				type: ROCK
+				type: BUOY
 				pos: {
-					x: 1143.095947
-					y: 3233.900391
+					x: 1700.193481
+					y: 2103.233154
 				}
 				vel: {
 					x: 0.0
@@ -322,10 +498,10 @@ lanes: [
 				}
 			}
 			{
-				type: ROCK
+				type: BUOY
 				pos: {
-					x: 1292.686768
-					y: 4080.564209
+					x: 1906.593872
+					y: 1782.203369
 				}
 				vel: {
 					x: 0.0
@@ -340,192 +516,16 @@ lanes: [
 		powerup: {
 			type: SPEED
 			pos: {
-				x: 1336.491943
-				y: 4066.12915
+				x: 1885.476318
+				y: 1553.164429
 			}
 			vel: {
 				x: 0.0
-				y: 3.164427
+				y: 2.30227
 			}
 			constantVel: {
-				x: 0.734806
-				y: 3.931928
-			}
-		}
-		isPlayer: 0
-	}
-	{
-		boat: {
-			type: AGILE
-			health: 193.0
-			stamina: 300.0
-			distance: 2207.958252
-			totalTime: 0
-			laneBounds: {
-				x: 1371.428467
-				y: 1645.714233
-			}
-			inGamePos: {
-				x: 1459.601685
-				y: 2217.958252
-			}
-			pos: {
-				x: 1459.601685
-				y: 2217.958252
-			}
-			vel: {
-				x: 0.0
-				y: 15.115248
-			}
-		}
-		obstacles: [
-			{
-				type: ROCK
-				pos: {
-					x: 1494.595825
-					y: 1845.519775
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: BUOY
-				pos: {
-					x: 1573.791748
-					y: 3848.589355
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: BUOY
-				pos: {
-					x: 1425.13623
-					y: 3867.748047
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-		]
-		powerup: {
-			type: AGILITY
-			pos: {
-				x: 1456.65918
-				y: 3243.515137
-			}
-			vel: {
-				x: -0.177369
-				y: 2.195088
-			}
-			constantVel: {
-				x: -0.241621
-				y: 2.990254
-			}
-		}
-		isPlayer: 0
-	}
-	{
-		boat: {
-			type: STRONG
-			health: 297.0
-			stamina: 700.0
-			distance: 1841.985962
-			totalTime: 0
-			laneBounds: {
-				x: 1645.714233
-				y: 1920.0
-			}
-			inGamePos: {
-				x: 1697.676514
-				y: 1851.985962
-			}
-			pos: {
-				x: 1697.676514
-				y: 1851.985962
-			}
-			vel: {
-				x: 0.0
-				y: 5.113198
-			}
-		}
-		obstacles: [
-			{
-				type: BUOY
-				pos: {
-					x: 1705.310913
-					y: 2061.319824
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: ROCK
-				pos: {
-					x: 1888.886108
-					y: 3166.402344
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: BUOY
-				pos: {
-					x: 1803.937622
-					y: 3607.484863
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-		]
-		powerup: {
-			type: TIMER
-			pos: {
-				x: 1895.024536
-				y: 1979.786621
-			}
-			vel: {
-				x: 0.0
-				y: 6.998063
-			}
-			constantVel: {
-				x: 4.931536
-				y: 8.699423
+				x: 2.794799
+				y: 2.86166
 			}
 		}
 		isPlayer: 0
@@ -533,63 +533,63 @@ lanes: [
 	{
 		boat: {
 			type: FAST
-			health: 96.0
-			stamina: 49.312698
-			distance: 1984.47998
+			health: 100.0
+			stamina: 995.976074
+			distance: 806.591064
 			totalTime: 0
 			laneBounds: {
 				x: 822.857117
 				y: 1097.142822
 			}
 			inGamePos: {
-				x: 942.723206
-				y: 1994.47998
+				x: 960.0
+				y: 816.591003
 			}
 			pos: {
-				x: 942.723206
+				x: 960.0
 				y: 10.0
 			}
 			vel: {
 				x: 0.0
-				y: 5.040369
+				y: 15.009527
 			}
 		}
 		obstacles: [
 			{
-				type: BUOY
-				pos: {
-					x: 867.249329
-					y: 1937.955322
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
-				type: BUOY
-				pos: {
-					x: 999.750854
-					y: 3462.423584
-				}
-				vel: {
-					x: 0.0
-					y: 0.0
-				}
-				constantVel: {
-					x: 0.0
-					y: 0.0
-				}
-			}
-			{
 				type: ROCK
 				pos: {
-					x: 882.493591
-					y: 3527.364014
+					x: 845.157471
+					y: 1701.653564
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: BUOY
+				pos: {
+					x: 858.222107
+					y: 1971.070068
+				}
+				vel: {
+					x: 0.0
+					y: 0.0
+				}
+				constantVel: {
+					x: 0.0
+					y: 0.0
+				}
+			}
+			{
+				type: BUOY
+				pos: {
+					x: 920.254822
+					y: 1259.467773
 				}
 				vel: {
 					x: 0.0
@@ -604,16 +604,16 @@ lanes: [
 		powerup: {
 			type: AGILITY
 			pos: {
-				x: 827.722473
-				y: 1912.526245
+				x: 827.764038
+				y: 2308.478271
 			}
 			vel: {
 				x: 0.0
-				y: 1.986156
+				y: 2.279741
 			}
 			constantVel: {
-				x: -1.795383
-				y: 2.403455
+				x: -0.84592
+				y: 2.878267
 			}
 		}
 		isPlayer: 1

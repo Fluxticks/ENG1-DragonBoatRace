@@ -36,7 +36,7 @@ public enum PowerUpType {
 
 
     public static PowerUpType chooseRandomType(){
-        int length = PowerUpType.values().length;
+        int length = PowerUpType.values().length-1;
         int random = ThreadLocalRandom.current().nextInt(length);
         return PowerUpType.values()[random];
     }

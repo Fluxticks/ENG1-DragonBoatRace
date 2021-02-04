@@ -59,6 +59,8 @@ public abstract class Boat extends Entity {
         this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
         this.inGamePos.y = jsonString.get("inGamePos").getFloat("y");
         this.hitbox.setToPosition(this.inGamePos);
+        if (!this.boatType.imageSrc.equals("Testing"))
+            this.image = new Texture(this.boatType.imageSrc);
 
 
     }

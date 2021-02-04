@@ -12,7 +12,6 @@ public abstract class Entity {
     protected int width, height;
     protected float weight, dampening;
     protected Obstacle collider;
-    //private ShapeRenderer shapeRenderer;
     protected EntityHitbox hitbox;
 
     public Entity(Vector2 pos, Vector2 size, float weight) {
@@ -40,7 +39,6 @@ public abstract class Entity {
         this.weight = weight;
         this.dampening = (float) 0.2;
         this.collider = null;
-        this.shapeRenderer = new ShapeRenderer();
         this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
@@ -99,12 +97,12 @@ public abstract class Entity {
         return new Vector2((this.pos.x), (this.pos.y - relPos.y));
     }
 
-    /* public void renderHitBox(Vector2 relPos){
-        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        this.shapeRenderer.setColor(Color.RED);
-        this.shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
-        this.shapeRenderer.end();
-    } */
+    public void renderHitBox(Vector2 relPos, ShapeRenderer shapeRenderer){
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(this.hitbox.getPosition().x, this.hitbox.getPosition().y - relPos.y, this.size.x, this.size.y);
+        shapeRenderer.end();
+    }
 
     public EntityHitbox getHitbox(){
         return this.hitbox;
