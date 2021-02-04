@@ -33,7 +33,8 @@ public class SaveLoadTest {
         String output = boat.save();
         String knownCorrect = "{type:TESTING, health:300.000000, stamina:1000.000000, distance:0.000000, totalTime:0, " +
                                 "laneBounds:{x:0.000000, y:500.000000}, inGamePos:{x:0.000000, y:0.000000}, " +
-                                "pos:{x:0.000000, y:0.000000}, vel:{x:0.000000, y:0.000000}}";
+                                "pos:{x:0.000000, y:0.000000}, vel:{x:0.000000, y:0.000000}, " +
+                                "startPos:{x:0.000000, y:0.000000}}";
         Assert.assertEquals(knownCorrect, output);
         Assert.assertTrue(GameScreen.saveJSONString(output, Gdx.files.local("TestingSaves/boatSaveTest.json")));
         System.out.println("Done Save Boat Test");
@@ -67,10 +68,10 @@ public class SaveLoadTest {
         Lane lane = new Lane(boat, boat);
         lane.updateRound(1, 0.5f);
         String output = lane.save();
-        String knownCorrect = "{boat:{type:TESTING, health:300.000000, stamina:1000.000000, distance:0.000000, " +
-                                "totalTime:0, laneBounds:{x:0.000000, y:500.000000}, inGamePos:{x:0.000000, y:0.000000}, " +
-                                "pos:{x:0.000000, y:0.000000}, vel:{x:0.000000, y:0.000000}}, obstacles:[], " +
-                                "powerup:null, isPlayer:1}";
+        String knownCorrect = "{boat:{type:TESTING, health:300.000000, stamina:1000.000000, distance:0.000000, totalTime:0, " +
+                                "laneBounds:{x:0.000000, y:500.000000}, inGamePos:{x:0.000000, y:0.000000}, " +
+                                "pos:{x:0.000000, y:0.000000}, vel:{x:0.000000, y:0.000000}, " +
+                                "startPos:{x:0.000000, y:0.000000}}, obstacles:[], powerup:null, isPlayer:1}";
         Assert.assertEquals(knownCorrect, output);
         Assert.assertTrue(GameScreen.saveJSONString(output, Gdx.files.local("TestingSaves/laneSaveTest.json")));
         System.out.println("Done Save Lane Test");
@@ -144,7 +145,6 @@ public class SaveLoadTest {
         laneKnown.updateRound(1, 0.5f);
         FileHandle file = Gdx.files.local("TestingSaves/laneSaveTest.json");
         JsonValue jsonString = new JsonReader().parse(file);
-        System.out.println(jsonString.get("powerup"));
         Lane laneOutput = new Lane(jsonString);
         laneOutput.setPb(boat);
         Assert.assertEquals(laneKnown, laneOutput);
