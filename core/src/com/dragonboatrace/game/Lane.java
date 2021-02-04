@@ -69,7 +69,7 @@ public class Lane {
         return String.format("{boat:%s, obstacles:%s, powerup:%s, isPlayer:%d}",
                 this.boat.save(),
                 Arrays.toString(obstacleStrings),
-                this.currentPower.save(),
+                (this.currentPower!=null)?this.currentPower.save():null,
                 this.isPlayerLane ? 1 : 0);
 
     
