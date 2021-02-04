@@ -64,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
 
-        ArrayList<Lane> tempLanes = new ArrayList<Lane>();
+        ArrayList<Lane> tempLanes = new ArrayList<>();
         for (JsonValue lane : jsonString.get("lanes")) {
             Lane tempLane = new Lane(lane);
             tempLanes.add(tempLane);
@@ -215,7 +215,7 @@ public class GameScreen extends ScreenAdapter {
             lane.update(deltaTime);
         }
 
-        if (pb.getHealth() == 0) {
+        if (pb.getCurrentHealth() == 0) {
             game.setScreen(new BoatDeathScreen(game));
         }
 		
@@ -379,7 +379,7 @@ public class GameScreen extends ScreenAdapter {
         this.game.shapeRenderer.rect(
                 0.02f * Gdx.graphics.getWidth(),
                 0.92f * Gdx.graphics.getHeight(),
-                0.2f * Gdx.graphics.getWidth() * (pb.getHealth() / pb.getType().getMaxHealth()),
+                0.2f * Gdx.graphics.getWidth() * (pb.getCurrentHealth() / pb.getType().getMaxHealth()),
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
@@ -418,7 +418,7 @@ public class GameScreen extends ScreenAdapter {
         this.game.shapeRenderer.rect(
                 0.02f * Gdx.graphics.getWidth(),
                 0.88f * Gdx.graphics.getHeight(),
-                0.2f * Gdx.graphics.getWidth() * (pb.getStamina() / pb.getMaxStamina()),
+                0.2f * Gdx.graphics.getWidth() * (pb.getCurrentStamina() / pb.getMaxStamina()),
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();

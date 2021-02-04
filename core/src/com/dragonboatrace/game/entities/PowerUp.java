@@ -54,13 +54,13 @@ public class PowerUp extends Entity {
                 boatAffected.increaseYVelocity(type.effect);
                 break;
             case HEALTH:
-                boatAffected.setCurrentHealth(Math.min(boatAffected.getHealth() + type.effect, boatAffected.boatType.maxHealth));
+                boatAffected.setCurrentHealth(Math.min(boatAffected.getCurrentHealth() + type.effect, boatAffected.boatType.maxHealth));
                 break;
             case AGILITY:
                 boatAffected.increaseXVelocity(type.effect);
                 break;
             case STAMINA:
-                boatAffected.setCurrentStamina(Math.min(boatAffected.getStamina() + type.effect, boatAffected.maxStamina));
+                boatAffected.setCurrentStamina(Math.min(boatAffected.getCurrentStamina() + type.effect, boatAffected.maxStamina));
                 break;
             case TIMER:
                 boatAffected.setTotalTime(boatAffected.getTotalTimeLong() - (long) type.effect);

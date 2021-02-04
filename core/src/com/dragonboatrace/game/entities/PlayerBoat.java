@@ -17,29 +17,29 @@ public class PlayerBoat extends Boat {
 
     public PlayerBoat(JsonValue jsonString) {
         super(jsonString);
-        startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
+        //startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
     }
 
     @Override
     public void move(float deltaTime) {
-        if (this.stamina > 0 && this.currentHealth > 0) {
+        if (this.currentStamina > 0 && this.currentHealth > 0) {
             if (Gdx.input.isKeyPressed(Keys.LEFT)) {
                 this.vel.add(-(1 * this.boatType.getHandling() / (deltaTime * 60)), 0);
-                this.stamina -= 2 / (60 * deltaTime);
+                this.currentStamina -= 2 / (60 * deltaTime);
             } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
                 this.vel.add((1 * this.boatType.getHandling() / (deltaTime * 60)), 0);
-                this.stamina -= 2 / (60 * deltaTime);
+                this.currentStamina -= 2 / (60 * deltaTime);
             }
             if (Gdx.input.isKeyPressed(Keys.UP) && (this.vel.y < this.currentMaxSpeed) || (this.vel.y < 0)) {
                 this.vel.add(0, ((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
-                this.stamina -= 2 / (60 * deltaTime);
+                this.currentStamina -= 2 / (60 * deltaTime);
             } else if (Gdx.input.isKeyPressed(Keys.DOWN) && (this.vel.y > 0) || this.vel.y > this.currentMaxSpeed) {
                 this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
-                this.stamina -= 2 / (60 * deltaTime);
+                this.currentStamina -= 2 / (60 * deltaTime);
             }
         }
-        if (this.stamina < this.maxStamina) {
-            this.stamina += 1 / (60 * deltaTime);
+        if (this.currentStamina < this.maxStamina) {
+            this.currentStamina += 1 / (60 * deltaTime);
         }
         if (this.penaltyResetDelay <= 0) {
             if (this.pos.x < this.laneBounds.a || this.laneBounds.b < this.pos.x) { // Boat has left the lane
