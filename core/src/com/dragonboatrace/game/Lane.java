@@ -160,11 +160,9 @@ public class Lane {
      * Update the contents of the lane.
      *
      * @param deltaTime The time since the previous frame.
-     * <p>
      * @see Boat
      * @see Obstacle
      * @see PowerUp
-     * </p>
      */
     public void update(float deltaTime) {
         ListIterator<Obstacle> iter = obstacles.listIterator();
@@ -205,11 +203,9 @@ public class Lane {
      * Add the contents to the given SpriteBatch and render it.
      *
      * @param batch The spritebatch to be added to.
-     * <p>
      * @see Boat
      * @see Obstacle
      * @see PowerUp
-     * </p>
      */
     public void render(SpriteBatch batch) {
         for (Obstacle obstacle : this.obstacles) {
