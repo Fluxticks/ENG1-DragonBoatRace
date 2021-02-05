@@ -82,10 +82,18 @@ public enum BoatType {
         return this.handling;
     }
 
+    /**
+     * Get the dimensions of the boat type.
+     * @return A 2d vector of the size of the boat type.
+     */
     public Vector2 getSize() {
         return this.size;
     }
 
+    /**
+     * Get the path for the texture of the boat type.
+     * @return A string for the path to the boat type texture.
+     */
     public String getImageSrc() {
         return this.imageSrc;
     }
