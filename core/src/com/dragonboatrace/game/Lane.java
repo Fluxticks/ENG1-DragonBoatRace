@@ -168,7 +168,6 @@ public class Lane {
         ListIterator<Obstacle> iter = obstacles.listIterator();
         while (iter.hasNext()) {
             Obstacle obstacle = iter.next();
-            Vector2 renderPos = obstacle.getRelPos(this.pb.getInGamePos());
             if (this.checkEntityNotOnScreen(obstacle)) {
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             } else {
@@ -210,12 +209,9 @@ public class Lane {
     public void render(SpriteBatch batch) {
         for (Obstacle obstacle : this.obstacles) {
             obstacle.render(batch, this.pb.getInGamePos());
-            //obstacle.renderHitBox(this.pb.getInGamePos());
         }
         if (this.currentPower != null) this.currentPower.render(batch, this.pb.getInGamePos());
         this.boat.render(batch, this.pb.getInGamePos());
-        //this.boat.renderHitBox(this.pb.getInGamePos());
-        //renderBounds();
     }
 
     /**
