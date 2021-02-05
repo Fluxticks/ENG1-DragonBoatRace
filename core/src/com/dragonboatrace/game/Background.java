@@ -14,7 +14,7 @@ public class Background extends Entity {
 
     public Background(Vector2 pos) {
         super(pos, new Vector2(0, 0), 0);
-        loadTextures();
+        loadTexture();
         updateTexture();
     }
 
@@ -42,7 +42,7 @@ public class Background extends Entity {
         this.size = new Vector2(this.img.getWidth(), this.img.getHeight());
     }
 
-    private void loadTextures() {
+    public void loadTexture() {
         FileHandle backgroundsDirectory = Gdx.files.local("Backgrounds");
         FileHandle[] backgroundFiles = backgroundsDirectory.list();
         this.allTextures = new Texture[backgroundFiles.length];

@@ -142,6 +142,8 @@ public abstract class Entity {
 
     public abstract void dispose();
 
+    public abstract void loadTexture();
+
     public Vector2 getSize() {
         return size;
     }

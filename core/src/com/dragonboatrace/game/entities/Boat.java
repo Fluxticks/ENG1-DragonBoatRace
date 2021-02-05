@@ -89,8 +89,9 @@ public abstract class Boat extends Entity {
 
     /**
      * Creates a generic boat from a BoatType, Position and with Lane bounds.
-     * @param boatType The type of boat to take statistics for. Of type {@link BoatType}
-     * @param pos The initial position of the boat. Of type {@link Vector2}
+     *
+     * @param boatType   The type of boat to take statistics for. Of type {@link BoatType}
+     * @param pos        The initial position of the boat. Of type {@link Vector2}
      * @param laneBounds The x bounds of the lane the boat is in. Of type {@link Tuple}
      */
     public Boat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
@@ -106,12 +107,11 @@ public abstract class Boat extends Entity {
         this.distanceTravelled = 0;
         this.totalTime = 0;
         this.laneBounds = laneBounds;
-        if (!this.boatType.imageSrc.equals("Testing"))
-            this.image = new Texture(this.boatType.imageSrc);
     }
 
     /**
      * Creates a generic boat from a json string, imported from a save file.
+     *
      * @param jsonString The json string that represents a boat as a string. Of type {@link JsonValue}
      */
     public Boat(JsonValue jsonString) {
@@ -134,12 +134,16 @@ public abstract class Boat extends Entity {
         this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
         this.inGamePos.y = jsonString.get("inGamePos").getFloat("y");
         this.hitbox.setToPosition(this.inGamePos);
-        if (!this.boatType.imageSrc.equals("Testing"))
-            this.image = new Texture(this.boatType.imageSrc);
+    }
+
+    @Override
+    public void loadTexture() {
+        this.image = new Texture(this.boatType.imageSrc);
     }
 
     /**
      * Checks if an object is equal to this boat, attribute by attribute
+     *
      * @param obj The object to be compared to.
      * @return True if all the attributes of the object are the same as this boats. False otherwise.
      */
@@ -164,6 +168,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Creates a JSON string of this boat.
+     *
      * @return A string of the attributes formatted for a JSON.
      */
     public String save() {
@@ -188,8 +193,9 @@ public abstract class Boat extends Entity {
 
     /**
      * Perform the collision logic after the check of if an obstacle is actually colliding.
+     *
      * @param colliding If the obstacle o is colliding with the boat.
-     * @param o The obstacle being checked.
+     * @param o         The obstacle being checked.
      */
     public void doCollision(boolean colliding, Obstacle o) {
         if (colliding) {
@@ -207,6 +213,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Check if there is a collision between an obstacle o and the boat.
+     *
      * @param o The obstacle being checked.
      */
     public void checkForCollision(Obstacle o) {
@@ -217,7 +224,8 @@ public abstract class Boat extends Entity {
 
     /**
      * Renders the boat to a spritebatch and relative to the y-coordinate of relPos
-     * @param batch The spritebatch to be added to.
+     *
+     * @param batch  The spritebatch to be added to.
      * @param relPos The position to be drawn relative to.
      */
     public void render(SpriteBatch batch, Vector2 relPos) {
@@ -230,6 +238,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Update the position of the boat based on the time passed since the previous frame.
+     *
      * @param deltaTime The time passed since the previous frame.
      */
     @Override
@@ -244,8 +253,9 @@ public abstract class Boat extends Entity {
 
     /**
      * Check if the boat has crossed the finish line.
+     *
      * @param finishLine The position of the finish line.
-     * @param startTime The time the round started.
+     * @param startTime  The time the round started.
      * @return If the boat has finished or not.
      */
     public boolean checkFinished(int finishLine, long startTime) {
@@ -264,6 +274,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Turn the time taken to finish into a string.
+     *
      * @return A string of how long the boat took to finish.
      */
     public String getFinishTimeString() {
@@ -281,6 +292,7 @@ public abstract class Boat extends Entity {
 
     /**
      * The cumulative time of all the rounds as a string.
+     *
      * @return A string of all the times of the rounds added.
      */
     public String getTotalTimeString() {
@@ -297,6 +309,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the total time taken.
+     *
      * @return The total time taken as a long.
      */
     public long getTotalTimeLong() {
@@ -305,6 +318,7 @@ public abstract class Boat extends Entity {
 
     /**
      * The bounds of the lane the boat is in currently.
+     *
      * @return A tuple of the lane bounds of the lane.
      */
     public Tuple<Float, Float> getLaneBounds() {
@@ -344,6 +358,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Checks if the boat is past the finish line.
+     *
      * @param finishLine The position of the finish line.
      * @return True if the boat is past the line, false otherwise.
      */
@@ -353,6 +368,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Set the time at which the boat finished.
+     *
      * @param finishTime The time to set the finish time to.
      */
     public void setFinishTime(long finishTime) {
@@ -361,6 +377,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the total time penalty.
+     *
      * @return The time penalty as a float.
      */
     public float getPenalty() {
@@ -369,6 +386,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the time at which the boat finished
+     *
      * @return A long of the time the boat finished.
      */
     public long getFinishTimeLong() {
@@ -377,6 +395,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the current maximum y velocity the boat can go.
+     *
      * @return The maximum speed the boat can go in the y-direction.
      */
     public float getMaxSpeed() {
@@ -385,6 +404,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the current health of the boat.
+     *
      * @return A float of the current health.
      */
     public float getCurrentHealth() {
@@ -393,6 +413,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the current amount of stamina.
+     *
      * @return A float of the current stamina of the boat.
      */
     public float getCurrentStamina() {
@@ -401,6 +422,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the distance travelled in a round as a float.
+     *
      * @return The distance travelled as a float.
      */
     public float getDistanceTravelled() {
@@ -409,6 +431,7 @@ public abstract class Boat extends Entity {
 
     /**
      * The type of boat the boat is.
+     *
      * @return A BoatType representing a boat.
      */
     public BoatType getType() {
@@ -417,6 +440,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the maximum amount of stamina the boat can have at any time.
+     *
      * @return A float of the maximum stamina.
      */
     public float getMaxStamina() {
@@ -425,6 +449,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Get the current y-velocity of the boat as a string.
+     *
      * @return Get the current y-velocity of the boat.
      */
     public float getCurrentSpeed() {
@@ -432,7 +457,26 @@ public abstract class Boat extends Entity {
     }
 
     /**
+     * Get the current handling of the boat.
+     *
+     * @return A float of the boats current handling.
+     */
+    public float getCurrentHandling() {
+        return this.boatType.handling;
+    }
+
+    /**
+     * Get the value of noCollide boolean.
+     *
+     * @return A boolean of if the boat is currently no collide or not.
+     */
+    public boolean getNoCollide() {
+        return noCollide;
+    }
+
+    /**
      * Set the current health of the boat.
+     *
      * @param healthToSet The amount of health to set the boat to.
      */
     public void setCurrentHealth(float healthToSet) {
@@ -441,6 +485,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Add to the Y velocity of the boat.
+     *
      * @param speedToAdd The velocity to add to the y-direction of the current velocity.
      */
     public void increaseYVelocity(float speedToAdd) {
@@ -448,15 +493,17 @@ public abstract class Boat extends Entity {
     }
 
     /**
-     * Add to the X velocity of the boat.
-     * @param speedToAdd The velocity to add to the x-direction of the current velocity.
+     * Add to the handling of the boat.
+     *
+     * @param speedToAdd The amount to add to the handling.
      */
-    public void increaseXVelocity(float speedToAdd) {
+    public void increaseHandling(float speedToAdd) {
         this.boatType.handling += speedToAdd;
     }
 
     /**
      * Set the current value for stamina.
+     *
      * @param staminaToSet The value to set the current stamina to.
      */
     public void setCurrentStamina(float staminaToSet) {
@@ -465,6 +512,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Set the total time passed.
+     *
      * @param timeToSet The time to set to.
      */
     public void setTotalTime(long timeToSet) {
@@ -473,6 +521,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Set weather the boat is currently no colliding.
+     *
      * @param toSet The boolean value to set to.
      */
     public void setNoCollide(boolean toSet) {
@@ -481,6 +530,7 @@ public abstract class Boat extends Entity {
 
     /**
      * Set the total distance travelled.
+     *
      * @param newDistance The distance to change to.
      */
     public void setDistanceTravelled(float newDistance) {

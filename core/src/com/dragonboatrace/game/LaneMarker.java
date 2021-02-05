@@ -19,6 +19,11 @@ public class LaneMarker extends Entity {
         this.img = img;
     }
 
+    @Override
+    public void loadTexture() {
+
+    }
+
     public void render(SpriteBatch batch, Vector2 relPos) {
         batch.begin();
         for (int i = 0; i < ((3 * Gdx.graphics.getHeight()) / this.img.getHeight()); i++) {

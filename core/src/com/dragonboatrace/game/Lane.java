@@ -126,7 +126,9 @@ public class Lane {
         }
 
         if (this.obstacles.size() < maxObstacles) {
-            this.obstacles.add(spawnObstacle());
+            Obstacle o = spawnObstacle();
+            o.loadTexture();
+            this.obstacles.add(o);
         }
 
         if (this.currentPower != null) {
@@ -286,7 +288,9 @@ public class Lane {
                     ThreadLocalRandom.current().nextFloat() * Gdx.graphics.getHeight())
             );
             dir.limit(randomType.getSpeed());    // Limit the vector to the max speed of the obstacle
-            return new PowerUp(randomType, spawnPos, dir);
+            PowerUp power = new PowerUp(randomType, spawnPos, dir);
+            power.loadTexture();
+            return power;
         } else {
             return null;
         }
@@ -350,5 +354,9 @@ public class Lane {
             obstacle.dispose();
         }
         this.boat.dispose();
+    }
+
+    public void loadTexture() {
+        this.boat.loadTexture();
     }
 }

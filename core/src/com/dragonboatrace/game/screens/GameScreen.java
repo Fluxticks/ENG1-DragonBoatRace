@@ -51,6 +51,7 @@ public class GameScreen extends ScreenAdapter {
         this.difficulty = difficulty;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
+        this.finishLineObstacle.loadTexture();
         this.round = round;
         this.obstacleMultiplier = 1;
         this.create(round);
@@ -63,6 +64,7 @@ public class GameScreen extends ScreenAdapter {
         this.obstacleMultiplier = 1;
         this.game.toDispose.add(this);
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
+        this.finishLineObstacle.loadTexture();
 
         ArrayList<Lane> tempLanes = new ArrayList<>();
         for (JsonValue lane : jsonString.get("lanes")) {
@@ -76,6 +78,7 @@ public class GameScreen extends ScreenAdapter {
 
         for (Lane lane : lanes) {
             lane.setPb(this.pb);
+            lane.loadTexture();
         }
         this.create(this.round);
     }

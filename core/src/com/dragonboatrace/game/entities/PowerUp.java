@@ -18,9 +18,6 @@ public class PowerUp extends Entity {
         this.type = type;
         this.constantVel = velocity.cpy();
         this.vel = velocity;
-        if (!this.type.imageSrc.equals("Testing")) {
-            this.image = new Texture(this.type.imageSrc);
-        }
     }
 
     public PowerUp(JsonValue jsonString) {
@@ -30,10 +27,11 @@ public class PowerUp extends Entity {
         this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
         this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
         this.type = new Json().fromJson(PowerUpType.class, jsonString.getString("type"));
-        if (!this.type.imageSrc.equals("Testing")) {
-            this.image = new Texture(this.type.imageSrc);
-        }
+    }
 
+    @Override
+    public void loadTexture() {
+        this.image = new Texture(this.type.imageSrc);
     }
 
     public String save() {
@@ -48,29 +46,83 @@ public class PowerUp extends Entity {
         );
     }
 
-    public void applyEffect(Boat boatAffected) {
-        switch (type) {
+    public void applyEffect(Boat boatAffected) throws NullPointerException{
+        switch (this.type) {
             case SPEED:
-                boatAffected.increaseYVelocity(type.effect);
+                this.applySpeed(boatAffected);
                 break;
             case HEALTH:
-                boatAffected.setCurrentHealth(Math.min(boatAffected.getCurrentHealth() + type.effect, boatAffected.boatType.maxHealth));
+                this.applyHealth(boatAffected);
                 break;
             case AGILITY:
-                boatAffected.increaseXVelocity(type.effect);
+                this.applyAgility(boatAffected);
                 break;
             case STAMINA:
-                boatAffected.setCurrentStamina(Math.min(boatAffected.getCurrentStamina() + type.effect, boatAffected.maxStamina));
+                this.applyStamina(boatAffected);
                 break;
             case TIMER:
-                boatAffected.setTotalTime(boatAffected.getTotalTimeLong() - (long) type.effect);
+                this.applyTimer(boatAffected);
+                break;
             case NOCOLLIDE:
-                this.noCollideEffect(boatAffected);
+                this.applyCollide(boatAffected);
                 break;
             default:
                 throw new NullPointerException("No power up type defined");
         }
     }
+
+    /*
+    * Refactored methods to so they can be tested
+    */
+
+    public float applySpeed(Boat boatAffected){
+        float velBefore = boatAffected.vel.y;
+        boatAffected.increaseYVelocity(type.effect);
+        return boatAffected.vel.y - velBefore;
+    }
+
+    public float applyHealth(Boat boatAffected){
+        float healthBefore = boatAffected.currentHealth;
+        boatAffected.setCurrentHealth(Math.min(boatAffected.getCurrentHealth() + type.effect, boatAffected.boatType.maxHealth));
+        return boatAffected.currentHealth - healthBefore;
+    }
+
+    public float applyAgility(Boat boatAffected){
+        float handlingBefore = boatAffected.getCurrentHandling();
+        boatAffected.increaseHandling(type.effect);
+        return boatAffected.getCurrentHandling() - handlingBefore;
+    }
+
+    public float applyStamina(Boat boatAffected){
+        float staminaBefore = boatAffected.currentStamina;
+        boatAffected.setCurrentStamina(Math.min(boatAffected.getCurrentStamina() + type.effect, boatAffected.maxStamina));
+        return boatAffected.currentStamina - staminaBefore;
+    }
+
+    public long applyTimer(Boat boatAffected){
+        long timeBefore = boatAffected.totalTime;
+        boatAffected.setTotalTime(boatAffected.getTotalTimeLong() - (long) type.effect);
+        return boatAffected.totalTime - timeBefore;
+    }
+
+    //TODO: Run this when the player loads the game
+    private boolean applyCollide(final Boat timedBoat) {
+        timedBoat.setNoCollide(true);
+        Timer.Task countDown = new Timer.Task() {
+            @Override
+            public void run() {
+                timedBoat.setNoCollide(false);
+            }
+        };
+        Timer timer = new Timer();
+        timer.scheduleTask(countDown, this.type.effect);
+        return timedBoat.getNoCollide();
+    }
+
+    /*
+    * End
+     */
+
 
     @Override
     public boolean equals(Object obj) {
@@ -84,19 +136,6 @@ public class PowerUp extends Entity {
         } else {
             return false;
         }
-    }
-
-    //TODO: Run this when the player loads the game
-    private void noCollideEffect(final Boat timedBoat) {
-        timedBoat.setNoCollide(true);
-        Timer.Task countDown = new Timer.Task() {
-            @Override
-            public void run() {
-                timedBoat.setNoCollide(false);
-            }
-        };
-        Timer timer = new Timer();
-        timer.scheduleTask(countDown, this.type.effect);
     }
 
     public void move(float deltaTime) {

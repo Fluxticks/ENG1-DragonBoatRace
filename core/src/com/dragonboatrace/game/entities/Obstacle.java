@@ -16,9 +16,6 @@ public class Obstacle extends Entity {
         this.vel = vel;
         this.constantVel = vel.cpy();
         this.obstacleType = obstacleType;
-        if (!this.obstacleType.imageSrc.equals("Testing")){
-            this.image = new Texture(this.obstacleType.imageSrc);
-        }
     }
 
     public Obstacle(JsonValue jsonString) {
@@ -28,9 +25,11 @@ public class Obstacle extends Entity {
         this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
         this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
         this.obstacleType = new Json().fromJson(ObstacleType.class,jsonString.getString("type"));
-        if (!this.obstacleType.imageSrc.equals("Testing")){
-            this.image = new Texture(this.obstacleType.imageSrc);
-        }
+    }
+
+    @Override
+    public void loadTexture() {
+        this.image = new Texture(this.obstacleType.imageSrc);
     }
 
     public String save() {

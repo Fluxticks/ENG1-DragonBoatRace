@@ -52,6 +52,7 @@ public class BoatChoice extends ScreenAdapter {
                     null
             );
             this.boats[i].getSize().scl(this.boatScale);
+            this.boats[i].loadTexture();
         }
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
@@ -89,6 +90,7 @@ public class BoatChoice extends ScreenAdapter {
                     )
             );
             CPUs[i].saveStartPos();
+            CPUs[i].loadTexture();
         }
 
         PlayerBoat pb = new PlayerBoat(
@@ -102,6 +104,7 @@ public class BoatChoice extends ScreenAdapter {
         )
         );    // Creating the players boat
         pb.saveStartPos();
+        pb.loadTexture();
 
         Lane[] lanes = new Lane[laneCount];
         for(int i = 0; i < laneCount - 1; i++){
@@ -162,8 +165,8 @@ public class BoatChoice extends ScreenAdapter {
 
         game.batch.begin();
         this.font.draw(game.batch,
-                String.format("Current Selection: %s",
-                        this.BoatTypes.get(this.selection).getID()),
+                String.format("Current Selection: %s BOAT",
+                        this.BoatTypes.get(this.selection).name()),
                 Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * .9f
         );
         this.font.draw(game.batch,
