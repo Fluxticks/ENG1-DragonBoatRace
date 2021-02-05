@@ -55,6 +55,7 @@ public class BoatTest {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(100,100), new Tuple<Float, Float>(0f,0f));
         Obstacle obstacle = new Obstacle(ObstacleType.TESTING, new Vector2(10,10), new Vector2());
         Assert.assertFalse(boat.checkCollision(obstacle));
+        //TODO: Check health and stamina change.
     }
 
     @Test

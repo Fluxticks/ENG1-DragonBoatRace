@@ -46,6 +46,7 @@ public class ObstacleTest {
         Assert.assertEquals(testingObstacle.getVel(), new Vector2(0, 0));
         // Size Test
         Assert.assertEquals(testingObstacle.getSize(), testingObstacle.getType().getSize());
-
+        // Movement Characteristics
+        Assert.assertEquals(testingObstacle.getType().getMover(), MovementCharacteristics.STATIC);
     }
 }
