@@ -9,13 +9,33 @@ import com.dragonboatrace.game.screens.TitleScreen;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the game as a class.
+ *
+ * @author Jacob Turner
+ */
 public class DragonBoatRace extends Game {
 
+    /**
+     * The spritebatch to be used across all the screens.
+     */
     public SpriteBatch batch;
+    /**
+     * The shape renderer to be used across all the screen.s
+     */
     public ShapeRenderer shapeRenderer;
+    /**
+     * The font used to display the text on screen.
+     */
     public BitmapFont font;
+    /**
+     * A list of currently active screens that need to be disposed when the game closes.
+     */
     public ArrayList<ScreenAdapter> toDispose;
 
+    /**
+     * Create the screen.
+     */
     @Override
     public void create() {
         this.batch = new SpriteBatch();
@@ -25,6 +45,9 @@ public class DragonBoatRace extends Game {
         setScreen(new TitleScreen(this));
     }
 
+    /**
+     * Dispose this screen and any other active screens.
+     */
     @Override
     public void dispose() {
         this.batch.dispose();
