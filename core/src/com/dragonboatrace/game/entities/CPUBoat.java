@@ -6,21 +6,45 @@ import com.dragonboatrace.game.Tuple;
 
 import java.util.ArrayList;
 
+/**
+ * A boat controlled by the computer.
+ *
+ * @author Jacob Turner
+ */
 public class CPUBoat extends Boat {
 
-    Vector2 startPos;
+    /**
+     * The current direction the boat is moving in horizontally.
+     */
     private int dir;
+    /**
+     * The multiplier that specifies how big the area being checked for obstacles is.
+     */
     private final float areaMulti = 0.5f;
-    private EntityHitbox areaChecker;
+    /**
+     * The area in which obstacles are checked for.
+     */
+    private final EntityHitbox areaChecker;
 
+    /**
+     * Creates a boat using a specific boat type and position to be controlled by the computer.
+     *
+     * @param boatType   The type of boat to be used as a template for statistics.
+     * @param pos        The starting position of the boat.
+     * @param laneBounds The x coordinates of the lane the boat is in.
+     */
     public CPUBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         this.startPos = pos;
         this.dir = 0;
-
         this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
     }
 
+    /**
+     * Creates a boat controlled by the computer from a save file.
+     *
+     * @param jsonString The json string representing the computer boat from a save file.
+     */
     public CPUBoat(JsonValue jsonString) {
         super(jsonString);
         startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
@@ -29,6 +53,11 @@ public class CPUBoat extends Boat {
 
     }
 
+    /**
+     * Performs the movement of the boat given the time since the previous frame.
+     *
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
     public void move(float deltaTime) {
 
@@ -57,25 +86,33 @@ public class CPUBoat extends Boat {
         }
     }
 
-    //this method isnt used yet bc it sucks, I was going to use it to decide where to move the cpus intelligently but that's too hard so might just make them move randomly 
-    //please ignore this method
+    /**
+     * Decides which direction to move (left/right) given the position of the obstacles around the boat.
+     *
+     * @param obstacles A list of the obstacles in the boat's lane.
+     */
     public void decideMovement(ArrayList<Obstacle> obstacles) {
 
         boolean obstacleInZone = false;
         float thisCenter = this.size.x / 2f + this.inGamePos.x;
 
+        // Find an obstacle in the area being checked.
         for (Obstacle obstacle : obstacles) {
             if (this.areaChecker.checkCollision(obstacle.getHitbox())) {
                 float obstacleCenter = obstacle.size.x / 2f + obstacle.inGamePos.x;
                 obstacleInZone = true;
-                dir = decideDirection(thisCenter, obstacleCenter);
+                this.dir = decideDirection(thisCenter, obstacleCenter);
                 break;
             }
         }
 
+        // If there was no obstacle found try and stay in the middle of the lane
         if (!obstacleInZone) {
             float laneCenter = (laneBounds.b + laneBounds.a) / 2f;
 
+            // Find if the boat is more to the left or right of the lane and set
+            // the direction to move towards the center.
+            // 1 moves right, -1 moves left, 0 goes forward.
             if (thisCenter + this.size.x < laneCenter) {
                 this.dir = 1;
             } else if (thisCenter - this.size.x > laneCenter) {
@@ -86,6 +123,13 @@ public class CPUBoat extends Boat {
         }
     }
 
+    /**
+     * Decides the direction to move based on the position of an obstacle.
+     *
+     * @param thisCenter     The x coordinate of the center of the boat.
+     * @param obstacleCenter The x coordinate of the center of the obstacle.
+     * @return -1 or 1 for a given direction. -1 for moving left, 1 for moving right.
+     */
     private int decideDirection(float thisCenter, float obstacleCenter) {
 
         // Try to stay in the lane.
@@ -103,11 +147,22 @@ public class CPUBoat extends Boat {
         }
     }
 
+    /**
+     * Determines if the given object is an identical {@link CPUBoat}
+     *
+     * @param obj The object to be compared to.
+     * @return True or False if the given object has the same values.
+     */
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
+    /**
+     * Updates the position, velocity and distance travelled for the boat given the time passed since the previous frame.
+     *
+     * @param deltaTime The time passed since the previous frame.
+     */
     @Override
     public void update(float deltaTime) {
         float deltaX = this.vel.x * this.dampening;
@@ -125,11 +180,6 @@ public class CPUBoat extends Boat {
         }
         this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
         this.hitbox.setToPosition(this.inGamePos);
-    }
-
-    //this is used for debugging, it tells you where they are on screen and where they are relative to the start line
-    public String getCurrentPos() {
-        return this.pos.toString() + " , " + this.inGamePos.toString();
     }
 
 }

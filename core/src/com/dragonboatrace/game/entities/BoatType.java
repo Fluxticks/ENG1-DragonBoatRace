@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Boat Type enum for storing basic values of different boat types.
+ *
  * @author Jacob Turner
  */
 public enum BoatType {
@@ -22,14 +23,15 @@ public enum BoatType {
 
     /**
      * Creates a Boat template to define a generic {@link Boat}
-     * @param speed The y-velocity of the boat type.
+     *
+     * @param speed        The y-velocity of the boat type.
      * @param acceleration The acceleration of the boat type.
-     * @param maxHealth The maximum health of the boat type.
-     * @param weight The weight of the boat type.
-     * @param strength The strength of the boat type.
-     * @param handling The handling of the boat type.
-     * @param size The size of the boat type.
-     * @param imageSrc The path of the image source used as the boat types texture.
+     * @param maxHealth    The maximum health of the boat type.
+     * @param weight       The weight of the boat type.
+     * @param strength     The strength of the boat type.
+     * @param handling     The handling of the boat type.
+     * @param size         The size of the boat type.
+     * @param imageSrc     The path of the image source used as the boat types texture.
      */
     BoatType(float speed, float acceleration, float maxHealth, float weight, float strength, float handling, Vector2 size, String imageSrc) {
         this.speed = speed;
@@ -44,6 +46,7 @@ public enum BoatType {
 
     /**
      * Get the speed of the boat type.
+     *
      * @return Returns type float of the speed.
      */
     public float getSpeed() {
@@ -52,6 +55,7 @@ public enum BoatType {
 
     /**
      * Get the boat type's acceleration.
+     *
      * @return A float of the boats acceleration rate.
      */
     public float getAcceleration() {
@@ -60,6 +64,7 @@ public enum BoatType {
 
     /**
      * Get the maximum health of the boat type.
+     *
      * @return A float of the maximum health.
      */
     public float getMaxHealth() {
@@ -68,6 +73,7 @@ public enum BoatType {
 
     /**
      * Get the weight of the boat type, used for collision.
+     *
      * @return The weight of the boat type.
      */
     public float getWeight() {
@@ -76,6 +82,7 @@ public enum BoatType {
 
     /**
      * Get the boat type's handling.
+     *
      * @return A float of the boat type's handling.
      */
     public float getHandling() {
@@ -84,6 +91,7 @@ public enum BoatType {
 
     /**
      * Get the dimensions of the boat type.
+     *
      * @return A 2d vector of the size of the boat type.
      */
     public Vector2 getSize() {
@@ -92,6 +100,7 @@ public enum BoatType {
 
     /**
      * Get the path for the texture of the boat type.
+     *
      * @return A string for the path to the boat type texture.
      */
     public String getImageSrc() {
