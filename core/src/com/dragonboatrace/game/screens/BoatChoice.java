@@ -75,7 +75,7 @@ public class BoatChoice extends ScreenAdapter {
             if (i >= (laneCount - 1) / 2) {
                 xpos += 1;
             }
-            ArrayList<BoatType> cpuBoatTypes = (ArrayList<BoatType>) this.BoatTypes.clone();
+            ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(this.BoatTypes);
             cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
             BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
             CPUs[i] = new CPUBoat(
