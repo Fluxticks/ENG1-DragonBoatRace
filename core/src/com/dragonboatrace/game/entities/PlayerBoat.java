@@ -7,19 +7,39 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
 
+/**
+ * Represents the boat a player controls.
+ *
+ * @author Jacob Turner
+ */
 public class PlayerBoat extends Boat {
-    Vector2 startPos;
 
+    /**
+     * Creates a new player boat of a specific type at an initial position and with lane bounds.
+     *
+     * @param boatType   The boat type to be used as a template.
+     * @param pos        The initial position of the boat.
+     * @param laneBounds The x-coordinates of the lane bounds the boat is in.
+     */
     public PlayerBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
         startPos = pos;
     }
 
+    /**
+     * Creates a boat from a json string loaded from a save file.
+     *
+     * @param jsonString A json string representing a player boat.
+     */
     public PlayerBoat(JsonValue jsonString) {
         super(jsonString);
-        //startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
     }
 
+    /**
+     * Get the input of the player to update the velocity, stamina and if any penalties need to be applied.
+     *
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
     public void move(float deltaTime) {
         if (this.currentStamina > 0 && this.currentHealth > 0) {
@@ -57,15 +77,32 @@ public class PlayerBoat extends Boat {
         }
     }
 
+    /**
+     * Assert if an object is an identical PlayerBoat.
+     *
+     * @param obj The object to be compared to.
+     * @return A boolean if the object is an identical boat.
+     */
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
+    /**
+     * Adds the boats texture to a given SpriteBatch and renders it.
+     *
+     * @param batch  The spritebatch to be added to.
+     * @param relPos The position to be drawn relative to.
+     */
     public void render(SpriteBatch batch, Vector2 relPos) {
         super.render(batch, new Vector2());
     }
 
+    /**
+     * Update the actual position, the render position and the distance travelled of the boat.
+     *
+     * @param deltaTime The time passed since the previous frame.
+     */
     @Override
     public void update(float deltaTime) {
         float deltaX = this.vel.x * this.dampening;
