@@ -244,10 +244,6 @@ public abstract class Boat extends Entity {
     @Override
     public void update(float deltaTime) {
         this.currentMaxSpeed = this.boatType.getSpeed();
-        if (this.collider != null) {
-            this.currentMaxSpeed /= this.collider.weight;
-        }
-
         super.update(deltaTime);
     }
 
