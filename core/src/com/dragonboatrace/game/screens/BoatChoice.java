@@ -121,17 +121,17 @@ public class BoatChoice extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.F6) {
+                if (keyCode == Input.Keys.F1) {
                     FileHandle file = Gdx.files.local("bin/save1.json");
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
 
-                }else if (keyCode == Input.Keys.F7) {
+                }else if (keyCode == Input.Keys.F2) {
                     FileHandle file = Gdx.files.local("bin/save2.json");
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
 
-                } else if (keyCode == Input.Keys.F8) {
+                } else if (keyCode == Input.Keys.F3) {
                     FileHandle file = Gdx.files.local("bin/save3.json");
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
