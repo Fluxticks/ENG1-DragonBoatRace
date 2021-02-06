@@ -1,5 +1,6 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.MovementCharacteristics;
 
@@ -17,7 +18,7 @@ public enum ObstacleType {
     RUBBISH(1.5f, new Vector2(50, 50), 3, "Obstacles/garbage.png", MovementCharacteristics.STATIC),
     LONGBOI(2, new Vector2(50, 50), 4, "Obstacles/longboi.png", MovementCharacteristics.STATIC),
     BOAT(5, new Vector2(50, 50), 5, "Obstacles/shipwreck.png", MovementCharacteristics.STATIC),
-    FINISHLINE(0, new Vector2(50, 50), 1, "Obstacles/finishline.png", MovementCharacteristics.STATIC),
+    FINISHLINE(0, new Vector2(Gdx.graphics.getWidth(), 150), 1, "Obstacles/finishline.png", MovementCharacteristics.STATIC),
     TESTING(0, new Vector2(50, 50), 0, "Testing", MovementCharacteristics.STATIC);
 
     /**

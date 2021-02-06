@@ -1,5 +1,6 @@
 package com.dragonboatrace.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -58,7 +59,7 @@ public class Obstacle extends Entity {
      */
     @Override
     public void loadTexture() {
-        this.image = new Texture(this.obstacleType.imageSrc);
+        this.image = new Texture(Gdx.files.local(this.obstacleType.imageSrc));
     }
 
     /**
