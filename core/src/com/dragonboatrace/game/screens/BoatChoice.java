@@ -24,14 +24,47 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 
+/**
+ * Represents the screen that allows the user to choose a boat for the race.
+ *
+ * @author Jacob Turner
+ */
 public class BoatChoice extends ScreenAdapter {
+
+    /**
+     * The instance of DragonBoatRace to be used across the whole game.
+     */
     DragonBoatRace game;
+    /**
+     * The list of instantiated boats to be presented to the user as choices.
+     */
     Boat[] boats;
+    /**
+     * The list of the types of boats the user can choose from.
+     */
     ArrayList<BoatType> BoatTypes;
-    int selection, boatScale;
+    /**
+     * The index of the current selection the user is looking at.
+     */
+    int selection;
+    /**
+     * The size to scale the boat up to in the preview.
+     */
+    int boatScale;
+    /**
+     * The font used to render the statistics and other UI elements.
+     */
     BitmapFont font;
+    /**
+     * The background texture.
+     */
     Texture background;
 
+    /**
+     * Creates a new screen for the boat choice of the user.
+     *
+     * @param game The instance of DragonBoatRace to be used across the whole game.
+     */
     public BoatChoice(DragonBoatRace game) {
         this.game = game;
         this.selection = 0;
@@ -62,13 +95,19 @@ public class BoatChoice extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
-    public void startGame(int difficulty){
+    /**
+     * Start the game once the user has made their choice with a specific difficulty.
+     *
+     * @param difficulty The difficulty the user has chosen.
+     */
+    public void startGame(int difficulty) {
 
+        //TODO: Inline comments are needed for this function.
         int laneCount = 7;
 
         CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
 
-        float laneWidth = Gdx.graphics.getWidth()/(float)laneCount;
+        float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
 
         for (int i = 0; i < laneCount - 1; i++) {
             int xpos = i;
@@ -81,7 +120,7 @@ public class BoatChoice extends ScreenAdapter {
             CPUs[i] = new CPUBoat(
                     cpuBoatType,
                     new Vector2(
-                            (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float)laneCount),
+                            (int) (0.5 + xpos) * (Gdx.graphics.getWidth() / (float) laneCount),
                             10
                     ),
                     new Tuple<>(
@@ -107,15 +146,17 @@ public class BoatChoice extends ScreenAdapter {
         pb.loadTexture();
 
         Lane[] lanes = new Lane[laneCount];
-        for(int i = 0; i < laneCount - 1; i++){
+        for (int i = 0; i < laneCount - 1; i++) {
             lanes[i] = new Lane(CPUs[i], pb);
         }
-        lanes[laneCount-1] = new Lane(pb,pb);
+        lanes[laneCount - 1] = new Lane(pb, pb);
 
         game.setScreen(new GameScreen(game, 0, lanes, pb, difficulty));
     }
 
-
+    /**
+     * Show the screen.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -126,7 +167,7 @@ public class BoatChoice extends ScreenAdapter {
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
 
-                }else if (keyCode == Input.Keys.F2) {
+                } else if (keyCode == Input.Keys.F2) {
                     FileHandle file = Gdx.files.local("bin/save2.json");
                     JsonValue jsonString = new JsonReader().parse(file);
                     game.setScreen(new GameScreen(game, jsonString));
@@ -154,8 +195,13 @@ public class BoatChoice extends ScreenAdapter {
         });
     }
 
+    /**
+     * Render the screen.
+     *
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
-    public void render(float delta) {
+    public void render(float deltaTime) {
         game.batch.begin();
         game.batch.draw(this.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -202,16 +248,22 @@ public class BoatChoice extends ScreenAdapter {
 
         this.font.draw(game.batch, "Use arrow keys to select boat", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.2f);
         this.font.draw(game.batch, "Select difficulty by pressing the corresponding button:", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.1f);
-        this.font.draw(game.batch, "Easy (1), Normal (2), Hard (3)", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight()*0.05f);
+        this.font.draw(game.batch, "Easy (1), Normal (2), Hard (3)", Gdx.graphics.getWidth() * 0.03f, Gdx.graphics.getHeight() * 0.05f);
         game.batch.end();
 
     }
 
+    /**
+     * Hide the screen.
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
     }
 
+    /**
+     * Dispose the screen's background and font.
+     */
     public void dispose() {
         this.background.dispose();
         this.font.dispose();
