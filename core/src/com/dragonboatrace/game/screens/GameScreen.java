@@ -149,11 +149,11 @@ public class GameScreen extends ScreenAdapter {
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.ESCAPE) {
                     game.dispose();
-                    System.exit(0);
+                    Gdx.app.exit();
                 }
                 if (keyCode == Input.Keys.F1 || keyCode == Input.Keys.F2 || keyCode == Input.Keys.F3) {
                     makeSave(keyCode - 243);
-                    System.exit(0);
+                    Gdx.app.exit();
                 }
                 return true;
             }
