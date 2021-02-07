@@ -169,6 +169,7 @@ public class Lane {
         while (iter.hasNext()) {
             Obstacle obstacle = iter.next();
             if (this.checkEntityNotOnScreen(obstacle)) {
+                obstacle.dispose();
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             } else {
                 this.boat.checkForCollision(obstacle);
@@ -242,8 +243,10 @@ public class Lane {
     private void updatePowerUp(float deltaTime) {
         if (this.boat.getHitbox().checkCollision(this.currentPower.getHitbox())) {
             this.currentPower.applyEffect(this.boat);
+            this.currentPower.dispose();
             this.currentPower = null;
         } else if (this.checkEntityNotOnScreen(this.currentPower)) {
+            this.currentPower.dispose();
             this.currentPower = null;
         } else if (this.checkPowerUpNotInEdges()) {
             this.currentPower.bounceEdge(deltaTime);

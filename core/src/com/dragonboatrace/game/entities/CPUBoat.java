@@ -62,21 +62,14 @@ public class CPUBoat extends Boat {
      */
     @Override
     public void move(float deltaTime) {
-        if(this.currentStamina > 0){
-            //basically they just move in a straight line until they break
-            if (this.vel.y < this.currentMaxSpeed) {
-                this.vel.add(0, ((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
-            } else if (this.vel.y > this.currentMaxSpeed) {
-                this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
-            }
-
-            this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)), 0);
-
-            if ((this.vel.y < this.currentMaxSpeed) || (this.vel.y < 0)) {
-                this.vel.add(0, ((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
-                this.currentStamina -= 2 / (60 * deltaTime);
-            }
+        //basically they just move in a straight line until they break
+        if (this.vel.y < this.currentMaxSpeed) {
+            this.vel.add(0, ((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
+        } else if (this.vel.y > this.currentMaxSpeed) {
+            this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         }
+
+        this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)), 0);
 
         //this part stops them if they break
         if (this.currentHealth <= 0) {
@@ -188,6 +181,11 @@ public class CPUBoat extends Boat {
         }
         this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
         this.hitbox.setToPosition(this.inGamePos);
+    }
+
+    public void moveToStart(){
+        super.moveToStart();
+        this.areaChecker.setToPosition(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y));
     }
 
 }

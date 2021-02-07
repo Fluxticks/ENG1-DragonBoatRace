@@ -1,9 +1,6 @@
 package com.dragonboatrace.game.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
@@ -74,7 +71,9 @@ public class midRoundScreen extends ScreenAdapter {
                     for (Lane lane : lanes) {
                         lane.moveBoatToStart();
                     }
-                    if (round != 3 || playerPositions[1] < 4) {
+                    if(playerPositions[1] > 4 && round == 2){
+                        game.setScreen(new BoatChoice(game));
+                    }else if (round != 3 || playerPositions[1] < 4) {
                         game.setScreen(new GameScreen(game, round + 1, lanes, pb, difficulty));
                     } else {
                         game.setScreen(new Finale(game, lanes, pb));
@@ -106,7 +105,9 @@ public class midRoundScreen extends ScreenAdapter {
 
         if (round != 2) {
             game.font.draw(game.batch, "You can progress to the next round!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .3f);
-        } else {
+        } else if(playerPositions[1] > 4){
+            game.font.draw(game.batch, "You were not fast enough to make it into the final round, better luck next time", Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * .3f);
+        }else {
             game.font.draw(game.batch, "You can progress to the finale!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .3f);
         }
         if (pb.getPenalty() > 0) {

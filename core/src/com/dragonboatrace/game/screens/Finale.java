@@ -56,9 +56,9 @@ public class Finale extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                /*if (keyCode == Input.Keys.SPACE) {
+                if (keyCode == Input.Keys.SPACE) {
                     game.setScreen(new TitleScreen(game));
-                }*/
+                }
                 if(keyCode == Input.Keys.ESCAPE){
                     Gdx.app.exit();
                 }
