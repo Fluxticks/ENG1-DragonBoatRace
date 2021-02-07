@@ -21,6 +21,7 @@ import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 
@@ -69,8 +70,7 @@ public class BoatChoice extends ScreenAdapter {
         this.game = game;
         this.selection = 0;
         this.boatScale = 7;
-        this.BoatTypes = new ArrayList<>(EnumSet.allOf(BoatType.class));
-        this.BoatTypes.remove(BoatType.TESTING);
+        this.BoatTypes = availableBoats(null);
         this.background = new Texture("menus/boatSelection.png");
         this.game.toDispose.add(this);
 
@@ -95,6 +95,13 @@ public class BoatChoice extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
+    public static ArrayList<BoatType> availableBoats(BoatType remove){
+        ArrayList<BoatType> types = new ArrayList<>(Arrays.asList(BoatType.values()));
+        types.remove(BoatType.TESTING);
+        if(remove!=null)types.remove(remove);
+        return types;
+    }
+
     /**
      * Start the game once the user has made their choice with a specific difficulty.
      *
@@ -106,7 +113,7 @@ public class BoatChoice extends ScreenAdapter {
         int laneCount = 7;
 
         CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
-
+        ArrayList<BoatType> cpuBoatTypes = availableBoats(BoatTypes.get(selection));
         float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
 
         for (int i = 0; i < laneCount - 1; i++) {
@@ -114,8 +121,7 @@ public class BoatChoice extends ScreenAdapter {
             if (i >= (laneCount - 1) / 2) {
                 xpos += 1;
             }
-            ArrayList<BoatType> cpuBoatTypes = new ArrayList<>(this.BoatTypes);
-            cpuBoatTypes.remove(BoatTypes.get(selection)); // CPUs can't choose player boat
+
             BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
             CPUs[i] = new CPUBoat(
                     cpuBoatType,

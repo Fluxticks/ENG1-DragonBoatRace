@@ -2,10 +2,13 @@ package com.dragonboatrace.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.dragonboatrace.game.entities.*;
+import com.dragonboatrace.game.screens.BoatChoice;
 import com.dragonboatrace.game.screens.midRoundScreen;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
 
 @RunWith(GdxTestRunner.class)
 public class BoatTest {
@@ -150,5 +153,16 @@ public class BoatTest {
 
         Assert.assertEquals(lanes.length, positions[0]);
         Assert.assertEquals(lanes.length, positions[1]);
+    }
+
+    @Test
+    public void checkValidCPUBoatTypes(){
+        for(BoatType type : BoatType.values()){
+            ArrayList<BoatType> availableTypes = BoatChoice.availableBoats(type);
+            Assert.assertFalse(availableTypes.contains(type));
+        }
+        // Testing should not be an available choice of boat for the cpu
+        ArrayList<BoatType> availableTypes = BoatChoice.availableBoats(null);
+        Assert.assertFalse(availableTypes.contains(BoatType.TESTING));
     }
 }
