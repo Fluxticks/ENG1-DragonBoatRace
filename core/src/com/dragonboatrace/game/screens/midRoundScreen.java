@@ -10,15 +10,47 @@ import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
+/**
+ * The screen that shows in-between rounds.
+ *
+ * @author Jacob Turner
+ */
 public class midRoundScreen extends ScreenAdapter {
 
+    /**
+     * The instance of the DragonBoatRace.
+     */
     DragonBoatRace game;
+    /**
+     * The round that was just completed.
+     */
     int round;
+    /**
+     * The instance of the player boat.
+     */
     PlayerBoat pb;
+    /**
+     * The current positions of the boats in the overall race.
+     */
     int[] playerPositions;
+    /**
+     * The array of lanes.
+     */
     Lane[] lanes;
+    /**
+     * The difficulty chosen by the player.
+     */
     int difficulty;
 
+    /**
+     * Creates a new screen.
+     *
+     * @param game       The instance of the DragonBoatRace.
+     * @param round      The round that was just completed.
+     * @param lanes      The array of lanes.
+     * @param playerBoat The instance of the player boat.
+     * @param difficulty The difficulty chosen by the player.
+     */
     public midRoundScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
         this.lanes = lanes;
@@ -30,6 +62,9 @@ public class midRoundScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Show the screen.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -52,8 +87,13 @@ public class midRoundScreen extends ScreenAdapter {
         });
     }
 
+    /**
+     * Render the information to the player.
+     *
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
-    public void render(float delta) {
+    public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -78,6 +118,11 @@ public class midRoundScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    /**
+     * Get the current positions of the cpu boats ignoring the player boats position.
+     *
+     * @return An array of the positions of the cpu boats.
+     */
     public int[] getPlayerPositions() {
         //element 0 of the output is the players position in the last race
         //element 1 of the output is the players position in all races
@@ -96,6 +141,9 @@ public class midRoundScreen extends ScreenAdapter {
         return output;
     }
 
+    /**
+     * Hide the screen.
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
