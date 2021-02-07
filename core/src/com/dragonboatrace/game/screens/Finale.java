@@ -79,28 +79,28 @@ public class Finale extends ScreenAdapter {
             game.font.draw(game.batch, "You didn't win a medal :(", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
         } else {
             game.batch.draw(new Texture("menus/victory.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-            switch (playerPositions[1]) {
-                case 1:
-                    game.font.draw(game.batch, "Congratulations you won a Gold medal!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
-                    break;
-                case 2:
-                    game.font.draw(game.batch, "Congratulations you won a Silver medal!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
-                    break;
-                case 3:
-                    game.font.draw(game.batch, "Congratulations you won a Bronze medal!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
-                    break;
-                default:
-                    break;
-            }
-
-
+            String medal = getPlayerMedal(playerPositions[1]);
+            String text = "Congratulations you won a " + medal + " medal!";
+            game.font.draw(game.batch, text, Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
         }
         game.font.draw(game.batch, "You came #" + playerPositions[1] + " in the dragon boat race! Your total time was " + pb.getTotalTimeString(), Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .5f);
         game.font.draw(game.batch, "Press Space to restart!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .3f);
         game.batch.end();
 
 
+    }
+
+    public static String getPlayerMedal(int playerPosition){
+        switch (playerPosition) {
+            case 1:
+                return "Gold";
+            case 2:
+                return "Silver";
+            case 3:
+                return "Bronze";
+            default:
+                return "";
+        }
     }
 
     /**
