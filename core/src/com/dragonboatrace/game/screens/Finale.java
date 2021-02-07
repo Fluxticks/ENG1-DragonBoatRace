@@ -12,6 +12,8 @@ import com.dragonboatrace.game.entities.PlayerBoat;
 
 /**
  * The screen that shows when either all the rounds are over, or if the user didn't make it into the final.
+ *
+ * @author Jacob Turner
  */
 public class Finale extends ScreenAdapter {
 

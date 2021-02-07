@@ -27,6 +27,8 @@ import java.util.Arrays;
 
 /**
  * The main game screen which is showing when the player is actually playing the game.
+ *
+ * @author Jacob Turner
  */
 public class GameScreen extends ScreenAdapter {
 
@@ -266,6 +268,7 @@ public class GameScreen extends ScreenAdapter {
 
     /**
      * Render the game to the player.
+     *
      * @param deltaTime The time since the previous frame.
      */
     public void render(float deltaTime) {
@@ -498,6 +501,7 @@ public class GameScreen extends ScreenAdapter {
 
     /**
      * Dispose of all the game elements.
+     *
      * @see Lane
      * @see com.dragonboatrace.game.entities.Boat
      * @see Background
