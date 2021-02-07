@@ -124,4 +124,31 @@ public class BoatTest {
         Assert.assertEquals(1, positions[0]);
         Assert.assertEquals(1, positions[1]);
     }
+
+    @Test
+    public void playerNotInFirstTest(){
+        PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 0f));
+
+        long playerFinish = 500;
+        long nextToAdd = 25;
+
+        boat.setTotalTime(playerFinish);
+        boat.setFinishTime(playerFinish);
+
+        Lane[] lanes = new Lane[3];
+        Lane pLane = new Lane(boat, boat);
+        lanes[0] = pLane;
+        for(int i = 1; i < lanes.length; i ++){
+            CPUBoat cpuBoat = new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
+            cpuBoat.setTotalTime(playerFinish - (long)i*nextToAdd);
+            cpuBoat.setFinishTime(playerFinish - (long)i*nextToAdd);
+            Lane lane = new Lane(cpuBoat, boat);
+            lanes[i] = lane;
+        }
+
+        int[] positions = midRoundScreen.getPlayerPositions(lanes, boat);
+
+        Assert.assertEquals(lanes.length, positions[0]);
+        Assert.assertEquals(lanes.length, positions[1]);
+    }
 }
