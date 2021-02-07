@@ -78,7 +78,7 @@ public class Finale extends ScreenAdapter {
             game.batch.draw(new Texture("menus/didnt qualify.png"), 0, 0);
             game.font.draw(game.batch, "You didn't win a medal :(", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
         } else {
-            game.batch.draw(new Texture("menus/victory.png"), 0, 0);
+            game.batch.draw(new Texture("menus/victory.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
             switch (playerPositions[1]) {
                 case 1:
