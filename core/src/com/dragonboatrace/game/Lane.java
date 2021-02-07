@@ -473,5 +473,9 @@ public class Lane {
      */
     public void loadTexture() {
         this.boat.loadTexture();
+        for(Obstacle obstacle : obstacles){
+            obstacle.loadTexture();
+        }
+        if(currentPower!=null)currentPower.loadTexture();
     }
 }
