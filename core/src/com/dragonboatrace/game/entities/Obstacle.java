@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.dragonboatrace.game.MovementCharacteristics;
 
 /**
  * Represents an obstacle.
@@ -25,6 +26,10 @@ public class Obstacle extends Entity {
      * The texture of the obstacle, used for rendering.
      */
     protected Texture image;
+    /**
+     * The characteristic that defines how the obstacle will move.
+     */
+    protected MovementCharacteristics mover;
 
     /**
      * Creates a new obstacle of a specific type and at a position.
@@ -38,6 +43,7 @@ public class Obstacle extends Entity {
         this.vel = vel;
         this.constantVel = vel.cpy();
         this.obstacleType = obstacleType;
+        this.mover = obstacleType.getMover();
     }
 
     /**
@@ -52,6 +58,7 @@ public class Obstacle extends Entity {
         this.vel = new Vector2(jsonString.get("vel").getFloat("x"), jsonString.get("vel").getFloat("y"));
         this.constantVel = new Vector2(jsonString.get("constantVel").getFloat("x"), jsonString.get("constantVel").getFloat("y"));
         this.obstacleType = new Json().fromJson(ObstacleType.class, jsonString.getString("type"));
+        this.mover = obstacleType.getMover();
     }
 
     /**
@@ -146,5 +153,9 @@ public class Obstacle extends Entity {
      */
     public ObstacleType getType() {
         return this.obstacleType;
+    }
+
+    public MovementCharacteristics getMover(){
+        return this.mover;
     }
 }

@@ -49,4 +49,14 @@ public class ObstacleTest {
         // Movement Characteristics
         Assert.assertEquals(testingObstacle.getType().getMover(), MovementCharacteristics.STATIC);
     }
+
+    @Test
+    public void obstacleMovementCharacteristicTest(){
+        for(ObstacleType type : ObstacleType.values()){
+            Obstacle obstacle = new Obstacle(type, new Vector2(), new Vector2());
+            MovementCharacteristics expectedMover = type.getMover();
+            MovementCharacteristics actualMover = obstacle.getMover();
+            Assert.assertEquals(expectedMover, actualMover);
+        }
+    }
 }
