@@ -18,7 +18,6 @@ import com.dragonboatrace.game.Background;
 import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.LaneMarker;
-import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.Obstacle;
 import com.dragonboatrace.game.entities.ObstacleType;
 import com.dragonboatrace.game.entities.PlayerBoat;
@@ -26,24 +25,73 @@ import com.dragonboatrace.game.entities.PlayerBoat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The main game screen which is showing when the player is actually playing the game.
+ */
 public class GameScreen extends ScreenAdapter {
 
+    /**
+     * The instance of the DragonBoatRace.
+     */
     DragonBoatRace game;
+    /**
+     * The instance of the player boat.
+     */
     PlayerBoat pb;
-    Obstacle finishLineObstacle;    //the finish line that appears on screen
-    int finishLine;                    //the y position in the game that the players have to pass to finish
+    /**
+     * The finish line of that round.
+     */
+    Obstacle finishLineObstacle;
+    /**
+     * The y-position of the finish line, ie the length of the race.
+     */
+    int finishLine;
+    /**
+     * The font used to display the UI elements.
+     */
     BitmapFont font;
+    /**
+     * The current round number.
+     */
     int round;
-    ObstacleType[] obstacles;
+    /**
+     * The array of lane markers that separates each lane.
+     */
     LaneMarker[] laneMarkers;
-    Background[] backgrounds;
+    /**
+     * The array of available backgrounds to display.
+     */
+    Background[] backgrounds; //TODO: Check this.
+    /**
+     * The array of the lanes that are in the game.
+     */
     Lane[] lanes;
-    CPUBoat[] CPUs;
+    /**
+     * The number of lanes, including the player lane.
+     */
     int laneCount;
+    /**
+     * The time at which the race started. Used to calculate the time it took for each boat.
+     */
     long raceStartTime;
+    /**
+     * The difficulty of the race chosen by the player.
+     */
     int difficulty;
+    /**
+     * The multiplier that increases the number of obstacles for a given difficulty.
+     */
     float obstacleMultiplier;
 
+    /**
+     * Creates a new screen.
+     *
+     * @param game       The instance of DragonBoatRace.
+     * @param round      The current round of the game.
+     * @param lanes      The array of lanes to be persistent throughout the whole game.
+     * @param playerBoat The instance of the player boat.
+     * @param difficulty The difficulty chosen by the player.
+     */
     public GameScreen(DragonBoatRace game, int round, Lane[] lanes, PlayerBoat playerBoat, int difficulty) {
         this.game = game;
         this.lanes = lanes;
@@ -57,6 +105,12 @@ public class GameScreen extends ScreenAdapter {
         this.create(round);
     }
 
+    /**
+     * Creates a new screen using a json string from a save file.
+     *
+     * @param game       The instance of the DragonBoatRace.
+     * @param jsonString The json string of the game state from a save file.
+     */
     public GameScreen(DragonBoatRace game, JsonValue jsonString) {
         this.game = game;
         this.round = jsonString.getInt("round");
@@ -83,6 +137,9 @@ public class GameScreen extends ScreenAdapter {
         this.create(this.round);
     }
 
+    /**
+     * Show the screen.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -92,26 +149,22 @@ public class GameScreen extends ScreenAdapter {
                     game.dispose();
                     System.exit(0);
                 }
-                if (keyCode == Input.Keys.F1) {
-                    FileHandle file = Gdx.files.local("bin/save1.json");
-                    makeSave(1, file);
+                if (keyCode == Input.Keys.F1 || keyCode == Input.Keys.F2 || keyCode == Input.Keys.F3) {
+                    makeSave(keyCode - 243);
                     System.exit(0);
-                } else if (keyCode == Input.Keys.F2) {
-                    FileHandle file = Gdx.files.local("bin/save2.json");
-                    makeSave(2, file);
-                    System.exit(0);
-                } else if (keyCode == Input.Keys.F3) {
-                    FileHandle file = Gdx.files.local("bin/save3.json");
-                    makeSave(3, file);
-                    System.exit(0);
-
                 }
                 return true;
             }
         });
     }
 
-    public void makeSave(int saveSlot, FileHandle file) {
+    /**
+     * Save the current game state to a file.
+     *
+     * @param saveSlot The slot to save in.
+     */
+    public void makeSave(int saveSlot) {
+        FileHandle file = Gdx.files.local("bin/save" + saveSlot + ".json");
         String[] laneStrings = new String[this.lanes.length];
 
         for (int i = 0; i < laneStrings.length; i++) {
@@ -127,6 +180,13 @@ public class GameScreen extends ScreenAdapter {
         saveJSONString(saveString, file);
     }
 
+    /**
+     * Save a JSON string to a file.
+     *
+     * @param jsonString The string to save.
+     * @param file       The file to save to.
+     * @return A boolean on if the save was successful or not.
+     */
     public static boolean saveJSONString(String jsonString, FileHandle file) {
         try {
             Json json = new Json();
@@ -138,8 +198,13 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Setup the number of obstacles and other round based parameters before the screen shows.
+     *
+     * @param round The current round.
+     */
     public void create(int round) {
-
+        //TODO: In-line comment this.
         switch (difficulty) {
             case 1:
                 this.obstacleMultiplier = (float) 0.5;
@@ -154,7 +219,6 @@ public class GameScreen extends ScreenAdapter {
 
         raceStartTime = System.currentTimeMillis();
 
-        obstacles = new ObstacleType[]{ObstacleType.BUOY, ObstacleType.ROCK, ObstacleType.BRANCH, ObstacleType.DUCK, ObstacleType.RUBBISH, ObstacleType.LONGBOI, ObstacleType.BOAT};    // The
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
         float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
@@ -200,8 +264,12 @@ public class GameScreen extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
-    public void render(float delta) {
-        float deltaTime = Gdx.graphics.getDeltaTime();    // Getting time since last frame
+    /**
+     * Render the game to the player.
+     * @param deltaTime The time since the previous frame.
+     */
+    public void render(float deltaTime) {
+        //TODO: In-line comment this.
         Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -221,76 +289,17 @@ public class GameScreen extends ScreenAdapter {
         if (pb.getCurrentHealth() == 0) {
             game.setScreen(new BoatDeathScreen(game));
         }
-		
-/*
-		game.batch.begin();	// Start drawing HUD (For debugging)
-		String debugString = String.format("stamina: %f\nhealth: %f\npos.x: %f\npos.y: %f\nvel.x: %f\nvel.y: %f\nmaxSpeed: %f\nhealth: %f\nobstacles: %d\ncolliding: %s\nPenalties: %f\nResetDelay: %f", 
-			pb.getStamina(),
-			pb.getHealth(),
-			pb.getPos().x, 
-			pb.getPos().y, 
-			pb.getVel().x,
-			pb.getVel().y,
-			pb.getMaxSpeed(),
-			pb.getHealth(),
-			obstacleList.size(),
-			collider != null ? collider.getType().getID() : "null",
-			pb.timePenalties,
-			pb.penaltyResetDelay);
-		// game.font.draw(game.batch, debugString, 10, Gdx.graphics.getHeight() - 10);
-		game.batch.end();
-*/
 
         checkAllBoatsForFinished();
 
-        /*Iterator<Obstacle> obstacleIterator = obstacleList.iterator();    // Create iterator for iterating over the obstacles
-
-        collider = null;
-
-        while (obstacleIterator.hasNext()) {    // While there is another obstacle, continute iterating
-            Obstacle o = obstacleIterator.next();    // Get the next obstacle
-            Vector2 renderPos = o.getRelPos(pb.getInGamePos());    // Get the position of the obstacle, relative to the players boat
-            if (renderPos.x > Gdx.graphics.getWidth() + 30 ||
-                    renderPos.x + o.getSize().x < -30 ||
-                    // renderPos.y > Gdx.graphics.getHeight() +10 ||
-                    renderPos.y + o.getSize().y < -100) {
-                obstacleIterator.remove();    // If the obstacles is off the screen (apart from the top) delete it
-            } else {
-                o.render(game.batch, pb.getInGamePos());    // If the obstacle is not off the screen, render it
-                o.move(deltaTime);    // Run the obstacles mover
-                o.update(deltaTime);    // Update the position of the obstacle
-                if (pb.checkCollision(o)) {    // See if the players boat is colliding with the obstacle
-                    //collider = o;
-                }
-
-                for (CPUBoat c : CPUs) {
-                    c.checkCollision(o);
-                }
-            }
-        }
-        if (obstacleList.size() < maxObstacles) {
-            obstacleList.add(spawnObstacle());
-        }*/
-
         finishLineObstacle.render(game.batch, pb.getInGamePos());
-
-        /*pb.render(game.batch, pb.getInGamePos());    // Render the boat
-        pb.move(deltaTime);    // Move the boat based on player inputs
-        pb.update(deltaTime);    // Update the position of the boat
-
-        if (pb.getHealth() == 0) {
-            game.setScreen(new BoatDeathScreen(game));
-        }
-
-        for (CPUBoat c : CPUs) {
-            c.render(game.batch, pb.getInGamePos());
-            c.move(deltaTime);
-            c.update(deltaTime);
-        }*/
 
         this.showHUD();
     }
 
+    /**
+     * Check if any boats have finished, and if the player boat estimate the finish times of the cpu boats.
+     */
     private void checkAllBoatsForFinished() {
 
         finishLineObstacle.getPos().y = finishLine; //this will make the finish line appear on the screen
@@ -325,6 +334,9 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Render the UI.
+     */
     private void showHUD() {
         // Finish line progress
         this.game.shapeRenderer.begin(ShapeType.Filled);
@@ -484,6 +496,12 @@ public class GameScreen extends ScreenAdapter {
         this.game.batch.end();
     }
 
+    /**
+     * Dispose of all the game elements.
+     * @see Lane
+     * @see com.dragonboatrace.game.entities.Boat
+     * @see Background
+     */
     @Override
     public void dispose() {
         for (Lane lane : lanes) {
