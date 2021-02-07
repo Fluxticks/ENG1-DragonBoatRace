@@ -10,13 +10,35 @@ import com.dragonboatrace.game.DragonBoatRace;
 import com.dragonboatrace.game.Lane;
 import com.dragonboatrace.game.entities.PlayerBoat;
 
+/**
+ * The screen that shows when either all the rounds are over, or if the user didn't make it into the final.
+ */
 public class Finale extends ScreenAdapter {
 
+    /**
+     * The instance of the DragonBoatRace.
+     */
     DragonBoatRace game;
+    /**
+     * The array of lanes that hold the boats.
+     */
     Lane[] lanes;
+    /**
+     * The instance of the players boat.
+     */
     PlayerBoat pb;
+    /**
+     * The race positions of all the boats.
+     */
     int[] playerPositions;
 
+    /**
+     * Creates a new screen to display.
+     *
+     * @param game  The instance of the DragonBoatRace.
+     * @param lanes The array of lanes of the boats.
+     * @param pb    The instance of the player boat.
+     */
     public Finale(DragonBoatRace game, Lane[] lanes, PlayerBoat pb) {
         this.game = game;
         this.lanes = lanes;
@@ -24,6 +46,9 @@ public class Finale extends ScreenAdapter {
         this.playerPositions = getPlayerPositions();
     }
 
+    /**
+     * Display the screen.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -37,8 +62,13 @@ public class Finale extends ScreenAdapter {
         });
     }
 
+    /**
+     * Render the information to the player.
+     *
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
-    public void render(float delta) {
+    public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
@@ -71,6 +101,10 @@ public class Finale extends ScreenAdapter {
 
     }
 
+    /**
+     * Get the positions of the cpu boats.
+     * @return An array indicating which position each of the cpu boats came, ignoring the player boat.
+     */
     public int[] getPlayerPositions() {
         //element 0 of the output is the players position in the last race
         //element 1 of the output is the players position in all races
@@ -91,6 +125,9 @@ public class Finale extends ScreenAdapter {
         return output;
     }
 
+    /**
+     * Hide the screen.
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
