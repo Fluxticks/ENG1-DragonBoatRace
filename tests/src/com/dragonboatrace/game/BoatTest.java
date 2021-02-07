@@ -1,10 +1,8 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.dragonboatrace.game.entities.BoatType;
-import com.dragonboatrace.game.entities.Obstacle;
-import com.dragonboatrace.game.entities.ObstacleType;
-import com.dragonboatrace.game.entities.PlayerBoat;
+import com.dragonboatrace.game.entities.*;
+import com.dragonboatrace.game.screens.midRoundScreen;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,5 +96,32 @@ public class BoatTest {
         int finishLine = 1000;
         boat.setDistanceTravelled((float) finishLine);
         Assert.assertTrue(boat.checkFinished(finishLine, 0));
+    }
+
+    @Test
+    public void playerInFirstTest(){
+        PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 0f));
+
+        long playerFinish = 100;
+        long nextToAdd = 50;
+
+        boat.setTotalTime(playerFinish);
+        boat.setFinishTime(playerFinish);
+
+        Lane[] lanes = new Lane[3];
+        Lane pLane = new Lane(boat, boat);
+        lanes[0] = pLane;
+        for(int i = 1; i < lanes.length; i ++){
+            CPUBoat cpuBoat = new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
+            cpuBoat.setTotalTime(playerFinish + (long)i*nextToAdd);
+            cpuBoat.setFinishTime(playerFinish + (long)i*nextToAdd);
+            Lane lane = new Lane(cpuBoat, boat);
+            lanes[i] = lane;
+        }
+
+        int[] positions = midRoundScreen.getPlayerPositions(lanes, boat);
+
+        Assert.assertEquals(1, positions[0]);
+        Assert.assertEquals(1, positions[1]);
     }
 }

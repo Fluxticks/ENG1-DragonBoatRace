@@ -58,7 +58,7 @@ public class midRoundScreen extends ScreenAdapter {
         this.pb = playerBoat;
         this.difficulty = difficulty;
         this.game.toDispose.add(this);
-        this.playerPositions = getPlayerPositions();
+        this.playerPositions = getPlayerPositions(lanes, playerBoat);
 
     }
 
@@ -119,11 +119,13 @@ public class midRoundScreen extends ScreenAdapter {
     }
 
     /**
-     * Get the current positions of the cpu boats ignoring the player boats position.
+     * Get the current positions of the player boat across all rounds and for the round just passed.
      *
+     * @param lanes The list of lanes to check
+     * @param pb    The player boat.
      * @return An array of the positions of the cpu boats.
      */
-    public int[] getPlayerPositions() {
+    public static int[] getPlayerPositions(Lane[] lanes, PlayerBoat pb) {
         //element 0 of the output is the players position in the last race
         //element 1 of the output is the players position in all races
 
