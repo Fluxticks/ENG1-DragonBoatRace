@@ -8,14 +8,29 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
 
+/**
+ * The screen that shows at the launch of the game.
+ *
+ * @author Jacob Turner
+ */
 public class TitleScreen extends ScreenAdapter {
 
+    /**
+     * The instance of the DragonBoatRace.
+     */
     DragonBoatRace game;
 
+    /**
+     * Creates a new screen.
+     * @param game The instance of DragonBoatRace.
+     */
     public TitleScreen(DragonBoatRace game) {
         this.game = game;
     }
 
+    /**
+     * Show the screen.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -33,8 +48,12 @@ public class TitleScreen extends ScreenAdapter {
         });
     }
 
+    /**
+     * Show the text on the screen.
+     * @param deltaTime The time since the previous frame.
+     */
     @Override
-    public void render(float delta) {
+    public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
@@ -45,6 +64,9 @@ public class TitleScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    /**
+     * Hide the screen.
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
