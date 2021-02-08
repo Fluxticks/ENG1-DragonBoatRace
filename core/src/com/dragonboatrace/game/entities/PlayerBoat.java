@@ -23,7 +23,7 @@ public class PlayerBoat extends Boat {
      */
     public PlayerBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
-        startPos = pos;
+        startPos = pos.cpy();
     }
 
     /**

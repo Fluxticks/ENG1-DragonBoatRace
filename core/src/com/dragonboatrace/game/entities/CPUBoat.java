@@ -37,7 +37,7 @@ public class CPUBoat extends Boat {
      */
     public CPUBoat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(boatType, pos, laneBounds);
-        this.startPos = pos;
+        this.startPos = pos.cpy();
         this.dir = 0;
         this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
     }
@@ -49,7 +49,7 @@ public class CPUBoat extends Boat {
      */
     public CPUBoat(JsonValue jsonString) {
         super(jsonString);
-        startPos = new Vector2(jsonString.get("pos").getFloat("x"), jsonString.get("pos").getFloat("y"));
+        startPos = new Vector2(jsonString.get("startPos").getFloat("x"), jsonString.get("startPos").getFloat("y"));
         this.dir = 0;
         this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
 
