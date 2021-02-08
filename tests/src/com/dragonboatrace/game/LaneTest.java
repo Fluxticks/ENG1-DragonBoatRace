@@ -32,13 +32,19 @@ public class LaneTest {
     }
 
     @Test
-    public void isPlayerLaneTestFalse() {
+    public void isPlayerLaneTest(){
+        // Check when the lane is a players lane
+        isPlayerLaneTestTrue();
+        // Check when the lane is not a players lane
+        isPlayerLaneTestFalse();
+    }
+
+    private void isPlayerLaneTestFalse() {
         Lane lane = new Lane(new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f)), null);
         Assert.assertFalse(lane.isPlayerLane);
     }
 
-    @Test
-    public void isPlayerLaneTestTrue() {
+    private void isPlayerLaneTestTrue() {
         Lane lane = new Lane(new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f)), null);
         Assert.assertTrue(lane.isPlayerLane);
     }

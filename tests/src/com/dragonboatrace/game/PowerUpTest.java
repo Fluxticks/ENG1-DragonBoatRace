@@ -30,7 +30,16 @@ public class PowerUpTest {
     }
 
     @Test
-    public void applySpeedTest() {
+    public void applyPowerUpTest(){
+        applySpeedTest();
+        applyHealthTest();
+        applyAgilityTest();
+        applyStaminaTest();
+        applyTimerTest();
+        applyNoCollideTest();
+    }
+
+    private void applySpeedTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp speedPower = new PowerUp(PowerUpType.SPEED, new Vector2(), new Vector2());
         float expectedDelta = speedPower.getType().getEffect();
@@ -38,8 +47,7 @@ public class PowerUpTest {
         Assert.assertEquals(expectedDelta, outputDelta, 0.0);
     }
 
-    @Test
-    public void applyHealthTest() {
+    private void applyHealthTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp healthPower = new PowerUp(PowerUpType.HEALTH, new Vector2(), new Vector2());
         float expectedDelta = healthPower.getType().getEffect();
@@ -47,8 +55,7 @@ public class PowerUpTest {
         Assert.assertEquals(expectedDelta, outputDelta, 0.0);
     }
 
-    @Test
-    public void applyAgilityTest() {
+    private void applyAgilityTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp agilityPower = new PowerUp(PowerUpType.AGILITY, new Vector2(), new Vector2());
         float expectedDelta = agilityPower.getType().getEffect();
@@ -56,8 +63,7 @@ public class PowerUpTest {
         Assert.assertEquals(expectedDelta, outputDelta, 0.0);
     }
 
-    @Test
-    public void applyStaminaTest() {
+    private void applyStaminaTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp staminaPower = new PowerUp(PowerUpType.STAMINA, new Vector2(), new Vector2());
         float expectedDelta = staminaPower.getType().getEffect();
@@ -65,8 +71,7 @@ public class PowerUpTest {
         Assert.assertEquals(expectedDelta, outputDelta, 0.0);
     }
 
-    @Test
-    public void applyTimerTest() {
+    private void applyTimerTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp timerPower = new PowerUp(PowerUpType.TIMER, new Vector2(), new Vector2());
         float expectedDelta = timerPower.getType().getEffect();
@@ -74,8 +79,7 @@ public class PowerUpTest {
         Assert.assertEquals(expectedDelta, outputDelta, 0.0);
     }
 
-    @Test
-    public void applyNoCollideTest() {
+    private void applyNoCollideTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 500f));
         PowerUp noCollidePower = new PowerUp(PowerUpType.NOCOLLIDE, new Vector2(), new Vector2());
         float expectedDelta = noCollidePower.getType().getEffect();

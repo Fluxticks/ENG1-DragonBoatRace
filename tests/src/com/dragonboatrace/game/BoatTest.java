@@ -44,7 +44,14 @@ public class BoatTest {
     }
 
     @Test
-    public void checkCollisionTestTrue() {
+    public void checkCollisionTest(){
+        //Check the fields when the collision happens
+        checkCollisionTestTrue();
+        //Check the fields when there is no collision
+        checkCollisionTestFalse();
+    }
+
+    private void checkCollisionTestTrue() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
         Obstacle obstacle = new Obstacle(ObstacleType.ROCK, new Vector2(), new Vector2());
 
@@ -64,8 +71,7 @@ public class BoatTest {
         Assert.assertTrue(velYAfter < velYBefore);
     }
 
-    @Test
-    public void checkCollisionTestFalse() {
+    private void checkCollisionTestFalse() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(100, 100), new Tuple<Float, Float>(0f, 0f));
         Obstacle obstacle = new Obstacle(ObstacleType.TESTING, new Vector2(10, 10), new Vector2());
 
@@ -86,14 +92,20 @@ public class BoatTest {
     }
 
     @Test
-    public void checkFinishedTestFalse() {
+    public void checkFinishedTest(){
+        // Check when the boat is finished
+        checkFinishedTestTrue();
+        // Check when the boat is not finsihed
+        checkFinishedTestFalse();
+    }
+
+    private void checkFinishedTestFalse() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
         int finishLine = 1000;
         Assert.assertFalse(boat.checkFinished(finishLine, 0));
     }
 
-    @Test
-    public void checkFinishedTestTrue() {
+    private void checkFinishedTestTrue() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 0f));
         int finishLine = 1000;
         boat.setDistanceTravelled((float) finishLine);
