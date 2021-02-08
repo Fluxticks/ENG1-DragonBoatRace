@@ -22,6 +22,7 @@ public class TitleScreen extends ScreenAdapter {
 
     /**
      * Creates a new screen.
+     *
      * @param game The instance of DragonBoatRace.
      */
     public TitleScreen(DragonBoatRace game) {
@@ -50,6 +51,7 @@ public class TitleScreen extends ScreenAdapter {
 
     /**
      * Show the text on the screen.
+     *
      * @param deltaTime The time since the previous frame.
      */
     @Override

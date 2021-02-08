@@ -1,6 +1,9 @@
 package com.dragonboatrace.game.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonboatrace.game.DragonBoatRace;
@@ -68,14 +71,19 @@ public class midRoundScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.SPACE) {
+                    // Reset all the boats to the start of the round.
                     for (Lane lane : lanes) {
                         lane.moveBoatToStart();
                     }
-                    if(playerPositions[1] > 4 && round == 2){
+                    // Given the position and round show a different screen
+                    if (playerPositions[1] > 4 && round == 2) {
+                        // If the round was the semi-finals and the player was not in the top 4
                         game.setScreen(new BoatChoice(game));
-                    }else if (round != 3 || playerPositions[1] < 4) {
+                    } else if (round != 3 || playerPositions[1] < 4) {
+                        // Any round where its not the final
                         game.setScreen(new GameScreen(game, round + 1, lanes, pb, difficulty));
                     } else {
+                        // Show the results screen
                         game.setScreen(new Finale(game, lanes, pb));
                     }
                     //this will move every cpu boat to the 'start'
@@ -103,11 +111,12 @@ public class midRoundScreen extends ScreenAdapter {
         game.font.draw(game.batch, "You came #" + playerPositions[0] + " in that leg! You took " + pb.getFinishTimeString(), Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .5f);
         game.font.draw(game.batch, "Overall you are #" + playerPositions[1] + " in the dragon boat race!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .4f);
 
+        // Choose the text to display given the round and the position of the player.
         if (round != 2) {
             game.font.draw(game.batch, "You can progress to the next round!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .3f);
-        } else if(playerPositions[1] > 4){
+        } else if (playerPositions[1] > 4) {
             game.font.draw(game.batch, "You were not fast enough to make it into the final round, better luck next time", Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * .3f);
-        }else {
+        } else {
             game.font.draw(game.batch, "You can progress to the finale!", Gdx.graphics.getWidth() * .1f, Gdx.graphics.getHeight() * .3f);
         }
         if (pb.getPenalty() > 0) {

@@ -73,23 +73,30 @@ public class Lane {
      * @param jsonString A json string representing a lane.
      */
     public Lane(JsonValue jsonString) {
+        // Check if the lane being created is a player lane
         if (jsonString.getInt("isPlayer") == 1) {
             this.boat = new PlayerBoat(jsonString.get("boat"));
         } else {
             this.boat = new CPUBoat(jsonString.get("boat"));
         }
 
+        // Create the obstacles from the json string
         this.obstacles = new ArrayList<>();
         for (JsonValue o : jsonString.get("obstacles")) {
             this.obstacles.add(new Obstacle(o));
         }
 
+        // Set the player lane var
         this.isPlayerLane = jsonString.getInt("isPlayer") == 1;
+
+        // Create the current power up from the json string
         if (jsonString.get("powerup").get(0) != null) {
             this.currentPower = new PowerUp(jsonString.get("powerup"));
         } else {
+            // If there wasn't a power up at the save point it will be null
             this.currentPower = null;
         }
+        // Don't set this yet
         this.pb = null;
     }
 
@@ -106,21 +113,29 @@ public class Lane {
         }
         if (obj.getClass() == this.getClass()) {
             Lane objLane = (Lane) obj;
+
+            // Check if the length of obstacles is the same
             if (objLane.obstacles.size() != this.obstacles.size()) {
                 return false;
             }
+
+            // Check in-place if all the obstacles are the same in each lane
+            // this is ok as the order saved is the same as the order in the game
             boolean obstacleBool = true;
             for (int i = 0; i < obstacles.size(); i++) {
                 obstacleBool = obstacleBool && objLane.obstacles.get(i).equals(this.obstacles.get(i));
             }
             boolean powerBool = false;
+            // Check the power ups
             if (this.currentPower != null) {
                 powerBool = this.currentPower.equals(objLane.getCurrentPower());
             } else if (this.currentPower == null && objLane.getCurrentPower() == null) {
                 powerBool = true;
             }
+            // Check the boats against each other
             boolean boatBool = this.boat.equals(objLane.getBoat());
             boolean pbBool = this.pb.equals(objLane.pb);
+            // Combine all the checks as all aspects must be the same
             return obstacleBool && powerBool && boatBool && pbBool;
         } else {
             return false;
@@ -165,11 +180,12 @@ public class Lane {
      * @see PowerUp
      */
     public void update(float deltaTime) {
+        // Update the obstacle positions
         ListIterator<Obstacle> iter = obstacles.listIterator();
         while (iter.hasNext()) {
             Obstacle obstacle = iter.next();
             if (this.checkEntityNotOnScreen(obstacle)) {
-                obstacle.dispose();
+                obstacle.dispose(); // Dispose of its textures, as otherwise this will cause a memory leak
                 iter.remove();    // If the obstacles is off the screen (apart from the top) delete it
             } else {
                 this.boat.checkForCollision(obstacle);
@@ -178,19 +194,21 @@ public class Lane {
             }
         }
 
+        // If some obstacles have been removed create new ones to replace them
         if (this.obstacles.size() < maxObstacles) {
             Obstacle o = spawnObstacle();
             o.loadTexture();
             this.obstacles.add(o);
         }
 
+        // Randomly spawn a new power up if there isn't one
         if (this.currentPower != null) {
             updatePowerUp(deltaTime);
         } else {
             this.currentPower = spawnPowerUp();
         }
 
-        // Don't like this but not sure how best to do this without swapping to the structure in the old game.
+        // If the lane is for a cpu boat the boat needs to know where the obstacles are and decide its direction
         if (!this.isPlayerLane) {
             ((CPUBoat) this.boat).decideMovement(obstacles);
         }
@@ -241,16 +259,20 @@ public class Lane {
      * @param deltaTime The time since the previous frame.
      */
     private void updatePowerUp(float deltaTime) {
+        // Check if the power up collided with the boat
         if (this.boat.getHitbox().checkCollision(this.currentPower.getHitbox())) {
             this.currentPower.applyEffect(this.boat);
             this.currentPower.dispose();
             this.currentPower = null;
+            // Check if the obstacle is still on the screen
         } else if (this.checkEntityNotOnScreen(this.currentPower)) {
             this.currentPower.dispose();
             this.currentPower = null;
+            // Stop the power up from leaving the lane
         } else if (this.checkPowerUpNotInEdges()) {
             this.currentPower.bounceEdge(deltaTime);
         } else {
+            // Just move the obstacle
             this.currentPower.move(deltaTime);
             this.currentPower.update(deltaTime);
         }
@@ -288,6 +310,7 @@ public class Lane {
 
     /**
      * Create a new random obstacle at a random position in the lane.
+     *
      * @return An obstacle of random type and at random position.
      */
     private Obstacle spawnObstacle() {
@@ -337,13 +360,16 @@ public class Lane {
 
     /**
      * Randomly create a new power up. Return null if it doesn't spawn one.
+     *
      * @return Null if no obstacle spawned, otherwise an obstacle of random type and in a random place in the lane.
      */
     private PowerUp spawnPowerUp() {
 
         float random = ThreadLocalRandom.current().nextFloat();
 
+        // Random chance that a power up is spawned in a given frame
         if (random <= this.powerChance) {
+            // Choose a position for the power up to spawn at
             int side;
             Vector2 spawnPos;
             Vector2 dir;
@@ -369,6 +395,7 @@ public class Lane {
 
     /**
      * Choose a random location on a side to spawn an obstacle.
+     *
      * @param side The side to choose from.
      * @return A vector2d of the position to spawn the obstacle on a side.
      */
@@ -402,8 +429,9 @@ public class Lane {
 
     /**
      * Check if the boat has crossed the finish line.
+     *
      * @param finishLine The position of the finish line.
-     * @param startTime The time at which the boat started the round.
+     * @param startTime  The time at which the boat started the round.
      * @return A boolean of if the boat has crossed the line.
      */
     public boolean checkBoatFinished(int finishLine, long startTime) {
@@ -412,6 +440,7 @@ public class Lane {
 
     /**
      * Set the boats finish time.
+     *
      * @param finishTime The time to set the finish time to.
      */
     public void setBoatFinishTime(long finishTime) {
@@ -420,6 +449,7 @@ public class Lane {
 
     /**
      * Get the boat that is in the lane.
+     *
      * @return A boat of type {@link PlayerBoat} or {@link CPUBoat}
      */
     public Boat getBoat() {
@@ -428,6 +458,7 @@ public class Lane {
 
     /**
      * Set the instance of the player boat.
+     *
      * @param pb The boat to set as the player boat.
      */
     public void setPb(PlayerBoat pb) {
@@ -436,6 +467,7 @@ public class Lane {
 
     /**
      * Get the boat in the lane's render position.
+     *
      * @return A vector2d of the boat's in-game position.
      */
     public Vector2 getBoatGamePos() {
@@ -444,6 +476,7 @@ public class Lane {
 
     /**
      * Get the time at which the boat finished as a long.
+     *
      * @return A long of the time at which the boat finished.
      */
     public long getBoatFinishTimeLong() {
@@ -452,6 +485,7 @@ public class Lane {
 
     /**
      * Get the total time of all the rounds added together the boat has done.
+     *
      * @return A long of all the rounds added up the boat has done.
      */
     public long getBoatTotalTimeLong() {
@@ -460,6 +494,7 @@ public class Lane {
 
     /**
      * Dispose of the boat texture, current power up texture and the obstacle textures.
+     *
      * @see Boat
      * @see PowerUp
      * @see Obstacle
@@ -476,9 +511,9 @@ public class Lane {
      */
     public void loadTexture() {
         this.boat.loadTexture();
-        for(Obstacle obstacle : obstacles){
+        for (Obstacle obstacle : obstacles) {
             obstacle.loadTexture();
         }
-        if(currentPower!=null)currentPower.loadTexture();
+        if (currentPower != null) currentPower.loadTexture();
     }
 }

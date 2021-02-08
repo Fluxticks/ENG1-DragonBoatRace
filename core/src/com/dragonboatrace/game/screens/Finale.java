@@ -56,10 +56,13 @@ public class Finale extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
+                // User options for when the game ends
                 if (keyCode == Input.Keys.SPACE) {
+                    // To go again
                     game.setScreen(new TitleScreen(game));
                 }
-                if(keyCode == Input.Keys.ESCAPE){
+                if (keyCode == Input.Keys.ESCAPE) {
+                    // To exit
                     Gdx.app.exit();
                 }
                 return true;
@@ -93,7 +96,8 @@ public class Finale extends ScreenAdapter {
 
     }
 
-    public static String getPlayerMedal(int playerPosition){
+    public static String getPlayerMedal(int playerPosition) {
+        // Generate the medal for the player given their position.
         switch (playerPosition) {
             case 1:
                 return "Gold";
@@ -108,6 +112,7 @@ public class Finale extends ScreenAdapter {
 
     /**
      * Get the positions of the cpu boats.
+     *
      * @return An array indicating which position each of the cpu boats came, ignoring the player boat.
      */
     public int[] getPlayerPositions() {

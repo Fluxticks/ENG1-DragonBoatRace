@@ -23,7 +23,6 @@ import com.dragonboatrace.game.entities.PlayerBoat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 
 /**
  * Represents the screen that allows the user to choose a boat for the race.
@@ -74,6 +73,7 @@ public class BoatChoice extends ScreenAdapter {
         this.background = new Texture("menus/boatSelection.png");
         this.game.toDispose.add(this);
 
+        // Initialise the list of boats to display as options to the user.
         boats = new Boat[this.BoatTypes.size()];
         for (int i = 0; i < this.BoatTypes.size(); i++) {
             BoatType boatType = this.BoatTypes.get(i);
@@ -84,10 +84,12 @@ public class BoatChoice extends ScreenAdapter {
                             (Gdx.graphics.getHeight() / 2f) - (this.boatScale * .5f * boatType.getSize().y)),
                     null
             );
+            // Render the boats at a larger scale.
             this.boats[i].getSize().scl(this.boatScale);
             this.boats[i].loadTexture();
         }
 
+        // Initialise the font.
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size *= 3;
@@ -95,10 +97,11 @@ public class BoatChoice extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
-    public static ArrayList<BoatType> availableBoats(BoatType remove){
+    public static ArrayList<BoatType> availableBoats(BoatType remove) {
+        // Make an array of the available boattypes
         ArrayList<BoatType> types = new ArrayList<>(Arrays.asList(BoatType.values()));
         types.remove(BoatType.TESTING);
-        if(remove!=null)types.remove(remove);
+        if (remove != null) types.remove(remove);
         return types;
     }
 
@@ -109,19 +112,23 @@ public class BoatChoice extends ScreenAdapter {
      */
     public void startGame(int difficulty) {
 
-        //TODO: Inline comments are needed for this function.
+        // The number of lanes.
         int laneCount = 7;
 
+        // Make n-1 cpu boats as one lane is for the player.
         CPUBoat[] CPUs = new CPUBoat[laneCount - 1];
         ArrayList<BoatType> cpuBoatTypes = availableBoats(BoatTypes.get(selection));
+        // Width of each lane.
         float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
 
         for (int i = 0; i < laneCount - 1; i++) {
             int xpos = i;
+            // Don't choose the middle lane.
             if (i >= (laneCount - 1) / 2) {
                 xpos += 1;
             }
 
+            // Choose a random boat type for a given cpu boat.
             BoatType cpuBoatType = cpuBoatTypes.get((int) (Math.random() * cpuBoatTypes.size()));
             CPUs[i] = new CPUBoat(
                     cpuBoatType,
@@ -134,10 +141,10 @@ public class BoatChoice extends ScreenAdapter {
                             (xpos + 1) * laneWidth
                     )
             );
-            CPUs[i].saveStartPos();
             CPUs[i].loadTexture();
         }
 
+        // Make the player's boat
         PlayerBoat pb = new PlayerBoat(
                 BoatTypes.get(selection),
                 new Vector2(
@@ -147,10 +154,11 @@ public class BoatChoice extends ScreenAdapter {
                 ((laneCount - 1) / 2) * laneWidth,
                 ((laneCount + 1) / 2) * laneWidth
         )
-        );    // Creating the players boat
-        pb.saveStartPos();
+        );
         pb.loadTexture();
 
+        // Make the lanes for the boats.
+        // Order here doesn't matter as the position of the lane is defined separately
         Lane[] lanes = new Lane[laneCount];
         for (int i = 0; i < laneCount - 1; i++) {
             lanes[i] = new Lane(CPUs[i], pb);
@@ -168,37 +176,51 @@ public class BoatChoice extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.F1) {
-                    FileHandle file = Gdx.files.local("bin/save1.json");
-                    JsonValue jsonString = new JsonReader().parse(file);
-                    game.setScreen(new GameScreen(game, jsonString));
 
-                } else if (keyCode == Input.Keys.F2) {
-                    FileHandle file = Gdx.files.local("bin/save2.json");
-                    JsonValue jsonString = new JsonReader().parse(file);
-                    game.setScreen(new GameScreen(game, jsonString));
-
-                } else if (keyCode == Input.Keys.F3) {
-                    FileHandle file = Gdx.files.local("bin/save3.json");
-                    JsonValue jsonString = new JsonReader().parse(file);
-                    game.setScreen(new GameScreen(game, jsonString));
-
+                // Create the key processor to capture the users input.
+                if (keyCode >= Input.Keys.F1 && keyCode <= Input.Keys.F3) {
+                    // Catch one of the F keys to load the respective file.
+                    loadFile(keyCode);
                 } else if (keyCode == Input.Keys.NUM_1) {
+                    // Choose difficulty 1
                     startGame(1);
                 } else if (keyCode == Input.Keys.NUM_2) {
+                    // Choose difficulty 2
                     startGame(2);
                 } else if (keyCode == Input.Keys.NUM_3) {
+                    // Choose difficulty 3
                     startGame(3);
                 } else if (keyCode == Input.Keys.LEFT) {
+                    // Select the previous boat
                     selection += boats.length - 1;
                     selection %= boats.length;
                 } else if (keyCode == Input.Keys.RIGHT) {
+                    // Select the next boat
                     selection++;
                     selection %= boats.length;
                 }
                 return true;
             }
         });
+    }
+
+    /**
+     * Try to load a save file given a keycode, but if no file present do nothing.
+     *
+     * @param keyCode The keycode of the key being pressed.
+     */
+    protected void loadFile(int keyCode) {
+        // Offset is the start F key - 1 as they are indexed from 1
+        int keyCodeOffset = Input.Keys.F1 - 1;
+        int fileNum = keyCode - keyCodeOffset;
+        // Catch if no such save file
+        try {
+            FileHandle file = Gdx.files.local("bin/save" + fileNum + ".json");
+            JsonValue jsonString = new JsonReader().parse(file);
+            game.setScreen(new GameScreen(game, jsonString));
+        } catch (NullPointerException e) {
+            System.out.println("No Such file");
+        }
     }
 
     /**
@@ -216,6 +238,7 @@ public class BoatChoice extends ScreenAdapter {
         this.boats[this.selection].render(game.batch);
 
         game.batch.begin();
+        // Render the boat information for the currently selected boat.
         this.font.draw(game.batch,
                 String.format("Current Selection: %s BOAT",
                         this.BoatTypes.get(this.selection).name()),
@@ -264,6 +287,7 @@ public class BoatChoice extends ScreenAdapter {
      */
     @Override
     public void hide() {
+        //Removed the input processor
         Gdx.input.setInputProcessor(null);
     }
 

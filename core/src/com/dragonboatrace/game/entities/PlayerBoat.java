@@ -42,6 +42,7 @@ public class PlayerBoat extends Boat {
      */
     @Override
     public void move(float deltaTime) {
+        // The player can't move if they don't have stamina.
         if (this.currentStamina > 0 && this.currentHealth > 0) {
             if (Gdx.input.isKeyPressed(Keys.LEFT)) {
                 this.vel.add(-(1 * this.boatType.getHandling() / (deltaTime * 60)), 0);
@@ -58,15 +59,18 @@ public class PlayerBoat extends Boat {
                 this.currentStamina -= 2 / (60 * deltaTime);
             }
         }
+        // Regain stamina.
         if (this.currentStamina < this.maxStamina) {
             this.currentStamina += 1 / (60 * deltaTime);
         }
+        // Check if the boat is within the bounds and the time since the previous penalty is enough
         if (this.penaltyResetDelay <= 0) {
             if (this.pos.x < this.laneBounds.a || this.laneBounds.b < this.pos.x) { // Boat has left the lane
                 this.timePenalties += 5000;
                 this.penaltyResetDelay = 5;
             }
         } else {
+            // Reduce the time since the previous penalty
             this.penaltyResetDelay -= deltaTime;
         }
         if (this.currentHealth < 0) {
@@ -105,6 +109,7 @@ public class PlayerBoat extends Boat {
      */
     @Override
     public void update(float deltaTime) {
+        // Dampen velocity
         float deltaX = this.vel.x * this.dampening;
         float deltaY = this.vel.y * this.dampening;
 

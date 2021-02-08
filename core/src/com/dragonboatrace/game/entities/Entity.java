@@ -107,6 +107,7 @@ public abstract class Entity {
      * @param deltaTime The time since the previous frame.
      */
     public void update(float deltaTime) {
+        // Dampen velocity
         float deltaX = this.vel.x * this.dampening / (deltaTime * 60);
         float deltaY = this.vel.y * this.dampening / (deltaTime * 60);
 

@@ -155,12 +155,14 @@ public abstract class Boat extends Entity {
         }
         if (obj.getClass() == this.getClass()) {
             Boat objBoat = (Boat) obj;
+            // Check each attribute of the boat to assert that all of them are the same.
             boolean type = objBoat.getType() == this.getType();
             boolean health = objBoat.getCurrentHealth() == this.getCurrentHealth();
             boolean stamina = objBoat.getCurrentStamina() == this.getCurrentStamina();
             boolean travelled = Float.compare(objBoat.getDistanceTravelled(), this.getDistanceTravelled()) != 1;
             boolean time = objBoat.getTotalTimeLong() == this.getTotalTimeLong();
             boolean bounds = objBoat.getLaneBounds().equals(this.getLaneBounds());
+            // Some generic Entity attributes also need to be checked.
             return type && health && stamina && travelled && time && bounds && super.equals(obj);
         } else {
             return false;
@@ -199,14 +201,17 @@ public abstract class Boat extends Entity {
      * @param o         The obstacle being checked.
      */
     public void doCollision(boolean colliding, Obstacle o) {
+        // Check if there is a collision occurring between an obstacle and the boat.
         if (colliding) {
             if (!this.collided.contains(o)) {
+                // Don't allow more than one collision per obstacle.
                 this.collided.add(o);
                 this.currentHealth -= o.weight;
                 this.currentMaxSpeed = this.boatType.getSpeed() / o.weight;
                 this.currentStamina = Math.max(this.currentStamina - 100 * o.weight, 0);
             }
         } else if (this.collided.contains(o)) {
+            // Remove the obstacle from the list of currently colliding obstacles.
             this.collided.remove(o);
             this.currentMaxSpeed = this.boatType.getSpeed();
         }
@@ -218,6 +223,7 @@ public abstract class Boat extends Entity {
      * @param o The obstacle being checked.
      */
     public void checkForCollision(Obstacle o) {
+        // Don't bother checking for collisions if no-collide is enabled.
         if (!this.noCollide) {
             doCollision(super.checkCollision(o), o);
         }
@@ -256,9 +262,6 @@ public abstract class Boat extends Entity {
      * @return If the boat has finished or not.
      */
     public boolean checkFinished(int finishLine, long startTime) {
-        //finish line is the pixels from the start that the boats have to travel
-        //start time is the system time when the race started
-
         if (this.finished) {
             return true;
         } else if (this.isFinished(finishLine)) {
@@ -266,7 +269,6 @@ public abstract class Boat extends Entity {
             this.finished = true;
         }
         return this.finished;
-
     }
 
     /**
@@ -323,17 +325,10 @@ public abstract class Boat extends Entity {
     }
 
     /**
-     * Save the start position.
-     */
-    //TODO: Remove this.
-    public void saveStartPos() {
-        this.startPos = this.pos.cpy();
-    }
-
-    /**
      * Reset the boat to default values and to the start of the race.
      */
     public void moveToStart() {
+        //Reset all values for the beginning of a round.
         this.inGamePos = startPos.cpy();
         this.pos = startPos.cpy();
         this.hitbox.setToPosition(this.inGamePos);

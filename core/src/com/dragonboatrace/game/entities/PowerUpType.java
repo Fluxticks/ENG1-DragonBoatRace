@@ -77,6 +77,7 @@ public enum PowerUpType {
      * @return A random {@link PowerUpType}
      */
     public static PowerUpType chooseRandomType() {
+        // -1 is so that the TESTING power-up is never chosen in a game.
         int length = PowerUpType.values().length - 1;
         int random = ThreadLocalRandom.current().nextInt(length);
         return PowerUpType.values()[random];

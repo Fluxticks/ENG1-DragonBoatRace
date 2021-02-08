@@ -37,6 +37,7 @@ public class BoatDeathScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(int keyCode) {
                 if (keyCode == Input.Keys.SPACE) {
+                    // Go back to main menu when the player fails and then presses space.
                     game.setScreen(new TitleScreen(game));
                 }
                 return true;

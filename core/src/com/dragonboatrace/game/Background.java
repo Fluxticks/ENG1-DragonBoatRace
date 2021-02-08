@@ -71,9 +71,11 @@ public class Background extends Entity {
      * Load all the textures.
      */
     public void loadTexture() {
+        // Load a list of file names from a text file
         FileHandle backgroundsDirectory = Gdx.files.local("Backgrounds/backgrounds.txt");
         String[] files = backgroundsDirectory.readString().split(",");
         this.allTextures = new Texture[files.length];
+        // Load those file names as files
         for (int i = 0; i < files.length; i++) {
             FileHandle file = Gdx.files.internal("Backgrounds/" + files[i] + ".jpg");
             this.allTextures[i] = new Texture(file);

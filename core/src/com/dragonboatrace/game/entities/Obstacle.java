@@ -155,7 +155,7 @@ public class Obstacle extends Entity {
         return this.obstacleType;
     }
 
-    public MovementCharacteristics getMover(){
+    public MovementCharacteristics getMover() {
         return this.mover;
     }
 }

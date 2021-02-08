@@ -122,16 +122,22 @@ public class GameScreen extends ScreenAdapter {
         this.finishLineObstacle = new Obstacle(ObstacleType.FINISHLINE, new Vector2(0, 0), new Vector2(0, 0));
         this.finishLineObstacle.loadTexture();
 
+        // Create a temporary list of lanes to be dynamically loaded in.
         ArrayList<Lane> tempLanes = new ArrayList<>();
+        // Each lane has a json string an just needs to be loaded in.
         for (JsonValue lane : jsonString.get("lanes")) {
+            // Each lane is able to create the boat, obstacles and its position from the string.
             Lane tempLane = new Lane(lane);
             tempLanes.add(tempLane);
+            // Find which one is the player's lane
             if (tempLane.isPlayerLane) {
                 this.pb = (PlayerBoat) tempLane.getBoat();
             }
         }
+        // Convert to a static length array
         this.lanes = tempLanes.toArray(new Lane[0]);
 
+        // Set the player boat for all the lanes.
         for (Lane lane : lanes) {
             lane.setPb(this.pb);
             lane.loadTexture();
@@ -152,6 +158,7 @@ public class GameScreen extends ScreenAdapter {
                     Gdx.app.exit();
                 }
                 if (keyCode == Input.Keys.F1 || keyCode == Input.Keys.F2 || keyCode == Input.Keys.F3) {
+                    // 243 is keycode of F1 - 1
                     makeSave(keyCode - 243);
                     Gdx.app.exit();
                 }
@@ -169,10 +176,12 @@ public class GameScreen extends ScreenAdapter {
         FileHandle file = Gdx.files.local("bin/save" + saveSlot + ".json");
         String[] laneStrings = new String[this.lanes.length];
 
+        // Convert each lane to a string containing the boat and obstacles.
         for (int i = 0; i < laneStrings.length; i++) {
             laneStrings[i] = this.lanes[i].save();
         }
 
+        // Format the total string with all the lanes and include the elected difficulty and current round
         String saveString = String.format("{round:%d, difficulty:%d, lanes:%s}",
                 this.round,
                 this.difficulty,
@@ -206,7 +215,8 @@ public class GameScreen extends ScreenAdapter {
      * @param round The current round.
      */
     public void create(int round) {
-        //TODO: In-line comment this.
+
+        // Given the difficulty choose a multiplier
         switch (difficulty) {
             case 1:
                 this.obstacleMultiplier = (float) 0.5;
@@ -221,6 +231,7 @@ public class GameScreen extends ScreenAdapter {
 
         raceStartTime = System.currentTimeMillis();
 
+        // Setup the lanes
         laneCount = 7;
         laneMarkers = new LaneMarker[laneCount + 1];
         float laneWidth = Gdx.graphics.getWidth() / (float) laneCount;
@@ -228,16 +239,19 @@ public class GameScreen extends ScreenAdapter {
             laneMarkers[i] = new LaneMarker(new Vector2(i * laneWidth, 0));
         }
 
+        // Setup the backgrounds
         int backgroundCount = 5;
         backgrounds = new Background[backgroundCount];
         for (int i = 0; i < backgroundCount; i++) {
             backgrounds[i] = new Background(new Vector2(Gdx.graphics.getWidth() / 2f, i * 1080));
         }
 
+        // Update each of the lanes with the new multiplier and round number
         for (Lane lane : lanes) {
             lane.updateRound(this.round, this.obstacleMultiplier);
         }
 
+        // Each round has a different length
         switch (round) {
             case 0:
                 finishLine = 20000;
@@ -256,7 +270,7 @@ public class GameScreen extends ScreenAdapter {
                 break;
         }
 
-
+        // Initialise the font
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/FreeMono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 24;
@@ -272,23 +286,26 @@ public class GameScreen extends ScreenAdapter {
      * @param deltaTime The time since the previous frame.
      */
     public void render(float deltaTime) {
-        //TODO: In-line comment this.
         Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Render the backgrounds
         for (Background b : backgrounds) {
             b.render(game.batch, pb.getInGamePos());
         }
 
+        // Render the lane markers
         for (LaneMarker l : laneMarkers) {
             l.render(game.batch, pb.getInGamePos());
         }
 
+        // Render each lane, which contains the boats and the obstacles
         for (Lane lane : lanes) {
             lane.render(game.batch);
             lane.update(deltaTime);
         }
 
+        // Check the current health of the players boat only
         if (pb.getCurrentHealth() == 0) {
             game.setScreen(new BoatDeathScreen(game));
         }
@@ -307,12 +324,14 @@ public class GameScreen extends ScreenAdapter {
 
         finishLineObstacle.getPos().y = finishLine; //this will make the finish line appear on the screen
 
+        // Check all but the player being finished
         for (Lane lane : lanes) {
             if (!lane.isPlayerLane) {
                 lane.checkBoatFinished(finishLine, this.raceStartTime);
             }
         }
 
+        // Check if the player has finished
         if (pb.checkFinished(finishLine, this.raceStartTime)) {
             //calculate the times it would have taken or did take the cpus to finish
             //send every boats finishing time to the next screen along w the current round
@@ -341,7 +360,7 @@ public class GameScreen extends ScreenAdapter {
      * Render the UI.
      */
     private void showHUD() {
-        // Finish line progress
+        // Distance bar background
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.DARK_GRAY);
         this.game.shapeRenderer.rect(
@@ -351,7 +370,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Distance bar progress
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.LIGHT_GRAY);
         this.game.shapeRenderer.rect(
@@ -361,7 +380,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Distance bar outline
         this.game.shapeRenderer.begin(ShapeType.Line);
         this.game.shapeRenderer.setColor(Color.BLACK);
         this.game.shapeRenderer.rect(
@@ -371,7 +390,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Distance bar text
         this.game.batch.begin();
         this.font.draw(
                 this.game.batch,
@@ -380,8 +399,7 @@ public class GameScreen extends ScreenAdapter {
                 0.975f * Gdx.graphics.getHeight());
         this.game.batch.end();
 
-
-        // Health Bar
+        // Health bar background
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.valueOf("#800f0f"));
         this.game.shapeRenderer.rect(
@@ -391,7 +409,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Health bar amount
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.RED);
         this.game.shapeRenderer.rect(
@@ -401,7 +419,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Health bar outline
         this.game.shapeRenderer.begin(ShapeType.Line);
         this.game.shapeRenderer.setColor(Color.BLACK);
         this.game.shapeRenderer.rect(
@@ -411,7 +429,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Health bar text
         this.game.batch.begin();
         this.font.draw(
                 this.game.batch,
@@ -420,7 +438,7 @@ public class GameScreen extends ScreenAdapter {
                 0.935f * Gdx.graphics.getHeight());
         this.game.batch.end();
 
-        // Stamina Bar
+        // Stamina bar background
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.NAVY);
         this.game.shapeRenderer.rect(
@@ -430,7 +448,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Stamina bar amount
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.BLUE);
         this.game.shapeRenderer.rect(
@@ -440,7 +458,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Stamina bar outline
         this.game.shapeRenderer.begin(ShapeType.Line);
         this.game.shapeRenderer.setColor(Color.BLACK);
         this.game.shapeRenderer.rect(
@@ -450,7 +468,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Stamina bar text
         this.game.batch.begin();
         this.font.draw(
                 this.game.batch,
@@ -459,7 +477,7 @@ public class GameScreen extends ScreenAdapter {
                 0.895f * Gdx.graphics.getHeight());
         this.game.batch.end();
 
-        // Speed Bar
+        // Speed bar background
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.valueOf("#838510"));
         this.game.shapeRenderer.rect(
@@ -469,7 +487,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Speed bar amount
         this.game.shapeRenderer.begin(ShapeType.Filled);
         this.game.shapeRenderer.setColor(Color.YELLOW);
         this.game.shapeRenderer.rect(
@@ -479,7 +497,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Speed bar outline
         this.game.shapeRenderer.begin(ShapeType.Line);
         this.game.shapeRenderer.setColor(Color.BLACK);
         this.game.shapeRenderer.rect(
@@ -489,7 +507,7 @@ public class GameScreen extends ScreenAdapter {
                 0.02f * Gdx.graphics.getHeight()
         );
         this.game.shapeRenderer.end();
-
+        // Speed bar text
         this.game.batch.begin();
         this.font.draw(
                 this.game.batch,

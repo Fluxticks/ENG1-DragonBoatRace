@@ -1,7 +1,5 @@
 package com.dragonboatrace.game.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dragonboatrace.game.Tuple;
@@ -62,13 +60,15 @@ public class CPUBoat extends Boat {
      */
     @Override
     public void move(float deltaTime) {
-        //basically they just move in a straight line until they break
+
+        //Always accelerate.
         if (this.vel.y < this.currentMaxSpeed) {
             this.vel.add(0, ((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         } else if (this.vel.y > this.currentMaxSpeed) {
             this.vel.add(0, -((this.boatType.getAcceleration() / 100) / (deltaTime * 60)));
         }
 
+        // Choose an x direction based on the direction set with dir.
         this.vel.add((dir * this.boatType.getHandling() / (deltaTime * 60)), 0);
 
         //this part stops them if they break
@@ -95,6 +95,7 @@ public class CPUBoat extends Boat {
     public void decideMovement(ArrayList<Obstacle> obstacles) {
 
         boolean obstacleInZone = false;
+        // The center of the boat.
         float thisCenter = this.size.x / 2f + this.inGamePos.x;
 
         // Find an obstacle in the area being checked.
@@ -102,6 +103,7 @@ public class CPUBoat extends Boat {
             if (this.areaChecker.checkCollision(obstacle.getHitbox())) {
                 float obstacleCenter = obstacle.size.x / 2f + obstacle.inGamePos.x;
                 obstacleInZone = true;
+                // Choose a direction based on the position of the center of the obstacle relative to the boats center.
                 this.dir = decideDirection(thisCenter, obstacleCenter);
                 break;
             }
@@ -166,9 +168,11 @@ public class CPUBoat extends Boat {
      */
     @Override
     public void update(float deltaTime) {
+        // Dampen the velocity.
         float deltaX = this.vel.x * this.dampening;
         float deltaY = this.vel.y * this.dampening;
 
+        // Don't bother if there isnt a change.
         if (deltaX != 0) {
             this.pos.add(deltaX, 0);
             this.inGamePos.add(deltaX, 0);
@@ -179,11 +183,12 @@ public class CPUBoat extends Boat {
             this.inGamePos.add(0, deltaY);
             this.distanceTravelled += deltaY;
         }
+        // Move the hit box using a fixed mover, but move the area checker relative as it has an x offset.
         this.areaChecker.movePosition(new Vector2(deltaX, deltaY));
         this.hitbox.setToPosition(this.inGamePos);
     }
 
-    public void moveToStart(){
+    public void moveToStart() {
         super.moveToStart();
         this.areaChecker.setToPosition(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y));
     }
