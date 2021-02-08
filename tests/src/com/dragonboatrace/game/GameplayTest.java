@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GameplayTest {
 
     @Test
-    public void playerInFirstTest(){
+    public void playerInFirstTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 0f));
 
         long playerFinish = 100;
@@ -29,10 +29,10 @@ public class GameplayTest {
         Lane[] lanes = new Lane[3];
         Lane pLane = new Lane(boat, boat);
         lanes[0] = pLane;
-        for(int i = 1; i < lanes.length; i ++){
+        for (int i = 1; i < lanes.length; i++) {
             CPUBoat cpuBoat = new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
-            cpuBoat.setTotalTime(playerFinish + (long)i*nextToAdd);
-            cpuBoat.setFinishTime(playerFinish + (long)i*nextToAdd);
+            cpuBoat.setTotalTime(playerFinish + (long) i * nextToAdd);
+            cpuBoat.setFinishTime(playerFinish + (long) i * nextToAdd);
             Lane lane = new Lane(cpuBoat, boat);
             lanes[i] = lane;
         }
@@ -44,7 +44,7 @@ public class GameplayTest {
     }
 
     @Test
-    public void playerNotInFirstTest(){
+    public void playerNotInFirstTest() {
         PlayerBoat boat = new PlayerBoat(BoatType.TESTING, new Vector2(0, 0), new Tuple<Float, Float>(0f, 0f));
 
         long playerFinish = 500;
@@ -56,10 +56,10 @@ public class GameplayTest {
         Lane[] lanes = new Lane[3];
         Lane pLane = new Lane(boat, boat);
         lanes[0] = pLane;
-        for(int i = 1; i < lanes.length; i ++){
+        for (int i = 1; i < lanes.length; i++) {
             CPUBoat cpuBoat = new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f));
-            cpuBoat.setTotalTime(playerFinish - (long)i*nextToAdd);
-            cpuBoat.setFinishTime(playerFinish - (long)i*nextToAdd);
+            cpuBoat.setTotalTime(playerFinish - (long) i * nextToAdd);
+            cpuBoat.setFinishTime(playerFinish - (long) i * nextToAdd);
             Lane lane = new Lane(cpuBoat, boat);
             lanes[i] = lane;
         }
@@ -71,8 +71,8 @@ public class GameplayTest {
     }
 
     @Test
-    public void checkValidCPUBoatTypes(){
-        for(BoatType type : BoatType.values()){
+    public void checkValidCPUBoatTypes() {
+        for (BoatType type : BoatType.values()) {
             ArrayList<BoatType> availableTypes = BoatChoice.availableBoats(type);
             Assert.assertFalse(availableTypes.contains(type));
         }
@@ -82,9 +82,9 @@ public class GameplayTest {
     }
 
     @Test
-    public void playerReceivesCorrectMedal(){
+    public void playerReceivesCorrectMedal() {
         String[] medals = {"", "Gold", "Silver", "Bronze", ""};
-        for(int i = 0; i < medals.length; i++){
+        for (int i = 0; i < medals.length; i++) {
             Assert.assertEquals(medals[i], Finale.getPlayerMedal(i));
         }
     }

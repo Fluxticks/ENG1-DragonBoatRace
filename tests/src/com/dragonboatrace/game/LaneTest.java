@@ -1,7 +1,6 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.dragonboatrace.game.entities.Boat;
 import com.dragonboatrace.game.entities.BoatType;
 import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
@@ -22,7 +21,7 @@ public class LaneTest {
     }
 
     @Test
-    public void updateMaxObstacleTestMultiple(){
+    public void updateMaxObstacleTestMultiple() {
         Lane lane = new Lane(null, null);
         float multiplier = 0.5f;
         int offset = 3;
@@ -33,14 +32,14 @@ public class LaneTest {
     }
 
     @Test
-    public void isPlayerLaneTestFalse(){
-        Lane lane = new Lane(new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f,0f)), null);
+    public void isPlayerLaneTestFalse() {
+        Lane lane = new Lane(new CPUBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f)), null);
         Assert.assertFalse(lane.isPlayerLane);
     }
 
     @Test
-    public void isPlayerLaneTestTrue(){
-        Lane lane = new Lane(new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f,0f)), null);
+    public void isPlayerLaneTestTrue() {
+        Lane lane = new Lane(new PlayerBoat(BoatType.TESTING, new Vector2(), new Tuple<Float, Float>(0f, 0f)), null);
         Assert.assertTrue(lane.isPlayerLane);
     }
 }

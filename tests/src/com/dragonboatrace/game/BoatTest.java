@@ -1,14 +1,13 @@
 package com.dragonboatrace.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.dragonboatrace.game.entities.*;
-import com.dragonboatrace.game.screens.BoatChoice;
-import com.dragonboatrace.game.screens.midRoundScreen;
+import com.dragonboatrace.game.entities.BoatType;
+import com.dragonboatrace.game.entities.Obstacle;
+import com.dragonboatrace.game.entities.ObstacleType;
+import com.dragonboatrace.game.entities.PlayerBoat;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
 
 @RunWith(GdxTestRunner.class)
 public class BoatTest {
