@@ -6,6 +6,7 @@ import com.dragonboatrace.game.entities.CPUBoat;
 import com.dragonboatrace.game.entities.PlayerBoat;
 import com.dragonboatrace.game.screens.BoatChoice;
 import com.dragonboatrace.game.screens.Finale;
+import com.dragonboatrace.game.screens.GameScreen;
 import com.dragonboatrace.game.screens.midRoundScreen;
 import org.junit.Assert;
 import org.junit.Test;
@@ -86,6 +87,24 @@ public class GameplayTest {
         String[] medals = {"", "Gold", "Silver", "Bronze", ""};
         for (int i = 0; i < medals.length; i++) {
             Assert.assertEquals(medals[i], Finale.getPlayerMedal(i));
+        }
+    }
+
+    @Test
+    public void updateMaxObstaclesMultipleDifficultyTest(){
+        int difficulty = 1;
+        float expectedOutcome = 0.5f;
+        float actualOutcome = GameScreen.getObstacleMultiplier(difficulty);
+        Assert.assertEquals(expectedOutcome, actualOutcome, 0.0);
+    }
+
+    @Test
+    public void updateMaxObstaclesSingleDifficultyTest(){
+        float[] multipliers = {0f, 0.5f, 1f, 2f, 0f};
+        for (int i = 0; i < multipliers.length; i++){
+            float expectedOutcome = multipliers[i];
+            float actualOutcome = GameScreen.getObstacleMultiplier(i);
+            Assert.assertEquals(expectedOutcome, actualOutcome, 0.0);
         }
     }
 

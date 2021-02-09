@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 public class LaneTest {
 
     @Test
-    public void updateMaxObstaclesTestSingle() {
+    public void updateMaxObstaclesRoundSingleTest() {
         Lane lane = new Lane(null, null);
         int initialRound = 1;
         float multiplier = 0.5f;
@@ -21,7 +21,7 @@ public class LaneTest {
     }
 
     @Test
-    public void updateMaxObstacleTestMultiple() {
+    public void updateMaxObstacleRoundMultipleTest() {
         Lane lane = new Lane(null, null);
         float multiplier = 0.5f;
         int offset = 3;

@@ -209,6 +209,19 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    public static float getObstacleMultiplier(int difficulty){
+        // Given the difficulty choose a multiplier
+        switch (difficulty) {
+            case 1:
+                return 0.5f;
+            case 2:
+                return 1f;
+            case 3:
+                return 2f;
+            default: return 0f;
+        }
+    }
+
     /**
      * Setup the number of obstacles and other round based parameters before the screen shows.
      *
@@ -216,18 +229,7 @@ public class GameScreen extends ScreenAdapter {
      */
     public void create(int round) {
 
-        // Given the difficulty choose a multiplier
-        switch (difficulty) {
-            case 1:
-                this.obstacleMultiplier = (float) 0.5;
-                break;
-            case 2:
-                this.obstacleMultiplier = (float) 1;
-                break;
-            case 3:
-                this.obstacleMultiplier = (float) 2;
-                break;
-        }
+        this.obstacleMultiplier = getObstacleMultiplier(difficulty);
 
         raceStartTime = System.currentTimeMillis();
 
