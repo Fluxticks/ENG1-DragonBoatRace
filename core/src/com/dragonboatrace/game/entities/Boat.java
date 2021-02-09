@@ -94,6 +94,7 @@ public abstract class Boat extends Entity {
      * @param pos        The initial position of the boat. Of type {@link Vector2}
      * @param laneBounds The x bounds of the lane the boat is in. Of type {@link Tuple}
      */
+    // THIS IS CHANGED
     public Boat(BoatType boatType, Vector2 pos, Tuple<Float, Float> laneBounds) {
         super(pos.cpy(), boatType.getSize().cpy(), boatType.getWeight());
         this.startPos = this.pos.cpy();
@@ -109,6 +110,7 @@ public abstract class Boat extends Entity {
         this.laneBounds = laneBounds;
     }
 
+    // THIS IS NEW
     /**
      * Creates a generic boat from a json string, imported from a save file.
      *
@@ -137,11 +139,13 @@ public abstract class Boat extends Entity {
         this.hitbox.setToPosition(this.inGamePos);
     }
 
+    // THIS IS NEW
     @Override
     public void loadTexture() {
         this.image = new Texture(this.boatType.imageSrc);
     }
 
+    // THIS IS NEW
     /**
      * Checks if an object is equal to this boat, attribute by attribute
      *
@@ -169,6 +173,7 @@ public abstract class Boat extends Entity {
         }
     }
 
+    // THIS IS NEW
     /**
      * Creates a JSON string of this boat.
      *
@@ -194,6 +199,7 @@ public abstract class Boat extends Entity {
         );
     }
 
+    // THIS IS CHANGED
     /**
      * Perform the collision logic after the check of if an obstacle is actually colliding.
      *
@@ -217,6 +223,7 @@ public abstract class Boat extends Entity {
         }
     }
 
+    // THIS IS CHANGED
     /**
      * Check if there is a collision between an obstacle o and the boat.
      *

@@ -46,6 +46,7 @@ public class Obstacle extends Entity {
         this.mover = obstacleType.getMover();
     }
 
+    // THIS IS NEW
     /**
      * Creates a new obstacle from json string from a save file.
      *
@@ -61,6 +62,7 @@ public class Obstacle extends Entity {
         this.mover = obstacleType.getMover();
     }
 
+    // THIS IS NEW
     /**
      * Load the texture for the obstacle. Is required before rendering.
      */
@@ -69,6 +71,7 @@ public class Obstacle extends Entity {
         this.image = new Texture(Gdx.files.local(this.obstacleType.imageSrc));
     }
 
+    // THIS IS NEW
     /**
      * Create a json string that represents the current obstacle.
      *
@@ -86,6 +89,7 @@ public class Obstacle extends Entity {
         );
     }
 
+    // THIS IS NEW
     /**
      * Compares an object to an obstacle and determines if the object is an identical obstacle.
      *

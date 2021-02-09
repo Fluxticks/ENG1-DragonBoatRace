@@ -45,6 +45,7 @@ public abstract class Entity {
      */
     protected EntityHitbox hitbox;
 
+    // THIS IS CHANGED
     /**
      * Creates a new entity at a position with a size and weight.
      *
@@ -62,6 +63,7 @@ public abstract class Entity {
         this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
+    // THIS IS NEW
     /**
      * Creates a new entity where the initial velocity is not 0, but instead the given value.
      *
@@ -79,6 +81,7 @@ public abstract class Entity {
         this.hitbox = new EntityHitbox(this.inGamePos, this.size);
     }
 
+    // THIS IS NEW
     /**
      * Checks if two entities have the same values.
      *
@@ -126,6 +129,7 @@ public abstract class Entity {
         this.hitbox.setToPosition(this.inGamePos);
     }
 
+    // THIS IS CHANGED
     /**
      * Check if an obstacle and an entity are colliding.
      *
@@ -155,6 +159,7 @@ public abstract class Entity {
         return new Vector2((this.pos.x), (this.pos.y - relPos.y));
     }
 
+    // THIS IS NEW
     /**
      * Draws a box around where the hit box is. Used for debugging.
      *
@@ -228,5 +233,6 @@ public abstract class Entity {
 
     public abstract void dispose();
 
+    // THIS IS NEW
     public abstract void loadTexture();
 }

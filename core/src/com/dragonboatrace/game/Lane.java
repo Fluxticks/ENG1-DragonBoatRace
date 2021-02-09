@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.concurrent.ThreadLocalRandom;
 
+// THIS WHOLE CLASS IS NEW
 /**
  * Represents a lane to be used for separating boats and obstacles into specific lanes.
  *

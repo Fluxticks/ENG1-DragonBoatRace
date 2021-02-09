@@ -67,6 +67,7 @@ public class Background extends Entity {
         this.size = new Vector2(this.img.getWidth(), this.img.getHeight());
     }
 
+    // THIS IS CHANGED
     /**
      * Load all the textures.
      */

@@ -97,6 +97,7 @@ public class BoatChoice extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
+    // THIS IS NEW
     public static ArrayList<BoatType> availableBoats(BoatType remove) {
         // Make an array of the available boattypes
         ArrayList<BoatType> types = new ArrayList<>(Arrays.asList(BoatType.values()));
@@ -105,6 +106,7 @@ public class BoatChoice extends ScreenAdapter {
         return types;
     }
 
+    // THIS IS CHANGED
     /**
      * Start the game once the user has made their choice with a specific difficulty.
      *
@@ -168,6 +170,7 @@ public class BoatChoice extends ScreenAdapter {
         game.setScreen(new GameScreen(game, 0, lanes, pb, difficulty));
     }
 
+    // THIS IS CHANGED
     /**
      * Show the screen.
      */
@@ -204,6 +207,7 @@ public class BoatChoice extends ScreenAdapter {
         });
     }
 
+    // THIS IS NEW
     /**
      * Try to load a save file given a keycode, but if no file present do nothing.
      *

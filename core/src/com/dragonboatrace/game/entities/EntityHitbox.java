@@ -2,6 +2,7 @@ package com.dragonboatrace.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
 
+// THIS WHOLE CLASS IS NEW
 /**
  * Holds the information for an entities hit box.
  *

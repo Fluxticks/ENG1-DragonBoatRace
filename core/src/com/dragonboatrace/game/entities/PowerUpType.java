@@ -5,6 +5,7 @@ import com.dragonboatrace.game.MovementCharacteristics;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+// THIS WHOLE CLASS IS NEW
 /**
  * Represents a generic power up template.
  *

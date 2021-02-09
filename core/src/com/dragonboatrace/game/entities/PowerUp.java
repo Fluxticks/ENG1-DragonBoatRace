@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 
+// THIS WHOLE CLASS IS NEW
 /**
  * Represents a Power Up obstacle
  *

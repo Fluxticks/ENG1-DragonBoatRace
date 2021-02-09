@@ -28,6 +28,7 @@ public class Tuple<A, B> {
         this.b = b;
     }
 
+    // THIS IS NEW
     /**
      * Assert if a given Object is identical to a given tuple.
      *

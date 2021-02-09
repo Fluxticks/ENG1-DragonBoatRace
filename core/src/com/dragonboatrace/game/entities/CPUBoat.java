@@ -26,6 +26,7 @@ public class CPUBoat extends Boat {
      */
     private final EntityHitbox areaChecker;
 
+    // THIS IS CHANGED
     /**
      * Creates a boat using a specific boat type and position to be controlled by the computer.
      *
@@ -40,6 +41,7 @@ public class CPUBoat extends Boat {
         this.areaChecker = new EntityHitbox(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y), new Vector2(this.size.x + this.size.x * this.areaMulti, this.size.y));
     }
 
+    // THIS IS NEW
     /**
      * Creates a boat controlled by the computer from a save file.
      *
@@ -53,6 +55,7 @@ public class CPUBoat extends Boat {
 
     }
 
+    // THIS IS CHANGED
     /**
      * Performs the movement of the boat given the time since the previous frame.
      *
@@ -87,6 +90,7 @@ public class CPUBoat extends Boat {
         }
     }
 
+    // THIS IS CHANGED
     /**
      * Decides which direction to move (left/right) given the position of the obstacles around the boat.
      *
@@ -150,6 +154,7 @@ public class CPUBoat extends Boat {
         }
     }
 
+    // THIS IS NEW
     /**
      * Determines if the given object is an identical {@link CPUBoat}
      *
@@ -188,6 +193,7 @@ public class CPUBoat extends Boat {
         this.hitbox.setToPosition(this.inGamePos);
     }
 
+    // THIS IS NEW
     public void moveToStart() {
         super.moveToStart();
         this.areaChecker.setToPosition(new Vector2(this.inGamePos.x - this.size.x * (this.areaMulti / 2f), this.inGamePos.y));

@@ -26,6 +26,7 @@ public class PlayerBoat extends Boat {
         startPos = pos.cpy();
     }
 
+    // THIS IS NEW
     /**
      * Creates a boat from a json string loaded from a save file.
      *
@@ -81,6 +82,7 @@ public class PlayerBoat extends Boat {
         }
     }
 
+    // THIS IS NEW
     /**
      * Assert if an object is an identical PlayerBoat.
      *

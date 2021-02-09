@@ -70,6 +70,7 @@ public class Finale extends ScreenAdapter {
         });
     }
 
+    // THIS IS CHANGED
     /**
      * Render the information to the player.
      *

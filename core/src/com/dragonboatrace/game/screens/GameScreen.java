@@ -107,6 +107,7 @@ public class GameScreen extends ScreenAdapter {
         this.create(round);
     }
 
+    // THIS IS NEW
     /**
      * Creates a new screen using a json string from a save file.
      *
@@ -145,6 +146,7 @@ public class GameScreen extends ScreenAdapter {
         this.create(this.round);
     }
 
+    // THIS IS CHANGED
     /**
      * Show the screen.
      */
@@ -167,6 +169,7 @@ public class GameScreen extends ScreenAdapter {
         });
     }
 
+    // THIS IS NEW
     /**
      * Save the current game state to a file.
      *
@@ -191,6 +194,7 @@ public class GameScreen extends ScreenAdapter {
         saveJSONString(saveString, file);
     }
 
+    // THIS IS NEW
     /**
      * Save a JSON string to a file.
      *
@@ -209,6 +213,7 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    // THIS IS NEW
     /**
      * Get the multiplier for the number of obstacles at a given difficulty.
      *
@@ -229,6 +234,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    // THIS IS CHANGED
     /**
      * Setup the number of obstacles and other round based parameters before the screen shows.
      *
@@ -289,6 +295,7 @@ public class GameScreen extends ScreenAdapter {
         this.font = generator.generateFont(parameter);
     }
 
+    // THIS IS CHANGED
     /**
      * Render the game to the player.
      *
