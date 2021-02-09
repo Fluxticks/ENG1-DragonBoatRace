@@ -339,6 +339,7 @@ public abstract class Boat extends Entity {
         this.finishTime = 0;
         this.boatType.handling = defaultHandling;
         this.finished = false;
+        this.currentMaxSpeed = this.boatType.getSpeed();
     }
 
     /**
