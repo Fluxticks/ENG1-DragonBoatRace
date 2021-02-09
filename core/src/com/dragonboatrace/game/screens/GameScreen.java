@@ -254,19 +254,19 @@ public class GameScreen extends ScreenAdapter {
         // Each round has a different length
         switch (round) {
             case 0:
-                finishLine = 20000;
+                finishLine = 10000;
                 break;
             case 1:
-                finishLine = 24000;
+                finishLine = 12000;
                 break;
             case 2:
-                finishLine = 28000;
+                finishLine = 14000;
                 break;
             case 3:
-                finishLine = 30000;
+                finishLine = 15000;
                 break;
             default:
-                finishLine = 1000;
+                finishLine = 500;
                 break;
         }
 
