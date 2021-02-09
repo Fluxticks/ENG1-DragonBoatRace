@@ -101,8 +101,8 @@ public abstract class Boat extends Entity {
         this.currentHealth = this.boatType.getMaxHealth();
         this.currentMaxSpeed = this.boatType.getSpeed();
         this.collided = new ArrayList<>();
-        this.currentStamina = 1000;
-        this.maxStamina = 1000;
+        this.currentStamina = this.boatType.getStamina();
+        this.maxStamina = this.boatType.getStamina();
         this.defaultHandling = boatType.handling;
         this.distanceTravelled = 0;
         this.totalTime = 0;
@@ -129,7 +129,7 @@ public abstract class Boat extends Entity {
         this.totalTime = jsonString.getInt("totalTime");
         this.laneBounds = new Tuple<>(jsonString.get("laneBounds").getFloat("x"), jsonString.get("laneBounds").getFloat("y"));
         this.currentMaxSpeed = this.boatType.getSpeed();
-        this.maxStamina = 1000;
+        this.maxStamina = this.boatType.getStamina();
         this.collided = new ArrayList<>();
         this.defaultHandling = boatType.getHandling();
         this.inGamePos.x = jsonString.get("inGamePos").getFloat("x");
