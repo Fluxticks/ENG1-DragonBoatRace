@@ -209,7 +209,13 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
-    public static float getObstacleMultiplier(int difficulty){
+    /**
+     * Get the multiplier for the number of obstacles at a given difficulty.
+     *
+     * @param difficulty The difficulty selected.
+     * @return A float that multiplies the number of obstacles.
+     */
+    public static float getObstacleMultiplier(int difficulty) {
         // Given the difficulty choose a multiplier
         switch (difficulty) {
             case 1:
@@ -218,7 +224,8 @@ public class GameScreen extends ScreenAdapter {
                 return 1f;
             case 3:
                 return 2f;
-            default: return 0f;
+            default:
+                return 0f;
         }
     }
 
